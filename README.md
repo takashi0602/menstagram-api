@@ -9,12 +9,14 @@ menstagram-apiはMenstagramのバックエンド開発のためのリポジト�
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
 $ cd menstagram-api
-$ composer install
-$ php artisan key:generate
+$ make install
 ```
 
 ### コマンド一覧
 
 ```bash
-$ docker-compose up -d
+$ make up       // 起動
+$ make down     // 終了
+$ make db       // DBの作り直し
+$ make sh       // bashの起動
 ```
