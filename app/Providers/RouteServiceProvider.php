@@ -35,11 +35,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
-        //
+        $this->mapV1AuthApiRoutes();
+        $this->mapV1UserApiRoutes();
+        $this->mapV1PostApiRoutes();
+        $this->mapV1TimelineApiRoutes();
+        $this->mapV1NoticeApiRoutes();
+        $this->mapV1ReportApiRoutes();
     }
 
     /**
@@ -57,17 +59,68 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
+     * 認証系API
      */
-    protected function mapApiRoutes()
+    protected function mapV1AuthApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+        Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\Api\V1')
+                ->group(base_path('routes/api/v1/auth.php'));
+    }
+
+    /**
+     * ユーザー系API
+     */
+    protected function mapV1UserApiRoutes()
+    {
+        Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\Api\V1')
+                ->group(base_path('routes/api/v1/user.php'));
+    }
+
+    /**
+     * 投稿系API
+     */
+    protected function mapV1PostApiRoutes()
+    {
+        Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\Api\V1')
+                ->group(base_path('routes/api/v1/post.php'));
+    }
+
+    /**
+     * タイムライン系API
+     */
+    protected function mapV1TimelineApiRoutes()
+    {
+        Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\Api\V1')
+                ->group(base_path('routes/api/v1/timeline.php'));
+    }
+
+    /**
+     * 通知系API
+     */
+    protected function mapV1NoticeApiRoutes()
+    {
+        Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\Api\V1')
+                ->group(base_path('routes/api/v1/notice.php'));
+    }
+
+    /**
+     * 報告系API
+     */
+    protected function mapV1ReportApiRoutes()
+    {
+        Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\Api\V1')
+                ->group(base_path('routes/api/v1/report.php'));
     }
 }
