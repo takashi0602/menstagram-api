@@ -19,4 +19,6 @@ $ make up       // 起動
 $ make down     // 終了
 $ make db       // DBの作り直し
 $ make sh       // bashの起動
+$ make dbg      // デバッガ(Telescope)の起動
+$ make qual     // 品質チェックツール(PHP Insights)の起動
 ```
