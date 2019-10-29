@@ -37,4 +37,29 @@ class AuthController extends Controller
 
         return response(['access_token' => $accessToken], 200);
     }
+
+    /**
+     * ログイン
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function login()
+    {
+        $request = request();
+
+        // TODO: バリデーション
+
+        $accessToken = Str::random(80);
+
+        User::where('user_id', $request->user_id)->update([
+            'access_token' => hash('sha256', $accessToken),
+        ]);
+
+        return response(['access_token' => $accessToken], 200);
+    }
+
+    public function logout()
+    {
+
+    }
 }
