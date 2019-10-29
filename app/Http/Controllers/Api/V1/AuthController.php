@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * 認証系API
@@ -23,7 +24,13 @@ class AuthController extends Controller
     {
         $request = request();
 
-        // TODO: バリデーション
+        $validator = Validator::make($request->all(), [
+            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', ],
+            'screen_name'=> ['bail', 'required', 'string', 'max:16', ],
+            'email'=> ['bail', 'required', 'email', ],
+            'password'=> ['bail', 'required', 'string', ],
+        ]);
+        if ($validator->fails()) return response('{}', 400);
 
         $accessToken = Str::random(80);
 
@@ -47,7 +54,12 @@ class AuthController extends Controller
     {
         $request = request();
 
-        // TODO: バリデーション
+        $validator = Validator::make($request->all(), [
+            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', ],
+            'password'=> ['bail', 'required', 'string', ],
+        ]);
+        if ($validator->fails()) return response('{}', 400);
+        // TODO: すでに存在するユーザかどうかの判定
 
         $accessToken = Str::random(80);
 
@@ -65,10 +77,14 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        // TODO: バリデーション
+        $request = request();
 
-        // TODO: アクセストークンの取得
-        User::where('access_token', 'hoge')->update([
+        $validator = Validator::make($request->all(), [
+            'access_token'=> ['bail', 'required', 'string', ],
+        ]);
+        if ($validator->fails()) return response('{}', 400);
+
+        User::where('access_token', $request->access_token)->update([
             'access_token' => null,
         ]);
 

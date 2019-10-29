@@ -74,7 +74,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapV1UserApiRoutes()
     {
         Route::prefix('api/v1')
-                ->middleware('api')
+                ->middleware('auth.bearer')
                 ->namespace($this->namespace . '\Api\V1')
                 ->group(base_path('routes/api/v1/user.php'));
     }
@@ -85,7 +85,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapV1PostApiRoutes()
     {
         Route::prefix('api/v1')
-                ->middleware('auth:api')
+                ->middleware('auth.bearer')
                 ->namespace($this->namespace . '\Api\V1')
                 ->group(base_path('routes/api/v1/post.php'));
     }
@@ -96,7 +96,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapV1TimelineApiRoutes()
     {
         Route::prefix('api/v1')
-                ->middleware('auth:api')
+                ->middleware('auth.bearer')
                 ->namespace($this->namespace . '\Api\V1')
                 ->group(base_path('routes/api/v1/timeline.php'));
     }
@@ -107,7 +107,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapV1NoticeApiRoutes()
     {
         Route::prefix('api/v1')
-                ->middleware('auth:api')
+                ->middleware('auth.bearer')
                 ->namespace($this->namespace . '\Api\V1')
                 ->group(base_path('routes/api/v1/notice.php'));
     }
@@ -118,7 +118,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapV1ReportApiRoutes()
     {
         Route::prefix('api/v1')
-                ->middleware('auth:api')
+                ->middleware('auth.bearer')
                 ->namespace($this->namespace . '\Api\V1')
                 ->group(base_path('routes/api/v1/report.php'));
     }
