@@ -25,9 +25,9 @@ class AuthController extends Controller
         $request = request();
 
         $validator = Validator::make($request->all(), [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', ],
+            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', 'unique:users', ],
             'screen_name'=> ['bail', 'required', 'string', 'max:16', ],
-            'email'=> ['bail', 'required', 'email', ],
+            'email'=> ['bail', 'required', 'email', 'unique:users', ],
             'password'=> ['bail', 'required', 'string', ],
         ]);
         if ($validator->fails()) return response('{}', 400);
@@ -55,11 +55,12 @@ class AuthController extends Controller
         $request = request();
 
         $validator = Validator::make($request->all(), [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', ],
+            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', 'exists:users', ],
             'password'=> ['bail', 'required', 'string', ],
         ]);
         if ($validator->fails()) return response('{}', 400);
-        // TODO: すでに存在するユーザかどうかの判定
+
+        // TODO: パスワードのチェック
 
         $accessToken = Str::random(80);
 
