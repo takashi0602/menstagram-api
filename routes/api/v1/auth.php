@@ -1,5 +1,5 @@
 <?php
 
-Route::post('/user/register', 'AuthController@register');
-Route::post('/user/login', 'AuthController@login');
-Route::post('/user/logout', 'AuthController@logout');
+Route::post('/auth/register', 'AuthController@register');
+Route::post('/auth/login', 'AuthController@login');
+Route::post('/auth/logout', 'AuthController@logout');

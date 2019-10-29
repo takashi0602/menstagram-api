@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * 認証系API
@@ -60,7 +61,8 @@ class AuthController extends Controller
         ]);
         if ($validator->fails()) return response('{}', 400);
 
-        // TODO: パスワードのチェック
+        $user = User::where('user_id', $request->user_id)->first();
+        if (!Hash::check($request->password, $user->password)) return response('{}', 409);
 
         $accessToken = Str::random(80);
 
