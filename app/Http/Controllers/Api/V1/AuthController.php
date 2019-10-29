@@ -58,8 +58,20 @@ class AuthController extends Controller
         return response(['access_token' => $accessToken], 200);
     }
 
+    /**
+     * ログアウト
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function logout()
     {
+        // TODO: バリデーション
 
+        // TODO: アクセストークンの取得
+        User::where('access_token', 'hoge')->update([
+            'access_token' => null,
+        ]);
+
+        return response('{}', 200);
     }
 }
