@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('user_id', 16);
-            $table->string('screen_name', 16)->unique();
+            $table->string('user_id', 16)->unique();
+            $table->string('screen_name', 16);
             $table->string('email', 256)->unique();
             $table->string('password')->nullable();
             $table->string('avatar')->default(''); // TODO: デフォルトのパスを書く

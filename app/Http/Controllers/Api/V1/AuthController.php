@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Str;
+use App\Http\Requests\RegisterUserRequest;
+use App\UseCases\RegisterUserUseCase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,32 +18,15 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     /**
-     * 登録
+     * ユーザー登録
      *
+     * @param RegisterUserRequest $request
+     * @param RegisterUserUseCase $usecase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function register()
+    public function register(RegisterUserRequest $request, RegisterUserUseCase $usecase)
     {
-        $request = request();
-
-        $validator = Validator::make($request->all(), [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', 'unique:users', ],
-            'screen_name'=> ['bail', 'required', 'string', 'max:16', ],
-            'email'=> ['bail', 'required', 'email', 'unique:users', ],
-            'password'=> ['bail', 'required', 'string', ],
-        ]);
-        if ($validator->fails()) return response('{}', 400);
-
-        $accessToken = Str::random(80);
-
-        User::create([
-            'user_id'       => $request->user_id,
-            'screen_name'   => $request->screen_name,
-            'email'         => $request->email,
-            'password'      => bcrypt($request->password),
-            'access_token'  => hash('sha256', $accessToken),
-        ]);
-
+        $accessToken = $usecase($request->user_id, $request->screen_name, $request->email, $request->password);
         return response(['access_token' => $accessToken], 200);
     }
 
