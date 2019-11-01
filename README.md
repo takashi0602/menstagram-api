@@ -21,4 +21,5 @@ $ make db       // DBの作り直し
 $ make sh       // bashの起動
 $ make dbg      // デバッガ(Telescope)の起動
 $ make qual     // 品質チェックツール(PHP Insights)の起動
+$ php artisan make:usecase {name}   // ユースケースのレンプレートを生成
 ```
