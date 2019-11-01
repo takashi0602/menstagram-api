@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\LogoutUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\UseCases\LoginUserUseCase;
+use App\UseCases\LogoutUserUseCase;
 use App\UseCases\RegisterUserUseCase;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
+use App\UseCases\ExistsUserUseCase;
 
 /**
  * 認証系API
@@ -21,60 +23,39 @@ class AuthController extends Controller
      * ユーザー登録
      *
      * @param RegisterUserRequest $request
-     * @param RegisterUserUseCase $usecase
+     * @param RegisterUserUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function register(RegisterUserRequest $request, RegisterUserUseCase $usecase)
+    public function register(RegisterUserRequest $request, RegisterUserUseCase $useCase)
     {
-        $accessToken = $usecase($request->user_id, $request->screen_name, $request->email, $request->password);
+        $accessToken = $useCase($request->user_id, $request->screen_name, $request->email, $request->password);
         return response(['access_token' => $accessToken], 200);
     }
 
     /**
      * ログイン
      *
+     * @param LoginUserRequest $request
+     * @param ExistsUserUseCase $existsUserUseCase
+     * @param LoginUserUseCase $loginUserUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function login()
+    public function login(LoginUserRequest $request, ExistsUserUseCase $existsUserUseCase, LoginUserUseCase $loginUserUseCase)
     {
-        $request = request();
-
-        $validator = Validator::make($request->all(), [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', 'exists:users', ],
-            'password'=> ['bail', 'required', 'string', ],
-        ]);
-        if ($validator->fails()) return response('{}', 400);
-
-        $user = User::where('user_id', $request->user_id)->first();
-        if (!Hash::check($request->password, $user->password)) return response('{}', 409);
-
-        $accessToken = Str::random(80);
-
-        User::where('user_id', $request->user_id)->update([
-            'access_token' => hash('sha256', $accessToken),
-        ]);
-
+        if (!$existsUserUseCase($request->user_id, $request->password)) return response('{}', 409);
+        $accessToken = $loginUserUseCase($request->user_id);
         return response(['access_token' => $accessToken], 200);
     }
 
     /**
      * ログアウト
      *
+     * @param LogoutUserRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function logout()
+    public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase)
     {
-        $request = request();
-
-        $validator = Validator::make($request->all(), [
-            'access_token'=> ['bail', 'required', 'string', ],
-        ]);
-        if ($validator->fails()) return response('{}', 400);
-
-        User::where('access_token', $request->access_token)->update([
-            'access_token' => null,
-        ]);
-
+        $useCase($request->access_token);
         return response('{}', 200);
     }
 }
