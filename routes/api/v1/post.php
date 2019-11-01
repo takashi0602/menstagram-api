@@ -4,7 +4,7 @@
 Route::post('/post', function(){
   return [
     "can_post"=> true
-  ]
+  ];
 });
 
 Route::post('/post/like', function(){
