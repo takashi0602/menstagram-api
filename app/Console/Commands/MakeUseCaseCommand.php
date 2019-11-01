@@ -3,8 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Str;
 
+/**
+ * ユースケースのテンプレートを生成するコマンド
+ *
+ * Class MakeUseCaseCommand
+ * @package App\Console\Commands
+ */
 class MakeUseCaseCommand extends GeneratorCommand
 {
     /**
@@ -12,7 +17,7 @@ class MakeUseCaseCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:usecase';
+    protected $name = 'make:usecase {name}';
 
     /**
      * The console command description.
@@ -26,7 +31,7 @@ class MakeUseCaseCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'File';
+    protected $type = 'UseCase';
 
     /**
      * Get the stub file for the generator.
@@ -38,25 +43,8 @@ class MakeUseCaseCommand extends GeneratorCommand
         return __DIR__ . '/stubs/usecase.stub';
     }
 
-    /**
-     * Get the destination class path.
-     *
-     * @param string $name
-     * @return string
-     */
-    protected function getPath($name)
+    protected function getDefaultNamespace($rootNamespace)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        return base_path('app/UseCases') . str_replace('\\', '/', $name) . '.php';
-    }
-
-    /**
-     * Get the root namespace for the class.
-     *
-     * @return string
-     */
-    protected function rootNamespace()
-    {
-        return 'File';
+        return $rootNamespace . '\UseCases';
     }
 }
