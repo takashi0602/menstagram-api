@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 /**
  * Bearer認証
@@ -24,8 +25,7 @@ class AuthenticateWithBearerAuth
     {
         $accessToken = $request->header('Authorization');
         if (preg_match('/^Bearer: .{80}$/', $accessToken) !== 1) return response('{}', 401);
-        if (User::where('access_token', $accessToken)->first() === null) return response('{}', 401);
-
+        if (User::where('access_token', Str::after($accessToken, 'Bearer: '))->first() === null) return response('{}', 401);
         return $next($request);
     }
 }

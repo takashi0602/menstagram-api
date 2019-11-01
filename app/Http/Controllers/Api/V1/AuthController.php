@@ -10,6 +10,7 @@ use App\UseCases\LoginUserUseCase;
 use App\UseCases\LogoutUserUseCase;
 use App\UseCases\RegisterUserUseCase;
 use App\UseCases\ExistsUserUseCase;
+use Illuminate\Support\Str;
 
 /**
  * 認証系API
@@ -51,11 +52,12 @@ class AuthController extends Controller
      * ログアウト
      *
      * @param LogoutUserRequest $request
+     * @param LogoutUserUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase)
     {
-        $useCase($request->access_token);
+        $useCase(Str::after($request->header('Authorization'), 'Bearer: '));
         return response('{}', 200);
     }
 }
