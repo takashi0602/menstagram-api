@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 
 /**
- * ログイン
+ * ユーザーのログイン
  *
  * Class LoginUserUseCase
  * @package App\UseCases

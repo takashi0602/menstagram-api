@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * ユーザー登録
+ * ユーザーの登録
  *
  * Class RegisterUserRequest
  * @package App\Http\Requests
@@ -35,7 +35,7 @@ class RegisterUserRequest extends FormRequest
             'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', 'unique:users', ],
             'screen_name'=> ['bail', 'required', 'string', 'max:16', ],
             'email'=> ['bail', 'required', 'email', 'unique:users', ],
-            'password'=> ['bail', 'required', 'string', ],
+            'password'=> ['bail', 'required', 'string', 'min:8', ],
         ];
     }
 

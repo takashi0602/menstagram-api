@@ -5,7 +5,7 @@ namespace App\UseCases;
 use App\Models\User;
 
 /**
- * ログアウト
+ * ユーザーのログアウト
  *
  * Class LogoutUserUseCase
  * @package App\UseCases

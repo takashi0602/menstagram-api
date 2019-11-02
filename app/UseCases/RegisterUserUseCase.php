@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 
 /**
- * ユーザー登録
+ * ユーザーの登録
  *
  * Class RegisterUserUseCase
  * @package App\UseCases

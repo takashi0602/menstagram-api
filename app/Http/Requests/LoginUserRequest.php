@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * ログイン
+ * ユーザーのログイン
  *
  * Class LoginUserRequest
  * @package App\Http\Requests

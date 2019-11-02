@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 class AuthController extends Controller
 {
     /**
-     * ユーザー登録
+     * ユーザーの登録
      *
      * @param RegisterUserRequest $request
      * @param RegisterUserUseCase $useCase
@@ -34,7 +34,7 @@ class AuthController extends Controller
     }
 
     /**
-     * ログイン
+     * ユーザーのログイン
      *
      * @param LoginUserRequest $request
      * @param ExistsUserUseCase $existsUserUseCase
@@ -49,7 +49,7 @@ class AuthController extends Controller
     }
 
     /**
-     * ログアウト
+     * ユーザーのログアウト
      *
      * @param LogoutUserRequest $request
      * @param LogoutUserUseCase $useCase
