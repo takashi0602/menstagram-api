@@ -16,19 +16,26 @@ use Tests\TestCase;
  */
 class AuthRegisterTest extends TestCase
 {
+    protected $users;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Artisan::call('db:seed', ['--class' => \CreateUserSeeder::class]);
+        $this->users = User::all();
+    }
+
     /**
-     * 正常系のテスト
+     * 正常系
      */
     public function testSuccess()
     {
         $user = [
-            'user_id'       => 'Menstagram9999',
-            'screen_name'   => 'Menstagram9999',
-            'email'         => 'menstagram9999@menstagram.com',
-            'password'      => 'Menstagram9999',
+            'user_id'       => 'Menstagram_9999',
+            'screen_name'   => 'Menstagram_9999',
+            'email'         => 'menstagram_9999@menstagram.com',
+            'password'      => 'Menstagram_9999',
         ];
-
-        Artisan::call('db:seed', ['--class' => \CreateUserSeeder::class]);
 
         $response = $this->post('/api/v1/auth/register', $user);
 
@@ -41,20 +48,49 @@ class AuthRegisterTest extends TestCase
             'screen_name'   => $user['screen_name'],
             'email'         => $user['email'],
         ]);
+
+        $this->users->where('user_id', $user['user_id'])->each->delete();
     }
 
-//    public function testFailUserId()
-//    {
-//        // TODO: ユーザーIDが抜けているパターン
-//
-//        // TODO: ユーザーIDがa-zA-Z0-9の範囲に無いパターン
-//
-//        // TODO: ユーザーIDが0文字のパターン
-//
-//        // TODO: ユーザーIDが16文字を超えているパターン
-//
-//        // TODO: すでにあるユーザーを登録しようとしているパターン
-//    }
+    /**
+     * 異常系(ユーザーID)
+     *
+     * @dataProvider userIdProvider
+     * @param $userId
+     */
+    public function testFailUserId($userId)
+    {
+        $user = [
+            'user_id'       => $userId,
+            'screen_name'   => 'Menstagram9999',
+            'email'         => 'menstagram9999@menstagram.com',
+            'password'      => 'Menstagram9999',
+        ];
+
+        $response = $this->post('/api/v1/auth/register', $user);
+
+        $response->assertStatus(400);
+
+        $this->assertDatabaseMissing('users', $user);
+
+        $this->users->where('user_id', $userId)->each->delete();
+    }
+
+    /**
+     * ユーザーIDのテストデータの定義
+     *
+     * @return array
+     */
+    public function userIdProvider()
+    {
+        return [
+            'ユーザーIDが抜けているパターン' => [null],
+            'ユーザーIDが空文字のパターン' => [''],
+            'ユーザーIDがa-zA-Z0-9の範囲に無いパターン' => ['めんすたぐらむ'],
+            'ユーザーIDが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
+            'ユーザーIDがすでに存在するパターン' => [$this->users[0]->user_id],
+        ];
+    }
 
 //    public function testFailScreenName()
 //    {

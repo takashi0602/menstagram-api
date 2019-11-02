@@ -32,7 +32,7 @@ class RegisterUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'max:16', 'unique:users', ],
+            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'unique:users', ],
             'screen_name'=> ['bail', 'required', 'string', 'max:16', ],
             'email'=> ['bail', 'required', 'email', 'unique:users', ],
             'password'=> ['bail', 'required', 'string', 'min:8', ],
