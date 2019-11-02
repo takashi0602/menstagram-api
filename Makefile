@@ -27,4 +27,4 @@ qual:
 	php artisan insights
 
 test:
-	vendor/bin/phpunit
+	docker-compose exec php vendor/bin/phpunit
