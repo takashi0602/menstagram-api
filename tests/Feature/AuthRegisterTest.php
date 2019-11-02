@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
@@ -30,8 +28,10 @@ class AuthRegisterTest extends TestCase
 
     /**
      * 正常系
+     *
+     * @test
      */
-    public function testSuccess()
+    public function successCase()
     {
         $user = [
             'user_id'       => 'Menstagram_9999',
@@ -56,8 +56,23 @@ class AuthRegisterTest extends TestCase
     }
 
     /**
+     * 異常系(ベース)
+     *
+     * @param $user
+     * @param $userId
+     */
+    protected function failBaseCase($user, $userId)
+    {
+        $response = $this->post('/api/v1/auth/register', $user);
+        $response->assertStatus(400);
+        $this->assertDatabaseMissing('users', $user);
+        $this->users->where('user_id', $userId)->each->delete();
+    }
+
+    /**
      * 異常系(ユーザーID)
      *
+     * @test
      * @dataProvider userIdProvider
      * @param $userId
      */
@@ -70,13 +85,7 @@ class AuthRegisterTest extends TestCase
             'password'      => 'Menstagram9999',
         ];
 
-        $response = $this->post('/api/v1/auth/register', $user);
-
-        $response->assertStatus(400);
-
-        $this->assertDatabaseMissing('users', $user);
-
-        $this->users->where('user_id', $userId)->each->delete();
+        $this->failBaseCase($user, $userId);
     }
 
     /**
@@ -98,10 +107,11 @@ class AuthRegisterTest extends TestCase
     /**
      * 異常系(スクリーンネーム)
      *
+     * @test
      * @dataProvider screenNameProvider
      * @param $screenName
      */
-    public function testFailScreenName($screenName)
+    public function failScreenNameCase($screenName)
     {
         $user = [
             'user_id'       => 'Menstagram_9999',
@@ -110,13 +120,7 @@ class AuthRegisterTest extends TestCase
             'password'      => 'Menstagram_9999',
         ];
 
-        $response = $this->post('/api/v1/auth/register', $user);
-
-        $response->assertStatus(400);
-
-        $this->assertDatabaseMissing('users', $user);
-
-        $this->users->where('user_id', $user['user_id'])->each->delete();
+        $this->failBaseCase($user, $user['user_id']);
     }
 
     /**
@@ -136,10 +140,11 @@ class AuthRegisterTest extends TestCase
     /**
      * 異常系(メールアドレス)
      *
+     * @test
      * @dataProvider emailProvider
      * @param $email
      */
-    public function testFailEmail($email)
+    public function failEmailCase($email)
     {
         $user = [
             'user_id'       => 'Menstagram_9999',
@@ -148,13 +153,7 @@ class AuthRegisterTest extends TestCase
             'password'      => 'Menstagram_9999',
         ];
 
-        $response = $this->post('/api/v1/auth/register', $user);
-
-        $response->assertStatus(400);
-
-        $this->assertDatabaseMissing('users', $user);
-
-        $this->users->where('user_id', $user['user_id'])->each->delete();
+        $this->failBaseCase($user, $user['user_id']);
     }
 
     /**
@@ -174,10 +173,11 @@ class AuthRegisterTest extends TestCase
     /**
      * 異常系(パスワード)
      *
+     * @test
      * @dataProvider passwordProvider
      * @param $password
      */
-    public function testFailPassword($password)
+    public function failPasswordCase($password)
     {
         $user = [
             'user_id'       => 'Menstagram_9999',
@@ -186,13 +186,7 @@ class AuthRegisterTest extends TestCase
             'password'      => $password,
         ];
 
-        $response = $this->post('/api/v1/auth/register', $user);
-
-        $response->assertStatus(400);
-
-        $this->assertDatabaseMissing('users', $user);
-
-        $this->users->where('user_id', $user['user_id'])->each->delete();
+        $this->failBaseCase($user, $user['user_id']);
     }
 
     /**
