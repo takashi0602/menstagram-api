@@ -18,6 +18,9 @@ class AuthRegisterTest extends TestCase
 {
     protected $users;
 
+    /**
+     * 初期化処理
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -77,7 +80,7 @@ class AuthRegisterTest extends TestCase
     }
 
     /**
-     * ユーザーIDのテストデータの定義
+     * 異常系(ユーザーID)のテストデータの定義
      *
      * @return array
      */
@@ -92,28 +95,116 @@ class AuthRegisterTest extends TestCase
         ];
     }
 
-//    public function testFailScreenName()
-//    {
-//        // TODO: スクリーンネームが無いパターン
-//
-//        // TODO: スクリーンネームが0文字のパターン
-//
-//        // TODO: スクリーンネームが16文字を超えているパターン
-//    }
+    /**
+     * 異常系(スクリーンネーム)
+     *
+     * @dataProvider screenNameProvider
+     * @param $screenName
+     */
+    public function testFailScreenName($screenName)
+    {
+        $user = [
+            'user_id'       => 'Menstagram_9999',
+            'screen_name'   => $screenName,
+            'email'         => 'menstagram_9999@menstagram.com',
+            'password'      => 'Menstagram_9999',
+        ];
 
-//    public function testFailEmail()
-//    {
-//        // TODO: メールアドレスが無いパターン
-//
-//        // TODO: メールアドレスの形式で無いパターン
-//
-//        // TODO: すでにあるメールアドレスを登録しようとしているパターン
-//    }
+        $response = $this->post('/api/v1/auth/register', $user);
 
-//    public function testFailPassword()
-//    {
-//        // TODO: パスワードが無いパターン
-//
-//        // TODO: パスワードが8文字よりも短いパターン
-//    }
+        $response->assertStatus(400);
+
+        $this->assertDatabaseMissing('users', $user);
+
+        $this->users->where('user_id', $user['user_id'])->each->delete();
+    }
+
+    /**
+     * 異常系(スクリーンネーム)のテストデータの定義
+     *
+     * @return array
+     */
+    public function screenNameProvider()
+    {
+        return [
+            'スクリーンネームが抜けているパターン' => [null],
+            'スクリーンネームが空文字のパターン' => [''],
+            'スクリーンネームが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
+        ];
+    }
+
+    /**
+     * 異常系(メールアドレス)
+     *
+     * @dataProvider emailProvider
+     * @param $email
+     */
+    public function testFailEmail($email)
+    {
+        $user = [
+            'user_id'       => 'Menstagram_9999',
+            'screen_name'   => 'Menstagram9999',
+            'email'         => $email,
+            'password'      => 'Menstagram_9999',
+        ];
+
+        $response = $this->post('/api/v1/auth/register', $user);
+
+        $response->assertStatus(400);
+
+        $this->assertDatabaseMissing('users', $user);
+
+        $this->users->where('user_id', $user['user_id'])->each->delete();
+    }
+
+    /**
+     * 異常系(メールアドレス)のテストデータの定義
+     *
+     * @return array
+     */
+    public function emailProvider()
+    {
+        return [
+            'メールアドレスが抜けているパターン' => [null],
+            'メールアドレスの形式で無いパターン' => ['menstagram'],
+            'メールアドレスがすでに存在するパターン' => [$this->users[0]->email],
+        ];
+    }
+
+    /**
+     * 異常系(パスワード)
+     *
+     * @dataProvider passwordProvider
+     * @param $password
+     */
+    public function testFailPassword($password)
+    {
+        $user = [
+            'user_id'       => 'Menstagram_9999',
+            'screen_name'   => 'Menstagram9999',
+            'email'         => 'menstagram_9999@menstagram.com',
+            'password'      => $password,
+        ];
+
+        $response = $this->post('/api/v1/auth/register', $user);
+
+        $response->assertStatus(400);
+
+        $this->assertDatabaseMissing('users', $user);
+
+        $this->users->where('user_id', $user['user_id'])->each->delete();
+    }
+
+    /**
+     * 異常系(パスワード)のテストデータの定義
+     *
+     * @return array
+     */
+    public function passwordProvider()
+    {
+        return [
+            'パスワードが抜けているパターン' => [null],
+            'パスワードが8文字よりも短いパターン' => ['mensta'],
+        ];
+    }
 }
