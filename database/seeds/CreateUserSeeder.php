@@ -18,15 +18,6 @@ class CreateUserSeeder extends Seeder
     public function run()
     {
         User::truncate();
-
-//        User::create([
-//            'user_id'=> 'menstagram',
-//            'screen_name'=> 'menstagram',
-//            'email'=> 'menstagram@menstagram.com',
-//            'password'=> bcrypt('menstagram'),
-//
-//        ]);
-
         factory(User::class, 10)->create();
     }
 }
