@@ -24,7 +24,9 @@ class AuthenticateWithBearerAuth
     public function handle($request, Closure $next)
     {
         $accessToken = $request->header('Authorization');
-        if (preg_match('/^Bearer: .{80}$/', $accessToken) !== 1) return response('{}', 401);
+
+        // TODO: バリデーション化したい
+        if (preg_match('/^Bearer: .{64}$/', $accessToken) !== 1) return response('{}', 401);
         if (User::where('access_token', Str::after($accessToken, 'Bearer: '))->first() === null) return response('{}', 401);
         return $next($request);
     }

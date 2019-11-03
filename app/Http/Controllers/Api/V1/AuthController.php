@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\LogoutUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\UseCases\LoginUserUseCase;
 use App\UseCases\LogoutUserUseCase;
@@ -53,13 +52,12 @@ class AuthController extends Controller
     /**
      * ユーザーのログアウト
      *
-     * @param LogoutUserRequest $request
      * @param LogoutUserUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase)
+    public function logout(LogoutUserUseCase $useCase)
     {
-        $useCase(Str::after($request->header('Authorization'), 'Bearer: '));
+        $useCase(Str::after(request()->header('Authorization'), 'Bearer: '));
         return response('{}', 200);
     }
 }
