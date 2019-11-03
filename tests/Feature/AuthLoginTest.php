@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Tests\Feature\DataProviders\AuthLoginDataProvider;
 use Tests\TestCase;
 
 /**
@@ -14,6 +15,8 @@ use Tests\TestCase;
  */
 class AuthLoginTest extends TestCase
 {
+    use AuthLoginDataProvider;
+
     protected $users;
 
     /**
@@ -75,22 +78,6 @@ class AuthLoginTest extends TestCase
     }
 
     /**
-     * 異常系(ユーザーID)のテストデータの定義
-     *
-     * @return array
-     */
-    public function userIdProvider()
-    {
-        return [
-            'ユーザーIDが抜けているパターン' => [null],
-            'ユーザーIDが空文字のパターン' => [''],
-            'ユーザーIDがa-zA-Z0-9の範囲に無いパターン' => ['めんすたぐらむ'],
-            'ユーザーIDが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
-            'ユーザーIDの条件は満たしているが存在しないユーザーIDのパターン' => ['takashi'],
-        ];
-    }
-
-    /**
      * 異常系(パスワード)
      *
      * @test
@@ -105,19 +92,5 @@ class AuthLoginTest extends TestCase
         ];
 
         $this->failBaseCase($user);
-    }
-
-    /**
-     * 異常系(パスワード)のテストデータの定義
-     *
-     * @return array
-     */
-    public function passwordProvider()
-    {
-        return [
-            'パスワードが抜けているパターン' => [null],
-            'パスワードが8文字よりも短いパターン' => ['mensta'],
-            'パスワードを間違えているパターン' => ['takashi'],
-        ];
     }
 }
