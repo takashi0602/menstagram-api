@@ -8,7 +8,7 @@ use Tests\Feature\DataProviders\AuthRegisterDataProvider;
 use Tests\TestCase;
 
 /**
- * ユーザー登録
+ * ユーザーの登録
  *
  * Class AuthRegisterTest
  * @package Tests\Feature
@@ -79,7 +79,7 @@ class AuthRegisterTest extends TestCase
      * @dataProvider userIdProvider
      * @param $userId
      */
-    public function testFailUserId($userId)
+    public function failUserIdCase($userId)
     {
         $user = [
             'user_id'       => $userId,

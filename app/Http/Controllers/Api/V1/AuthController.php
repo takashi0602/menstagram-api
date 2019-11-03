@@ -43,7 +43,9 @@ class AuthController extends Controller
      */
     public function login(LoginUserRequest $request, ExistsUserUseCase $existsUserUseCase, LoginUserUseCase $loginUserUseCase)
     {
-        if (!$existsUserUseCase($request->user_id, $request->password)) return response('{}', 409);
+        // TODO: ここをバリデーション化したい
+        if (!$existsUserUseCase($request->user_id, $request->password)) return response('{}', 400);
+
         $accessToken = $loginUserUseCase($request->user_id);
         return response(['access_token' => $accessToken], 200);
     }
