@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
 use Tests\Feature\DataProviders\AuthLoginDataProvider;
 use Tests\TestCase;
@@ -25,7 +27,11 @@ class AuthLoginTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Model::unguard();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Artisan::call('db:seed', ['--class' => \CreateUserSeeder::class]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Model::reguard();
         $this->users = User::all();
     }
 
