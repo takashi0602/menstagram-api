@@ -57,7 +57,8 @@ class AuthController extends Controller
      */
     public function logout(LogoutUserUseCase $useCase)
     {
-        $useCase(Str::after(request()->header('Authorization'), 'Bearer: '));
+        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
+        $useCase($accessToken);
         return response('{}', 200);
     }
 }

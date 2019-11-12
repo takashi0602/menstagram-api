@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Tests\Feature\DataProviders\AuthLogoutDataProvider;
@@ -26,7 +28,11 @@ class AuthLogoutTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Model::unguard();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Artisan::call('db:seed', ['--class' => \CreateUserSeeder::class]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Model::reguard();
         $this->users = User::all();
     }
 
@@ -40,7 +46,7 @@ class AuthLogoutTest extends TestCase
         $user = Arr::first($this->users, function ($value, $key) {
             return $value->access_token !== null;
         });
-        $accessToken = $user['access_token'];
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer: $accessToken")
