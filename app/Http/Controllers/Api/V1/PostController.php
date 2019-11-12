@@ -38,14 +38,14 @@ class PostController extends Controller
     {
         $request = request();
 
-        $filePaths = [];
+        $filePaths = collect([]);
         for ($i = 1; $i <= 4; $i++) {
             if ($request->file("image$i")->isFile()) {
                 $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
                 $fileName = Str::random(16) . ".$extension";
                 // TODO: http://~らへんはenvから取ってくるようにする
                 $filePath = asset("public/storage/posts/$fileName");
-                array_push($filePaths, $filePath);
+                $filePaths->put('image' . (count($filePaths) + 1), $filePath);
                 // TODO: 圧縮処理
                 $request->file("image$i")->storeAs('public/posts', $fileName);
             }
