@@ -33,9 +33,13 @@ class PostController extends Controller
      */
     public function images()
     {
+        // TODO: 画像を取得
+
         // TODO: 画像が１〜４枚か
 
         // TODO: 画像が大きい場合は圧縮する
+
+        // TODO: public storageに保存
 
         // TODO: postsテーブルに挿入
 
