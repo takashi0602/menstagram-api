@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -43,15 +41,14 @@ class PostController extends Controller
             if ($request->file("image$i")->isFile()) {
                 $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
                 $fileName = Str::random(16) . ".$extension";
-                // TODO: http://~らへんはenvから取ってくるようにする
-                $filePath = asset("public/storage/posts/$fileName");
-                $filePaths->put('image' . (count($filePaths) + 1), $filePath);
                 // TODO: 圧縮処理
                 $request->file("image$i")->storeAs('public/posts', $fileName);
+
+                $filePath = asset("public/storage/posts/$fileName");
+                $filePaths->put('image' . (count($filePaths) + 1), $filePath);
             }
         }
 
-        \Log::info($filePaths);
         foreach ($filePaths as $path) {
             // TODO: postsテーブルに挿入
         }
