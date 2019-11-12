@@ -33,6 +33,14 @@ class PostController extends Controller
      */
     public function media()
     {
+        // TODO: 画像が１〜４枚か
+
+        // TODO: 画像が大きい場合は圧縮する
+
+        // TODO: postsテーブルに挿入
+
+        // TODO: post_idを取得
+
         $response = [
             'post_id' => 1,
         ];
