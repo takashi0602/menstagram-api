@@ -19,4 +19,8 @@ class Post extends Model
     protected $casts = [
         'images' => 'array',
     ];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 }
