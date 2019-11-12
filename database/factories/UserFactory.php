@@ -1,5 +1,6 @@
 <?php
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Arr;
@@ -17,8 +18,8 @@ $factory->define(User::class, function (Faker $faker) {
         'biography'     => Arr::random([ null, $faker->text(128), ]),
         'password'      => bcrypt('menstagram'),
         'access_token'  => Arr::random([ null, hash('sha256', Str::random(80)), ]),
-        'posted'        => $faker->randomNumber(),
-        'following'     => $faker->randomNumber(),
-        'followed'      => $faker->randomNumber(),
+        'posted'        => $faker->numberBetween(1, 999999999),
+        'following'     => $faker->numberBetween(1, 9999999999),
+        'followed'      => $faker->numberBetween(1, 9999999999),
     ];
 });
