@@ -31,7 +31,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function media()
+    public function images()
     {
         // TODO: 画像が１〜４枚か
 
