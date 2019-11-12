@@ -1,4 +1,4 @@
-install:
+init:
 	docker-compose build --no-cache
 	docker-compose up -d
 	docker-compose exec php composer install
@@ -9,7 +9,6 @@ install:
 
 up:
 	docker-compose up -d
-	open http://localhost:8000
 
 down:
 	docker-compose down

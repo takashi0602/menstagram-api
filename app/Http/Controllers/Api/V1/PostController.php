@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 /**
  * 投稿系API
@@ -41,8 +42,8 @@ class PostController extends Controller
             if ($request->file("image$i")->isFile()) {
                 $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
                 $fileName = Str::random(16) . ".$extension";
-                // TODO: 圧縮処理
-                $request->file("image$i")->storeAs('public/posts', $fileName);
+                $image = Image::make($request->file("image$i"))->resize(100, 100);
+//                $request->file("image$i")->storeAs('public/posts', $image);
 
                 $filePath = asset("public/storage/posts/$fileName");
                 $filePaths->put('image' . (count($filePaths) + 1), $filePath);
