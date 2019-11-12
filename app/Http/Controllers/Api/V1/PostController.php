@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * 投稿系API
@@ -33,16 +36,25 @@ class PostController extends Controller
      */
     public function images()
     {
-        // TODO: 画像を取得
+        $request = request();
 
-        // TODO: 画像が１〜４枚か
+        $filePaths = [];
+        for ($i = 1; $i <= 4; $i++) {
+            if ($request->file("image$i")->isFile()) {
+                $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
+                $fileName = Str::random(16) . ".$extension";
+                // TODO: http://~らへんはenvから取ってくるようにする
+                $filePath = asset("public/storage/posts/$fileName");
+                array_push($filePaths, $filePath);
+                // TODO: 圧縮処理
+                $request->file("image$i")->storeAs('public/posts', $fileName);
+            }
+        }
 
-        // TODO: 画像が大きい場合は圧縮する
-
-        // TODO: public storageに保存
-
-        // TODO: postsテーブルに挿入
-
+        \Log::info($filePaths);
+        foreach ($filePaths as $path) {
+            // TODO: postsテーブルに挿入
+        }
         // TODO: post_idを取得
 
         $response = [
