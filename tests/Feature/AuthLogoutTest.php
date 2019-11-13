@@ -3,10 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Tests\Feature\DataProviders\AuthLogoutDataProvider;
 use Tests\TestCase;
 
@@ -28,11 +25,7 @@ class AuthLogoutTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Model::unguard();
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Artisan::call('db:seed', ['--class' => \CreateUserSeeder::class]);
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        Model::reguard();
+        parent::seeding(\CreateUserSeeder::class);
         $this->users = User::all();
     }
 
