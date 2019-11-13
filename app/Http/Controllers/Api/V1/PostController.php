@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -37,6 +36,7 @@ class PostController extends Controller
      */
     public function images()
     {
+        // TODO: バリデーション
         $request = request();
 
         $filePaths = collect([]);
@@ -46,15 +46,21 @@ class PostController extends Controller
             $fileName = Str::random(16) . ".$extension";
             $storageFilePath = storage_path('app/public/posts/') . $fileName;
             // TODO: リサイズ処理
-            Image::make($request->file("image$i"))->save($storageFilePath);
+            // TODO: widthとheightを取得
+            // TODO: widthとheightのうち、大きいほうが1024pxを超えていたら、そっちを基準に圧縮する
+            Image::make($request->file("image$i"))->resize(500, null, function ($a) {
+                $a->aspectRatio();
+            })->save($storageFilePath);
             $publicFilePath = asset("storage/posts/$fileName");
             $filePaths->push($publicFilePath);
         }
 
+        // TODO: アクセストークンの取得
 
+        // TODO: アクセストークンからユーザーを検索
 
         $postId = Post::create([
-            'user_id'=> 1,
+            'user_id'=> 1,  // TODO: 取得したユーザーのユーザーIDを指定
             'images'=> $filePaths,
         ])->id;
 
