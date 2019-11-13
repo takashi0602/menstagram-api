@@ -39,14 +39,13 @@ class PostController extends Controller
         $request = request();
 
         $filePaths = collect([]);
-        for ($i = 1; $i <= 4; $i++) {
-            if ($request->file("image$i")->isFile()) {
-                $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
-                $fileName = Str::random(16) . ".$extension";
-                $filePath = storage_path('app/public/posts/') . $fileName;
-                Image::make($request->file("image$i"))->save($filePath);
-                $filePaths->put('image' . (count($filePaths) + 1), $filePath);
-            }
+        $len = collect($request)->count();
+        for ($i = 1; $i <= $len; $i++) {
+            $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
+            $fileName = Str::random(16) . ".$extension";
+            $filePath = storage_path('app/public/posts/') . $fileName;
+            Image::make($request->file("image$i"))->save($filePath);
+            $filePaths->put('image' . (count($filePaths) + 1), $filePath);
         }
 
         foreach ($filePaths as $path) {
