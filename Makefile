@@ -5,7 +5,7 @@ init:
 	docker-compose exec php cp .env.dev .env
 	docker-compose exec php php artisan key:generate
 	make db
-	php artisan storage:link
+	docker-compose exec php php artisan storage:link
 
 up:
 	docker-compose up -d
