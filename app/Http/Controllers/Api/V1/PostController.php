@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -42,10 +43,8 @@ class PostController extends Controller
             if ($request->file("image$i")->isFile()) {
                 $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
                 $fileName = Str::random(16) . ".$extension";
-                $image = Image::make($request->file("image$i"))->resize(100, 100);
-//                $request->file("image$i")->storeAs('public/posts', $image);
-
-                $filePath = asset("public/storage/posts/$fileName");
+                $filePath = storage_path('app/public/posts/') . $fileName;
+                Image::make($request->file("image$i"))->save($filePath);
                 $filePaths->put('image' . (count($filePaths) + 1), $filePath);
             }
         }
