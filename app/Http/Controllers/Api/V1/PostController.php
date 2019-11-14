@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -39,36 +40,47 @@ class PostController extends Controller
         // TODO: バリデーション
         $request = request();
 
+        // TODO: usecase1 画像を処理する
         $filePaths = collect([]);
         $len = collect($request)->count();
         for ($i = 1; $i <= $len; $i++) {
+            // TODO: mimetypeが取得できないパターン
             $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
             $fileName = Str::random(16) . ".$extension";
-            $storageFilePath = storage_path('app/public/posts/') . $fileName;
-            // TODO: リサイズ処理
-            // TODO: widthとheightを取得
-            // TODO: widthとheightのうち、大きいほうが1024pxを超えていたら、そっちを基準に圧縮する
-            Image::make($request->file("image$i"))->resize(500, null, function ($a) {
-                $a->aspectRatio();
-            })->save($storageFilePath);
+            $storageFilePath = storage_path("app/public/posts/$fileName");
+            $image = Image::make($request->file("image$i"));
+            if ($image->width() > $image->height()) {
+                $image->resize(1024, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->save($storageFilePath);
+            }
+            else {
+                $image->resize(null, 1024, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->save($storageFilePath);
+            }
             $publicFilePath = asset("storage/posts/$fileName");
             $filePaths->push($publicFilePath);
         }
 
         // TODO: アクセストークンの取得
-
-        // TODO: アクセストークンからユーザーを検索
-
-        $postId = Post::create([
-            'user_id'=> 1,  // TODO: 取得したユーザーのユーザーIDを指定
-            'images'=> $filePaths,
-        ])->id;
-
-        $response = [
-            'post_id' => $postId,
-        ];
-
-        return response($response, 200);
+        // TODO: usecaseとして切り出せるかも
+//        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
+//
+//        $userId = User::where('access_token', $accessToken)->first()->id;
+//
+//        $postId = Post::create([
+//            'user_id'   => $userId,
+//            'images'    => $filePaths,
+//        ])->id;
+//
+//        $response = [
+//            'post_id' => $postId,
+//        ];
+//
+//        return response($response, 200);
     }
 
     /**
