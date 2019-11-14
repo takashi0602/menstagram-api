@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostImagesRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -33,13 +34,10 @@ class PostController extends Controller
     /**
      * 画像送信
      *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @param PostImagesRequest $request
      */
-    public function images()
+    public function images(PostImagesRequest $request)
     {
-        // TODO: バリデーション
-        $request = request();
-
         // TODO: usecase1 画像を処理する
         $filePaths = collect([]);
         for ($i = 1; $i <= 4; $i++) {
