@@ -42,10 +42,9 @@ class PostController extends Controller
 
         // TODO: usecase1 画像を処理する
         $filePaths = collect([]);
-        $len = collect($request)->count();
-        for ($i = 1; $i <= $len; $i++) {
-            // TODO: mimetypeが取得できないパターン
-            $extension = Str::after($request->file("image$i")->getMimeType(), 'image/');
+        for ($i = 1; $i <= 4; $i++) {
+            if (is_null($request->file("image$i"))) continue;
+            $extension = $request->file("image$i")->guessClientExtension();
             $fileName = Str::random(16) . ".$extension";
             $storageFilePath = storage_path("app/public/posts/$fileName");
             $image = Image::make($request->file("image$i"));
