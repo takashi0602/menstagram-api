@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostImagesRequest;
 use App\Http\Requests\PostRequest;
-use App\Models\Post;
-use App\Models\User;
 use App\UseCases\PostImagesUseCase;
+use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
 use App\UseCases\TakeAccessTokenUseCase;
 
@@ -24,16 +23,13 @@ class PostController extends Controller
      *
      * @param PostRequest $request
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param PostUseCase $postUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function post(PostRequest $request, TakeAccessTokenUseCase $takeAccessTokenUseCase)
+    public function post(PostRequest $request, TakeAccessTokenUseCase $takeAccessTokenUseCase, PostUseCase $postUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
-        $userId = User::where('access_token', $accessToken)->first()->id;
-
-        Post::where('user_id', $userId)->where('id', $request->post_id)->where('text', null)->update([
-            'text' => $request->text,
-        ]);
+        $postUseCase($accessToken, $request);
 
         return response('{}', 200);
     }
@@ -43,14 +39,14 @@ class PostController extends Controller
      *
      * @param PostImagesRequest $request
      * @param StoreImagesUseCase $storeImagesUseCase
-     * @param PostImagesUseCase $postImagesUseCase
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param PostImagesUseCase $postImagesUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function images(PostImagesRequest $request,
                            StoreImagesUseCase $storeImagesUseCase,
-                           PostImagesUseCase $postImagesUseCase,
-                           TakeAccessTokenUseCase $takeAccessTokenUseCase)
+                           TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                           PostImagesUseCase $postImagesUseCase)
     {
         $filePaths = $storeImagesUseCase($request);
         $accessToken = $takeAccessTokenUseCase();
