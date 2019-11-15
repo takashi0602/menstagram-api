@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostImagesRequest;
-use App\Models\Post;
 use App\Models\User;
+use App\UseCases\PostImagesUseCase;
+use App\UseCases\StoreImagesUseCase;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 
 /**
  * 投稿系API
@@ -35,49 +35,18 @@ class PostController extends Controller
      * 画像送信
      *
      * @param PostImagesRequest $request
+     * @param StoreImagesUseCase $storeImagesUseCase
+     * @param PostImagesUseCase $postImagesUseCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function images(PostImagesRequest $request)
+    public function images(PostImagesRequest $request, StoreImagesUseCase $storeImagesUseCase, PostImagesUseCase $postImagesUseCase)
     {
-        // TODO: usecase1 画像を処理する
-        $filePaths = collect([]);
-        for ($i = 1; $i <= 4; $i++) {
-            if (is_null($request->file("image$i"))) continue;
-            $extension = $request->file("image$i")->guessClientExtension();
-            $fileName = Str::random(16) . ".$extension";
-            $storageFilePath = storage_path("app/public/posts/$fileName");
-            $image = Image::make($request->file("image$i"));
-            if ($image->width() > $image->height()) {
-                $image->resize(1024, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save($storageFilePath);
-            }
-            else {
-                $image->resize(null, 1024, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save($storageFilePath);
-            }
-            $publicFilePath = asset("storage/posts/$fileName");
-            $filePaths->push($publicFilePath);
-        }
+        $filePaths = $storeImagesUseCase($request);
+        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
+        $userId = User::where('access_token', $accessToken)->first()->id;
+        $response = $postImagesUseCase($userId, $filePaths);
 
-        // TODO: アクセストークンの取得
-        // TODO: usecaseとして切り出せるかも
-//        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
-//
-//        $userId = User::where('access_token', $accessToken)->first()->id;
-//
-//        $postId = Post::create([
-//            'user_id'   => $userId,
-//            'images'    => $filePaths,
-//        ])->id;
-//
-//        $response = [
-//            'post_id' => $postId,
-//        ];
-//
-//        return response($response, 200);
+        return response($response, 200);
     }
 
     /**
