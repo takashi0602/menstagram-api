@@ -6,14 +6,14 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 /**
+ * 画像の保存
+ *
  * Class StoreImagesUseCase
  * @package App\UseCases
  */
 class StoreImagesUseCase
 {
     /**
-     * 画像の保存
-     *
      * @param $request
      * @return \Illuminate\Support\Collection
      */

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\UseCases\GetAccessTokenUseCase;
 use App\UseCases\LoginUserUseCase;
 use App\UseCases\LogoutUserUseCase;
 use App\UseCases\RegisterUserUseCase;
 use App\UseCases\ExistsUserUseCase;
+use App\UseCases\TakeAccessTokenUseCase;
 use Illuminate\Support\Str;
 
 /**
@@ -52,13 +54,14 @@ class AuthController extends Controller
     /**
      * ユーザーのログアウト
      *
-     * @param LogoutUserUseCase $useCase
+     * @param LogoutUserUseCase $logoutUserUseCase
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function logout(LogoutUserUseCase $useCase)
+    public function logout(LogoutUserUseCase $logoutUserUseCase, TakeAccessTokenUseCase $takeAccessTokenUseCase)
     {
-        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
-        $useCase($accessToken);
+        $accessToken = $takeAccessTokenUseCase();
+        $logoutUserUseCase($accessToken);
         return response('{}', 200);
     }
 }

@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostImagesRequest;
-use App\Models\User;
 use App\UseCases\PostImagesUseCase;
 use App\UseCases\StoreImagesUseCase;
-use Illuminate\Support\Str;
+use App\UseCases\TakeAccessTokenUseCase;
 
 /**
  * 投稿系API
@@ -37,14 +36,17 @@ class PostController extends Controller
      * @param PostImagesRequest $request
      * @param StoreImagesUseCase $storeImagesUseCase
      * @param PostImagesUseCase $postImagesUseCase
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function images(PostImagesRequest $request, StoreImagesUseCase $storeImagesUseCase, PostImagesUseCase $postImagesUseCase)
+    public function images(PostImagesRequest $request,
+                           StoreImagesUseCase $storeImagesUseCase,
+                           PostImagesUseCase $postImagesUseCase,
+                           TakeAccessTokenUseCase $takeAccessTokenUseCase)
     {
         $filePaths = $storeImagesUseCase($request);
-        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
-        $userId = User::where('access_token', $accessToken)->first()->id;
-        $response = $postImagesUseCase($userId, $filePaths);
+        $accessToken = $takeAccessTokenUseCase();
+        $response = $postImagesUseCase($accessToken, $filePaths);
 
         return response($response, 200);
     }
