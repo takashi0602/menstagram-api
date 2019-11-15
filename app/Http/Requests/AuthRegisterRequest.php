@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * ユーザーのログイン
+ * ユーザーの登録
  *
- * Class LoginUserRequest
+ * Class AuthRegisterRequest
  * @package App\Http\Requests
  */
-class LoginUserRequest extends FormRequest
+class AuthRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +32,9 @@ class LoginUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users', ],
+            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'unique:users', ],
+            'screen_name'=> ['bail', 'required', 'string', 'min:1', 'max:16', ],
+            'email'=> ['bail', 'required', 'email', 'unique:users', ],
             'password'=> ['bail', 'required', 'string', 'min:8', ],
         ];
     }
