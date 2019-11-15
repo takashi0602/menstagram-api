@@ -21,23 +21,14 @@ class StoreImagesUseCase
     {
         $filePaths = collect([]);
         for ($i = 1; $i <= 4; $i++) {
-            if (is_null($request->file("image$i"))) continue;
-            $extension = $request->file("image$i")->guessClientExtension();
-            $fileName = Str::random(16) . ".$extension";
+            $file = $request->file("image$i");
+
+            if (is_null($file)) continue;
+
+            $fileName = $this->getFileName($file);
             $storageFilePath = storage_path("app/public/posts/$fileName");
-            $image = Image::make($request->file("image$i"));
-            if ($image->width() > $image->height()) {
-                $image->resize(1024, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save($storageFilePath);
-            }
-            else {
-                $image->resize(null, 1024, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save($storageFilePath);
-            }
+            $image = Image::make($file);
+            $this->trimImage($image)->save($storageFilePath);
             $publicFilePath = asset("storage/posts/$fileName");
             $filePaths->push($publicFilePath);
         }
@@ -45,5 +36,38 @@ class StoreImagesUseCase
         // TODO: 画像が投稿できたかの確認
 
         return $filePaths;
+    }
+
+    /**
+     * ファイルネームの取得
+     *
+     * @param $file
+     * @return string
+     */
+    protected function getFileName($file)
+    {
+        $extension = $file->guessClientExtension();
+        $fileName = Str::random(16) . ".$extension";
+        return $fileName;
+    }
+
+    /**
+     * 画像のトリミング
+     *
+     * @param $image
+     * @return mixed
+     */
+    protected function trimImage($image)
+    {
+        if ($image->width() > $image->height()) {
+            return $image->resize(1024, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        }
+        return $image->resize(null, 1024, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
     }
 }
