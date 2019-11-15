@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostImagesRequest;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\User;
 use App\UseCases\PostImagesUseCase;
@@ -21,13 +22,12 @@ class PostController extends Controller
     /**
      * 投稿
      *
+     * @param PostRequest $request
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function post(TakeAccessTokenUseCase $takeAccessTokenUseCase)
+    public function post(PostRequest $request, TakeAccessTokenUseCase $takeAccessTokenUseCase)
     {
-        $request = request();
-
         $accessToken = $takeAccessTokenUseCase();
         $userId = User::where('access_token', $accessToken)->first()->id;
 
