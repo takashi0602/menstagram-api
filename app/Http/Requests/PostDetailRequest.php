@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PostRequest extends FormRequest
+class PostDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,7 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id'   => ['bail', 'required', 'integer', ],
-            'text'      => ['bail', 'required', 'string', ],
+            'post_id' => ['bail', 'required', 'integer', ],
         ];
     }
 

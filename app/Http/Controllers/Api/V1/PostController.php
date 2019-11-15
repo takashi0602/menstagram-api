@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostDetailRequest;
 use App\Http\Requests\PostImagesRequest;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
@@ -79,12 +80,11 @@ class PostController extends Controller
     /**
      * 投稿の詳細を見る
      *
+     * @param PostDetailRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function detail()
+    public function detail(PostDetailRequest $request)
     {
-        $request = request();
-
         $response = Post::where('id', $request->post_id)
                             ->where('images', '<>', null)
                             ->with('user:id,user_id,screen_name,avatar')
