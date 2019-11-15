@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostDetailRequest;
 use App\Http\Requests\PostImagesRequest;
 use App\Http\Requests\PostRequest;
-use App\Models\Post;
+use App\UseCases\FetchPostDetailUseCase;
 use App\UseCases\PostImagesUseCase;
 use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
@@ -81,17 +81,12 @@ class PostController extends Controller
      * 投稿の詳細を見る
      *
      * @param PostDetailRequest $request
+     * @param FetchPostDetailUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function detail(PostDetailRequest $request)
+    public function detail(PostDetailRequest $request, FetchPostDetailUseCase $useCase)
     {
-        $response = Post::where('id', $request->post_id)
-                            ->where('images', '<>', null)
-                            ->with('user:id,user_id,screen_name,avatar')
-                            ->first();
-
-        $response = collect($response)->except(['user_id']);
-
+        $response = $useCase($request->post_id);
         return response($response, 200);
     }
 
