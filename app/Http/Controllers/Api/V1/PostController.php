@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostImagesRequest;
 use App\Http\Requests\PostRequest;
+use App\Models\Post;
 use App\UseCases\PostImagesUseCase;
 use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
@@ -82,31 +83,14 @@ class PostController extends Controller
      */
     public function detail()
     {
-        $response = [
-            [
-                'id' => 1,
-                'text' => 'ダミーテキスト',
-                'images' => [
-                    'https://placehold.jp/500x500.png?text=%E7%94%BB%E5%83%8F1',
-                    'https://placehold.jp/500x500.png?text=%E7%94%BB%E5%83%8F2',
-                    'https://placehold.jp/500x500.png?text=%E7%94%BB%E5%83%8F3',
-                    'https://placehold.jp/500x500.png?text=%E7%94%BB%E5%83%8F4',
-                ],
-                'liked' => 1,
-                'liker' => [
-                    [
-                        'user_id' => 'ダミーデータさん',
-                        'avatar' => 'https://placehold.jp/150x150.png?text=%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3',
-                    ],
-                    [
-                        'user_id' => 'ダミーデータさん',
-                        'avatar' => 'https://placehold.jp/150x150.png?text=%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3',
-                    ]
-                ],
-                'created_at' => 'ダミーデータさん',
-                'updated_at' => 'https://placehold.jp/150x150.png?text=%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3',
-            ],
-        ];
+        $request = request();
+
+        $response = Post::where('id', $request->post_id)
+                            ->where('images', '<>', null)
+                            ->with('user:id,user_id,screen_name,avatar')
+                            ->first();
+
+        $response = collect($response)->except(['user_id']);
 
         return response($response, 200);
     }

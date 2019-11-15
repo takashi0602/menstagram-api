@@ -19,4 +19,12 @@ class Post extends Model
     protected $casts = [
         'images' => 'array',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
