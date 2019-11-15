@@ -33,8 +33,6 @@ class StoreImagesUseCase
             $filePaths->push($publicFilePath);
         }
 
-        // TODO: 画像が投稿できたかの確認
-
         return $filePaths;
     }
 
