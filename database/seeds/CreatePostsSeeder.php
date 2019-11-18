@@ -8,7 +8,7 @@ use App\Models\Post;
  *
  * Class CreatePostSeeder
  */
-class CreatePostSeeder extends Seeder
+class CreatePostsSeeder extends Seeder
 {
     /**
      * Run the database seeds.

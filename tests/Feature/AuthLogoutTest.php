@@ -25,7 +25,7 @@ class AuthLogoutTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreateUserSeeder::class);
+        parent::seeding(\CreateUsersSeeder::class);
         $this->users = User::all();
     }
 
