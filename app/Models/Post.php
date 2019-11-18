@@ -27,4 +27,22 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return str_replace('-', '/', $value);
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return str_replace('-', '/', $value);
+    }
 }
