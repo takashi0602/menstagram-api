@@ -121,11 +121,9 @@ class GlobalTimelineTest extends TestCase
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
-        $request = [];
-
         $response = $this
             ->withHeader('Authorization', "Bearer: $accessToken")
-            ->get('/api/v1/timeline/global',[
+            ->json('get','/api/v1/timeline/global',[
                 'post_id' => $postId
             ]);
         $response->assertStatus(400);

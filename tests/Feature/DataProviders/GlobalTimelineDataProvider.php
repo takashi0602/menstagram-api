@@ -18,10 +18,8 @@ trait GlobalTimelineDataProvider
     public function PostIdProvider()
     {
         return [
-            // 'PostIdが無いパターン' => [null],
-            'PostIdが文字列のパターン' => ["takashi"],
-            // 'PostIdが0のパターン' => [0],
-            // 'PostIdが負数のパターン' => [-100]
+            'PostIdが無いパターン' => [null],
+            'PostIdが文字列のパターン' => ['takashi']
         ];
     }
 }
