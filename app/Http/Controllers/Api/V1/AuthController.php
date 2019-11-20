@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\AuthLoginRequest;
+use App\Http\Requests\AuthRegisterRequest;
 use App\UseCases\LoginUserUseCase;
 use App\UseCases\LogoutUserUseCase;
 use App\UseCases\RegisterUserUseCase;
 use App\UseCases\ExistsUserUseCase;
-use Illuminate\Support\Str;
+use App\UseCases\TakeAccessTokenUseCase;
 
 /**
  * 認証系API
@@ -22,11 +22,11 @@ class AuthController extends Controller
     /**
      * ユーザーの登録
      *
-     * @param RegisterUserRequest $request
+     * @param AuthRegisterRequest $request
      * @param RegisterUserUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function register(RegisterUserRequest $request, RegisterUserUseCase $useCase)
+    public function register(AuthRegisterRequest $request, RegisterUserUseCase $useCase)
     {
         $accessToken = $useCase($request->user_id, $request->screen_name, $request->email, $request->password);
         return response(['access_token' => $accessToken], 200);
@@ -35,12 +35,12 @@ class AuthController extends Controller
     /**
      * ユーザーのログイン
      *
-     * @param LoginUserRequest $request
+     * @param AuthLoginRequest $request
      * @param ExistsUserUseCase $existsUserUseCase
      * @param LoginUserUseCase $loginUserUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function login(LoginUserRequest $request, ExistsUserUseCase $existsUserUseCase, LoginUserUseCase $loginUserUseCase)
+    public function login(AuthLoginRequest $request, ExistsUserUseCase $existsUserUseCase, LoginUserUseCase $loginUserUseCase)
     {
         // TODO: ここをバリデーション化したい
         if (!$existsUserUseCase($request->user_id, $request->password)) return response('{}', 400);
@@ -52,13 +52,14 @@ class AuthController extends Controller
     /**
      * ユーザーのログアウト
      *
-     * @param LogoutUserUseCase $useCase
+     * @param LogoutUserUseCase $logoutUserUseCase
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function logout(LogoutUserUseCase $useCase)
+    public function logout(LogoutUserUseCase $logoutUserUseCase, TakeAccessTokenUseCase $takeAccessTokenUseCase)
     {
-        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
-        $useCase($accessToken);
+        $accessToken = $takeAccessTokenUseCase();
+        $logoutUserUseCase($accessToken);
         return response('{}', 200);
     }
 }

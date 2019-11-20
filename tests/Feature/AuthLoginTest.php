@@ -24,7 +24,7 @@ class AuthLoginTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreateUserSeeder::class);
+        parent::seeding(\CreateUsersSeeder::class);
         $this->users = User::all();
     }
 
@@ -55,7 +55,9 @@ class AuthLoginTest extends TestCase
     protected function failBaseCase($user)
     {
         $response = $this->post('/api/v1/auth/login', $user);
-        $response->assertStatus(400);
+        $response
+            ->assertStatus(400)
+            ->assertJsonStructure([]);
         $this->assertDatabaseMissing('users', $user);
     }
 

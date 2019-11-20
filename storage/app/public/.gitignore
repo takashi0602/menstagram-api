@@ -1,2 +1,4 @@
-*
-!.gitignore
+avatars/*
+posts/*
+!avatars/.gitkeep
+!posts/.gitkeep

@@ -24,7 +24,7 @@ class AuthRegisterTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreateUserSeeder::class);
+        parent::seeding(\CreateUsersSeeder::class);
         $this->users = User::all();
     }
 
@@ -66,7 +66,9 @@ class AuthRegisterTest extends TestCase
     protected function failBaseCase($user, $userId)
     {
         $response = $this->post('/api/v1/auth/register', $user);
-        $response->assertStatus(400);
+        $response
+            ->assertStatus(400)
+            ->assertJsonStructure([]);
         $this->assertDatabaseMissing('users', $user);
         $this->users->where('user_id', $userId)->each->delete();
     }

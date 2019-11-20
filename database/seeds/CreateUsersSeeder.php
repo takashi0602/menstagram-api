@@ -8,7 +8,7 @@ use App\Models\User;
  *
  * Class CreateUserSeeder
  */
-class CreateUserSeeder extends Seeder
+class CreateUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
