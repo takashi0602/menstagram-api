@@ -95,7 +95,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapV1TimelineApiRoutes()
     {
         Route::prefix('api/v1')
-                ->middleware('auth.bearer')
                 ->namespace($this->namespace . '\Api\V1')
                 ->group(base_path('routes/api/v1/timeline.php'));
     }

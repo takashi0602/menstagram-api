@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GlobalTimelineRequest;
-use App\UseCases\GlobalTimelineUseCase;
+use App\UseCases\FetchGlobalTimelineUseCase;
 
 /**
  * タイムラインAPI
@@ -18,12 +18,12 @@ class TimelineController extends Controller
      * グローバルタイムライン
      *
      * @param GlobalTimelineRequest $request
-     * @param GlobalTimelineUseCase $useCase
+     * @param FetchGlobalTimelineUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    function global(GlobalTimelineRequest $request, GlobalTimelineUseCase $useCase)
+    function global(GlobalTimelineRequest $request, FetchGlobalTimelineUseCase $useCase)
     {
-        $response = $useCase($request->post_ids);
+        $response = $useCase($request->post_id);
         return response($response, 200);
     }
 }
