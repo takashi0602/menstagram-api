@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use Illuminate\Http\UploadedFile;
+use Tests\Feature\DataProviders\PostDataProvider;
 use Tests\TestCase;
 
 /**
@@ -13,6 +15,8 @@ use Tests\TestCase;
  */
 class PostTest extends TestCase
 {
+    use PostDataProvider;
+
     protected $posts;
 
     /**
@@ -25,26 +29,79 @@ class PostTest extends TestCase
         $this->posts = Post::all();
     }
 
+    /**
+     * 正常系
+     *
+     * @test
+     */
     public function successCase()
     {
-        //
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $file = UploadedFile::fake()->image('test.jpg', 100, 100);
+
+        $response = $this
+                    ->withHeader('Authorization', "Bearer: $accessToken")
+                    ->post('/api/v1/post/images', [
+                        'image1' => $file,
+                    ]);
+
+        $postId = json_decode($response->content())->post_id;
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer: $accessToken")
+                        ->post('/api/v1/post', [
+                            'post_id'   => $postId,
+                            'text'      => 'test',
+                        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([]);
     }
 
-    public function failPostIdCase()
+    /**
+     * @test
+     * @dataProvider postIdProvider
+     * @param $postId
+     */
+    public function failPostIdCase($postId)
     {
-        // TODO: 有効なpost_idではないパターン
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
-        // TODO: post_idが数値ではないパターン
+        $response = $this
+            ->withHeader('Authorization', "Bearer: $accessToken")
+            ->post('/api/v1/post', [
+                'post_id'   => $postId,
+                'text'      => 'test',
+            ]);
 
-        // TODO: post_idが存在しないパターン
+        $response
+            ->assertStatus(400);
     }
 
-    public function failTextCase()
+    public function failTextCase($text)
     {
-        // TODO: 空白のパターン
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
-        // TODO: textが存在しないパターン
+        $file = UploadedFile::fake()->image('test.jpg', 100, 100);
 
-        // TODO: 256文字を超えているパターン
+        $response = $this
+            ->withHeader('Authorization', "Bearer: $accessToken")
+            ->post('/api/v1/post/images', [
+                'image1' => $file,
+            ]);
+
+        $postId = json_decode($response->content())->post_id;
+
+        $response = $this
+            ->withHeader('Authorization', "Bearer: $accessToken")
+            ->post('/api/v1/post', [
+                'post_id'   => $postId,
+                'text'      => $text,
+            ]);
+
+        $response
+            ->assertStatus(400);
     }
 }

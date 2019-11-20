@@ -31,7 +31,8 @@ class PostController extends Controller
     public function post(PostRequest $request, TakeAccessTokenUseCase $takeAccessTokenUseCase, PostUseCase $postUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
-        $postUseCase($accessToken, $request);
+        // TODO: バリデーション化したい
+        if (!$postUseCase($accessToken, $request)) return response('{}', 400);
 
         return response('{}', 200);
     }
