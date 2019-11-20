@@ -6,13 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-/**
- * ユーザーのログイン
- *
- * Class LoginUserRequest
- * @package App\Http\Requests
- */
-class LoginUserRequest extends FormRequest
+class PostDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,8 +26,7 @@ class LoginUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users', ],
-            'password'=> ['bail', 'required', 'string', 'min:8', ],
+            'post_id' => ['bail', 'required', 'integer', ],
         ];
     }
 

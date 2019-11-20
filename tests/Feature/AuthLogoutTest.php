@@ -25,7 +25,7 @@ class AuthLogoutTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreateUserSeeder::class);
+        parent::seeding(\CreateUsersSeeder::class);
         $this->users = User::all();
     }
 
@@ -42,7 +42,7 @@ class AuthLogoutTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-                        ->withHeader('Authorization', "Bearer: $accessToken")
+                        ->withHeader('Authorization', "Bearer $accessToken")
                         ->post('/api/v1/auth/logout');
 
         $response

@@ -9,10 +9,10 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 /**
  * ユーザーの登録
  *
- * Class RegisterUserRequest
+ * Class AuthRegisterRequest
  * @package App\Http\Requests
  */
-class RegisterUserRequest extends FormRequest
+class AuthRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

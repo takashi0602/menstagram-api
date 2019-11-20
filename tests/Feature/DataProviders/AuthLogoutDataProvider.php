@@ -20,8 +20,8 @@ trait AuthLogoutDataProvider
         return [
             'アクセストークンが無いパターン' => [null],
             'AuthorizationヘッダがBearerではないパターン' => ['takashi'],
-            'アクセストークンが短いパターン' => ['Bearer: takashi'],
-            'アクセストークンが長いパターン' => ['Bearer: takashitakashitakashitakashitakashitakashitakashitakashitakashitakashi'],
+            'アクセストークンが短いパターン' => ['Bearer takashi'],
+            'アクセストークンが長いパターン' => ['Bearer takashitakashitakashitakashitakashitakashitakashitakashitakashitakashi'],
         ];
     }
 }

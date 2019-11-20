@@ -9,7 +9,7 @@ menstagram-apiはMenstagramのバックエンド開発のためのリポジト�
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
 $ cd menstagram-api
-$ make install
+$ make init
 ```
 
 ### コマンド一覧
