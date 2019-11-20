@@ -66,7 +66,9 @@ class AuthRegisterTest extends TestCase
     protected function failBaseCase($user, $userId)
     {
         $response = $this->post('/api/v1/auth/register', $user);
-        $response->assertStatus(400);
+        $response
+            ->assertStatus(400)
+            ->assertJsonStructure([]);
         $this->assertDatabaseMissing('users', $user);
         $this->users->where('user_id', $userId)->each->delete();
     }

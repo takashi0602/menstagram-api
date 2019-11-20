@@ -73,6 +73,7 @@ class PostImagesTest extends TestCase
             ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonStructure([]);
     }
 }

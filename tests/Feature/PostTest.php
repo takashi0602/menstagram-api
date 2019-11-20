@@ -61,6 +61,8 @@ class PostTest extends TestCase
     }
 
     /**
+     * 異常系(投稿ID)
+     *
      * @test
      * @dataProvider postIdProvider
      * @param $postId
@@ -70,16 +72,24 @@ class PostTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
-            ->post('/api/v1/post', [
-                'post_id'   => $postId,
-                'text'      => 'test',
-            ]);
+                        ->withHeader('Authorization', "Bearer: $accessToken")
+                        ->post('/api/v1/post', [
+                            'post_id'   => $postId,
+                            'text'      => 'test',
+                        ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonStructure([]);
     }
 
+    /**
+     * 異常系(テキスト)
+     *
+     * @test
+     * @dataProvider textProvider
+     * @param $text
+     */
     public function failTextCase($text)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
@@ -87,21 +97,22 @@ class PostTest extends TestCase
         $file = UploadedFile::fake()->image('test.jpg', 100, 100);
 
         $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
-            ->post('/api/v1/post/images', [
-                'image1' => $file,
-            ]);
+                        ->withHeader('Authorization', "Bearer: $accessToken")
+                        ->post('/api/v1/post/images', [
+                            'image1' => $file,
+                        ]);
 
         $postId = json_decode($response->content())->post_id;
 
         $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
-            ->post('/api/v1/post', [
-                'post_id'   => $postId,
-                'text'      => $text,
-            ]);
+                        ->withHeader('Authorization', "Bearer: $accessToken")
+                        ->post('/api/v1/post', [
+                            'post_id'   => $postId,
+                            'text'      => $text,
+                        ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonStructure([]);
     }
 }
