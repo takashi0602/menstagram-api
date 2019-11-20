@@ -14,29 +14,29 @@ class GlobalTimelineUseCase
 {
     /**
      * @param $postId
-     * @return Array
+     * @return array
      */
     public function __invoke($postId)
     {
-        if ($postId != NULL){
+        if ($postId != NULL) {
             $posts = Post::where('id', '<', $postId)->orderBy('id', 'DESC')->limit(32)->get();
-        }else{
+        } else {
             $posts = Post::orderBy('id', 'DESC')->limit(32)->get();
         }
-        $array=[];
+        $array = [];
         foreach ($posts as $key => $post) {
             $array[] = [
-                "id"=> $post->id,
-                "text"=> $post->text,
-                "images"=> $post->images,
-                "user"=> [
-                    "user_id"=> $post->user->user_id,
-                    "screen_name"=> $post->user->screen_name,
-                    "avatar"=> $post->user->avatar
+                'id'        => $post->id,
+                'text'      => $post->text,
+                'images'    => $post->images,
+                'user'      => [
+                    'user_id'       => $post->user->user_id,
+                    'screen_name'   => $post->user->screen_name,
+                    'avatar'        => $post->user->avatar
                 ],
-                "liked"=> $post->liked,
-                "created_at"=> $post->created_at,
-                "updated_at"=> $post->updated_at
+                'liked'         => $post->liked,
+                'created_at'    => $post->created_at,
+                'updated_at'    => $post->updated_at
             ];
         }
         return $array;

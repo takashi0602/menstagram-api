@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * グローバルタイムライン表示
+ * グローバルタイムライン
  *
  * Class GlobalTimelineRequest
  * @package App\Http\Requests
