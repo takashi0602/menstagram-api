@@ -88,6 +88,8 @@ class PostController extends Controller
     public function detail(PostDetailRequest $request, FetchPostDetailUseCase $useCase)
     {
         $response = $useCase($request->post_id);
+        // TODO: バリデーション化したい
+        if (collect($response)->isEmpty()) return response('{}', 400);
         return response($response, 200);
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use Tests\Feature\DataProviders\PostDetailDataProvider;
 use Tests\TestCase;
 
 /**
@@ -13,6 +14,8 @@ use Tests\TestCase;
  */
 class PostDetailTest extends TestCase
 {
+    use PostDetailDataProvider;
+
     protected $posts;
 
     /**
@@ -25,17 +28,49 @@ class PostDetailTest extends TestCase
         $this->posts =  Post::all();
     }
 
+    /**
+     * 正常系
+     *
+     * @test
+     */
     public function successCase()
     {
-        //
+        $response = $this->json('GET', '/api/v1/post/detail', [
+            'post_id' => 1,
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id',
+                'text',
+                'images' => [],
+                'liked',
+                'created_at',
+                'updated_at',
+                'user' => [
+                    'id',
+                    'user_id',
+                    'screen_name',
+                    'avatar',
+                ],
+            ]);
     }
 
-    public function failCase()
+    /**
+     * 異常系
+     *
+     * @test
+     * @dataProvider postIdProvider
+     * @param $postId
+     */
+    public function failCase($postId)
     {
-        // TODO: 有効なpost_idではないパターン
+        $response = $this->json('GET', '/api/v1/post/detail', [
+            'post_id' => $postId,
+        ]);
 
-        // TODO: post_idが数値ではないパターン
-
-        // TODO: post_idが存在しないパターン
+        $response
+            ->assertStatus(400);
     }
 }
