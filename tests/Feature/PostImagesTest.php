@@ -50,19 +50,19 @@ class PostImagesTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure(['post_id']);
 
-        // TODO: DBに存在するか確認
-
-        // TODO: 画像が存在するか確認
+        $this->assertDatabaseHas('posts', [
+            'id' => json_decode($response->content())->post_id,
+        ]);
     }
 
     /**
-     * 異常系
+     * 異常系(画像)
      *
      * @test
      * @dataProvider imagesProvider
      * @param $file
      */
-    public function failCase($file)
+    public function failImagesCase($file)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
