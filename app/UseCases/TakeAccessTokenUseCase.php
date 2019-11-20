@@ -17,7 +17,7 @@ class TakeAccessTokenUseCase
      */
     public function __invoke()
     {
-        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer: '));
+        $accessToken = hash('sha256', Str::after(request()->header('Authorization'), 'Bearer '));
         return $accessToken;
     }
 }
