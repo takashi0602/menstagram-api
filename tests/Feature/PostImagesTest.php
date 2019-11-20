@@ -41,7 +41,7 @@ class PostImagesTest extends TestCase
         $file = UploadedFile::fake()->image('test.jpg', 100, 100);
 
         $response = $this
-                        ->withHeader('Authorization', "Bearer: $accessToken")
+                        ->withHeader('Authorization', "Bearer $accessToken")
                         ->post('/api/v1/post/images', [
                             'image1' => $file,
                         ]);
@@ -67,7 +67,7 @@ class PostImagesTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
+            ->withHeader('Authorization', "Bearer $accessToken")
             ->post('/api/v1/post/images', [
                 'image1' => $file,
             ]);
