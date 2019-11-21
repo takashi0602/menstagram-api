@@ -1,4 +1,4 @@
 <?php
 
-Route::get('/timeline/global', 'TimelineController@global');
-Route::get('/timeline/private', 'TimelineController@private')->middleware('auth.bearer');
+Route::get('/timeline/global', 'TimelineController@_global');
+Route::get('/timeline/private', 'TimelineController@_private')->middleware('auth.bearer');

@@ -21,9 +21,14 @@ class TimelineController extends Controller
      * @param FetchGlobalTimelineUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    function global(GlobalTimelineRequest $request, FetchGlobalTimelineUseCase $useCase)
+    public function _global(GlobalTimelineRequest $request, FetchGlobalTimelineUseCase $useCase)
     {
         $response = $useCase($request->post_id);
         return response($response, 200);
+    }
+
+    public function _private()
+    {
+        //
     }
 }
