@@ -19,9 +19,16 @@ class FetchGlobalTimelineUseCase
     public function __invoke($postId = null)
     {
         if ($postId !== null) {
-            $posts = Post::where('id', '<', $postId)->where('text', '<>', null)->orderBy('id', 'desc')->limit(32)->get();
+            $posts = Post::where('id', '<', $postId)
+                            ->where('text', '<>', null)
+                            ->orderBy('id', 'desc')
+                            ->limit(32)
+                            ->get();
         } else {
-            $posts = Post::where('text', '<>', null)->orderBy('id', 'desc')->limit(32)->get();
+            $posts = Post::where('text', '<>', null)
+                            ->orderBy('id', 'desc')
+                            ->limit(32)
+                            ->get();
         }
 
         $posts = collect($posts)->map(function ($v, $k) {

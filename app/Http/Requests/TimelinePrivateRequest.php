@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * グローバルタイムライン
+ * プライベートタイムライン
  *
- * Class GlobalTimelineRequest
+ * Class TimelinePrivateRequest
  * @package App\Http\Requests
  */
-class GlobalTimelineRequest extends FormRequest
+class TimelinePrivateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +32,7 @@ class GlobalTimelineRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id'=> ['bail', 'integer']
+            'post_id' => ['bail', 'integer', ],
         ];
     }
 
