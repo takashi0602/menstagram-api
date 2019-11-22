@@ -13,13 +13,15 @@ use App\Models\Post;
 class FetchGlobalTimelineUseCase
 {
     /**
-     * @param $postId
-     * @return array
+     * @param null $postId
+     * @param null $type
+     * @return \Illuminate\Support\Collection
      */
-    public function __invoke($postId = null)
+    public function __invoke($postId = null, $type = null)
     {
         if ($postId !== null) {
-            $posts = Post::where('id', '<', $postId)
+            $operator = $type === 'new' ? '>' : '<';
+            $posts = Post::where('id', $operator, $postId)
                             ->where('text', '<>', null)
                             ->orderBy('id', 'desc')
                             ->limit(32)

@@ -32,7 +32,8 @@ class TimelineGlobalRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id' => ['bail', 'integer', ],
+            'post_id'   => ['bail', 'integer', 'exists:posts' ],
+            'type'      => ['bail', 'in:old,new', ],
         ];
     }
 

@@ -33,6 +33,7 @@ class TimelinePrivateRequest extends FormRequest
     {
         return [
             'post_id' => ['bail', 'integer', ],
+            'type'      => ['bail', 'in:old,new', ],
         ];
     }
 
