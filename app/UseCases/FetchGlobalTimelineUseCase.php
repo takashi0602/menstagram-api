@@ -21,19 +21,21 @@ class FetchGlobalTimelineUseCase
     {
         if ($postId !== null) {
             $operator = $type === 'new' ? '>' : '<';
+            // TODO: ここらへんModelに持っていきたい
             $posts = Post::where('id', $operator, $postId)
                             ->where('text', '<>', null)
                             ->orderBy('id', 'desc')
                             ->limit(32)
                             ->get();
         } else {
+            // TODO: ここらへんModelに持っていきたい
             $posts = Post::where('text', '<>', null)
                             ->orderBy('id', 'desc')
                             ->limit(32)
                             ->get();
         }
 
-        $posts = collect($posts)->map(function ($v, $k) {
+        $posts = collect($posts)->reverse()->values()->map(function ($v, $k) {
             return collect($v)->except(['user_id']);
         });
 
