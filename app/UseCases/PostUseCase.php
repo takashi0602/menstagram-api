@@ -14,14 +14,12 @@ use App\Models\User;
 class PostUseCase
 {
     /**
-     * @param $accessToken
+     * @param $userId
      * @param $request
      * @return bool
      */
-    public function __invoke($accessToken, $request)
+    public function __invoke($userId, $request)
     {
-        $userId = User::where('access_token', $accessToken)->first()->id;
-
         $post = Post::where('user_id', $userId)->where('id', $request->post_id)->where('text', null)->first();
         if (collect($post)->isEmpty()) return false;
 

@@ -14,14 +14,12 @@ use App\Models\User;
 class PostImagesUseCase
 {
     /**
-     * @param $accessToken
+     * @param $userId
      * @param $filePaths
      * @return array
      */
-    public function __invoke($accessToken, $filePaths)
+    public function __invoke($userId, $filePaths)
     {
-        $userId = User::where('access_token', $accessToken)->first()->id;
-
         $postId = Post::create([
             'user_id'   => $userId,
             'images'    => $filePaths,

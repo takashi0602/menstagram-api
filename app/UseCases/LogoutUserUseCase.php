@@ -13,11 +13,11 @@ use App\Models\User;
 class LogoutUserUseCase
 {
     /**
-     * @param $accessToken
+     * @param $userId
      */
-    public function __invoke($accessToken)
+    public function __invoke($userId)
     {
-        User::where('access_token', $accessToken)->update([
+        User::where('access_token', $userId)->update([
             'access_token' => null,
         ]);
     }

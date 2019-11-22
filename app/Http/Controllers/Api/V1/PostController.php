@@ -11,6 +11,7 @@ use App\UseCases\PostImagesUseCase;
 use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
 use App\UseCases\TakeAccessTokenUseCase;
+use App\UseCases\TakeUserByAccessTokenUseCase;
 
 /**
  * 投稿系API
@@ -21,18 +22,21 @@ use App\UseCases\TakeAccessTokenUseCase;
 class PostController extends Controller
 {
     /**
-     * 投稿
-     *
      * @param PostRequest $request
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
      * @param PostUseCase $postUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function post(PostRequest $request, TakeAccessTokenUseCase $takeAccessTokenUseCase, PostUseCase $postUseCase)
+    public function post(PostRequest $request,
+                         TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                         TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                         PostUseCase $postUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
         // TODO: バリデーション化したい
-        if (!$postUseCase($accessToken, $request)) return response('{}', 400);
+        if (!$postUseCase($userId, $request)) return response('{}', 400);
 
         return response('{}', 200);
     }
@@ -43,17 +47,20 @@ class PostController extends Controller
      * @param PostImagesRequest $request
      * @param StoreImagesUseCase $storeImagesUseCase
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
      * @param PostImagesUseCase $postImagesUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function images(PostImagesRequest $request,
                            StoreImagesUseCase $storeImagesUseCase,
                            TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
                            PostImagesUseCase $postImagesUseCase)
     {
         $filePaths = $storeImagesUseCase($request);
         $accessToken = $takeAccessTokenUseCase();
-        $response = $postImagesUseCase($accessToken, $filePaths);
+        $userId = $takeUserByAccessTokenUseCase($accessToken);
+        $response = $postImagesUseCase($userId, $filePaths);
 
         return response($response, 200);
     }

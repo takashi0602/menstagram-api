@@ -10,6 +10,7 @@ use App\UseCases\LogoutUserUseCase;
 use App\UseCases\RegisterUserUseCase;
 use App\UseCases\ExistsUserUseCase;
 use App\UseCases\TakeAccessTokenUseCase;
+use App\UseCases\TakeUserByAccessTokenUseCase;
 
 /**
  * 認証系API
@@ -52,14 +53,18 @@ class AuthController extends Controller
     /**
      * ユーザーのログアウト
      *
-     * @param LogoutUserUseCase $logoutUserUseCase
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
+     * @param LogoutUserUseCase $logoutUserUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function logout(LogoutUserUseCase $logoutUserUseCase, TakeAccessTokenUseCase $takeAccessTokenUseCase)
+    public function logout(TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                           LogoutUserUseCase $logoutUserUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
-        $logoutUserUseCase($accessToken);
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
+        $logoutUserUseCase($userId);
         return response('{}', 200);
     }
 }
