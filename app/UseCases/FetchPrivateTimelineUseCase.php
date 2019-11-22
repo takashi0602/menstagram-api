@@ -2,6 +2,7 @@
 
 namespace App\UseCases;
 
+use App\Models\Follow;
 use App\Models\Post;
 
 /**
@@ -20,11 +21,15 @@ class FetchPrivateTimelineUseCase
      */
     public function __invoke($userId, $postId = null, $type = null)
     {
+        $followIds = collect(Follow::where('user_id', $userId)->get())->map(function ($v, $k) {
+            return $v->id;
+        });
+
         if ($postId !== null) {
             $operator = $type === 'new' ? '>' : '<';
             // TODO: ここらへんModelに持っていきたい
             $posts = Post::where('id', $operator, $postId)
-                            ->where('user_id', $userId)
+                            ->whereIn('user_id', $followIds)
                             ->where('text', '<>', null)
                             ->orderBy('id', 'desc')
                             ->limit(32)
@@ -32,7 +37,7 @@ class FetchPrivateTimelineUseCase
         } else {
             // TODO: ここらへんModelに持っていきたい
             $posts = Post::where('text', '<>', null)
-                            ->where('user_id', $userId)
+                            ->whereIn('user_id', $followIds)
                             ->orderBy('id', 'desc')
                             ->limit(32)
                             ->get();
