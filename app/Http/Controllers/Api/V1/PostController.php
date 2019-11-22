@@ -22,6 +22,8 @@ use App\UseCases\TakeUserByAccessTokenUseCase;
 class PostController extends Controller
 {
     /**
+     * 投稿
+     *
      * @param PostRequest $request
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
