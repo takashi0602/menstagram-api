@@ -14,7 +14,7 @@ use Tests\TestCase;
  * Class GlobalTimelineTest
  * @package Tests\Feature
  */
-class GlobalTimelineTest extends TestCase
+class TimelineGlobalTest extends TestCase
 {
     use GlobalTimelineDataProvider;
 
@@ -26,9 +26,8 @@ class GlobalTimelineTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreateUserSeeder::class);
+        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
         $this->users = User::all();
-        parent::seeding(\CreatePostSeeder::class);
         $this->posts = Post::orderBy('id', 'DESC')->get();
     }
 
@@ -39,13 +38,7 @@ class GlobalTimelineTest extends TestCase
      */
     public function successCase()
     {
-        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
-
-        $request = [];
-
-        $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
-            ->get('/api/v1/timeline/global');
+        $response = $this->get('/api/v1/timeline/global');
 
         $response->assertStatus(200)
             ->assertJsonStructure([

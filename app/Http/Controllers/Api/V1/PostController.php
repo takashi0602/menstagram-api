@@ -61,7 +61,7 @@ class PostController extends Controller
     {
         $filePaths = $storeImagesUseCase($request);
         $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken);
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
         $response = $postImagesUseCase($userId, $filePaths);
 
         return response($response, 200);

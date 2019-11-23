@@ -18,13 +18,15 @@ abstract class TestCase extends BaseTestCase
     /**
      * シーディング
      *
-     * @param $className
+     * @param array $classNames
      */
-    protected function seeding($className)
+    protected function seeding(array $classNames)
     {
         Model::unguard();
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Artisan::call('db:seed', ['--class' => $className]);
+        foreach ($classNames as $className) {
+            Artisan::call('db:seed', ['--class' => $className]);
+        }
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         Model::reguard();
     }

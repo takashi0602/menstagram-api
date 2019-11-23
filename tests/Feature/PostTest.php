@@ -25,7 +25,7 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreatePostsSeeder::class);
+        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
         $this->posts = Post::all();
     }
 
@@ -47,6 +47,8 @@ class PostTest extends TestCase
                     ]);
 
         $postId = json_decode($response->content())->post_id;
+
+        \Log::info($postId);
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")

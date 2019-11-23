@@ -54,17 +54,14 @@ class AuthController extends Controller
      * ユーザーのログアウト
      *
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
      * @param LogoutUserUseCase $logoutUserUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function logout(TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
                            LogoutUserUseCase $logoutUserUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $logoutUserUseCase($userId);
+        $logoutUserUseCase($accessToken);
         return response('{}', 200);
     }
 }
