@@ -28,7 +28,8 @@ class FetchPrivateTimelineUseCase
         if ($postId !== null) {
             $operator = $type === 'new' ? '>' : '<';
             // TODO: ここらへんModelに持っていきたい
-            $posts = Post::where('id', $operator, $postId)
+            $posts = Post::with(['user:id,screen_name,avatar'])
+                            ->where('id', $operator, $postId)
                             ->whereIn('user_id', $followIds)
                             ->where('text', '<>', null)
                             ->orderBy('id', 'desc')
@@ -36,7 +37,8 @@ class FetchPrivateTimelineUseCase
                             ->get();
         } else {
             // TODO: ここらへんModelに持っていきたい
-            $posts = Post::where('text', '<>', null)
+            $posts = Post::with(['user:id,screen_name,avatar'])
+                            ->where('text', '<>', null)
                             ->whereIn('user_id', $followIds)
                             ->orderBy('id', 'desc')
                             ->limit(32)

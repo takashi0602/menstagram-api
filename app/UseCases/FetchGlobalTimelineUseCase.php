@@ -22,14 +22,16 @@ class FetchGlobalTimelineUseCase
         if ($postId !== null) {
             $operator = $type === 'new' ? '>' : '<';
             // TODO: ここらへんModelに持っていきたい
-            $posts = Post::where('id', $operator, $postId)
+            $posts = Post::with(['user:id,screen_name,avatar'])
+                            ->where('id', $operator, $postId)
                             ->where('text', '<>', null)
                             ->orderBy('id', 'desc')
                             ->limit(32)
                             ->get();
         } else {
             // TODO: ここらへんModelに持っていきたい
-            $posts = Post::where('text', '<>', null)
+            $posts = Post::with(['user:id,screen_name,avatar'])
+                            ->where('text', '<>', null)
                             ->orderBy('id', 'desc')
                             ->limit(32)
                             ->get();
