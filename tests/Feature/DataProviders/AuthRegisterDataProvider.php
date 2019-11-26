@@ -3,7 +3,7 @@
 namespace Tests\Feature\DataProviders;
 
 /**
- * ユーザーの登録(異常系)
+ * ユーザーの登録
  *
  * Trait AuthRegisterDataProvider
  * @package Tests\Feature\DataProviders

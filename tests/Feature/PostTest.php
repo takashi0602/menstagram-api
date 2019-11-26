@@ -25,7 +25,7 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding(\CreatePostsSeeder::class);
+        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
         $this->posts = Post::all();
     }
 

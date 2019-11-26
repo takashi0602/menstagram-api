@@ -3,7 +3,7 @@
 namespace Tests\Feature\DataProviders;
 
 /**
- * 投稿(異常系)
+ * 投稿
  *
  * Trait PostDataProvider
  * @package Tests\Feature\DataProviders

@@ -3,7 +3,7 @@
 namespace Tests\Feature\DataProviders;
 
 /**
- * ユーザーのログアウト(異常系)
+ * ユーザーのログアウト
  *
  * Trait AuthLogoutDataProvider
  * @package Tests\Feature\DataProviders
