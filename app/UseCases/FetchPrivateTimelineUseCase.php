@@ -27,16 +27,9 @@ class FetchPrivateTimelineUseCase
 
         $query = Post::with(['user:id,screen_name,avatar']);
 
-
-        if (is_null($postId) && is_null($type)) {
-            $query->latest('id');
-        }
-        else if (!is_null($postId) && (is_null($type) || $type === 'new')) {
-            $query->where('id', '>=', $postId);
-        }
-        else if (!is_null($postId) && $type === 'old') {
-            $query->where('id', '<=', $postId);
-        }
+        if (is_null($postId) && is_null($type))                             $query->latest('id');
+        else if (!is_null($postId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $postId);
+        else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId);
 
         $posts = $query
                     ->whereIn('user_id', $followIds)
@@ -48,9 +41,7 @@ class FetchPrivateTimelineUseCase
             return collect($v)->except(['user_id']);
         });
 
-        if (is_null($postId) && is_null($type)) {
-            $posts = $posts->reverse()->values();
-        }
+        if (is_null($postId) && is_null($type)) $posts = $posts->reverse()->values();
 
         return $posts;
     }
