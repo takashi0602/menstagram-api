@@ -32,7 +32,7 @@ class TimelinePrivateRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id' => ['bail', 'integer', ],
+            'post_id' => ['bail', 'integer', 'exists:posts,id', ],
             'type'      => ['bail', 'in:old,new', ],
         ];
     }

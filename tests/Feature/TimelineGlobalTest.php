@@ -2,10 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\Post;
-use Illuminate\Support\Arr;
-use Tests\Feature\DataProviders\GlobalTimelineDataProvider;
+use Tests\Feature\DataProviders\TimelineGlobalDataProvider;
 use Tests\TestCase;
 
 /**
@@ -16,7 +13,7 @@ use Tests\TestCase;
  */
 class TimelineGlobalTest extends TestCase
 {
-    use GlobalTimelineDataProvider;
+    use TimelineGlobalDataProvider;
 
     protected $users;
 
@@ -27,8 +24,6 @@ class TimelineGlobalTest extends TestCase
     {
         parent::setUp();
         parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
-        $this->users = User::all();
-        $this->posts = Post::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -40,85 +35,91 @@ class TimelineGlobalTest extends TestCase
     {
         $response = $this->get('/api/v1/timeline/global');
 
-        $response->assertStatus(200)
+        $response
+            ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'id',
                     'text',
                     'images' => [
-                        '*' => []
+                        '*' => [],
                     ],
                     'user' => [
-                        'user_id',
+                        'id',
                         'screen_name',
-                        'avatar'
+                        'avatar',
                     ],
                     'liked',
                     'created_at',
-                    'updated_at'
-                ]
+                    'updated_at',
+                ],
             ]);
-            // assertJsonCount(32) // でレスポンスデータの数を照らし合わせれるけど、本番時初期に数は減るのでやめる
     }
 
     /**
      * 正常系
-     * 「もっと読む」リクエストのときのパターン
      *
      * @test
      */
-    public function successCaseRequested()
+    public function successPostIdCase()
     {
-        $post = Arr::first($this->posts, function ($value, $key) {
-            return $value->id !== null;
-        });
-        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+        $response = $this->json('GET', '/api/v1/timeline/global', [
+            'post_id' => 50,
+        ]);
 
-        $request = [];
-
-        $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
-            ->get('/api/v1/timeline/global',[
-                'post_id' => $post->id
-            ]);
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([ // Json形式を指定
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
                 '*' => [
                     'id',
                     'text',
                     'images' => [
-                        '*' => []
+                        '*' => [],
                     ],
                     'user' => [
-                        'user_id',
+                        'id',
                         'screen_name',
-                        'avatar'
+                        'avatar',
                     ],
                     'liked',
                     'created_at',
-                    'updated_at'
-                ]
+                    'updated_at',
+                ],
             ]);
-            // assertJsonCount(32) // でレスポンスデータの数を照らし合わせれるけど、本番時初期に数は減るのでやめる
     }
 
     /**
-     * 異常系(グローバルタイムライン)
+     * 正常系
      *
      * @test
-     * @dataProvider PostIdProvider
-     * @param $postId
+     * @dataProvider typeProvider
+     * @param $type
      */
-    public function failUserIdCase($postId)
+    public function successTypeCase($type)
     {
-        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+        $response = $this->json('GET', '/api/v1/timeline/global', [
+            'post_id'   => 50,
+            'type'      => $type,
+        ]);
 
-        $response = $this
-            ->withHeader('Authorization', "Bearer: $accessToken")
-            ->json('get','/api/v1/timeline/global',[
-                'post_id' => $postId
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => [
+                    'id',
+                    'text',
+                    'images' => [
+                        '*' => [],
+                    ],
+                    'user' => [
+                        'id',
+                        'screen_name',
+                        'avatar',
+                    ],
+                    'liked',
+                    'created_at',
+                    'updated_at',
+                ],
             ]);
-        $response->assertStatus(400);
     }
 }

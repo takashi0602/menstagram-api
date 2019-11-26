@@ -5,7 +5,7 @@ namespace Tests\Feature\DataProviders;
 use Illuminate\Http\UploadedFile;
 
 /**
- * 画像の送信(異常系)
+ * 画像の送信
  *
  * Trait PostImagesDataProvider
  * @package Tests\Feature\DataProviders
