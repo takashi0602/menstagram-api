@@ -26,7 +26,6 @@ class FetchGlobalTimelineUseCase
         else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId);
 
         $posts = $query
-                    ->where('text', '<>', null)
                     ->limit(32)
                     ->get();
 

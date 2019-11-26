@@ -33,7 +33,6 @@ class FetchPrivateTimelineUseCase
 
         $posts = $query
                     ->whereIn('user_id', $followIds)
-                    ->where('text', '<>', null)
                     ->limit(32)
                     ->get();
 
