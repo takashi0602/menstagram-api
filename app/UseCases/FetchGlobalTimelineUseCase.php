@@ -21,20 +21,28 @@ class FetchGlobalTimelineUseCase
     {
         $query = Post::with(['user:id,screen_name,avatar']);
 
-        if ($postId !== null) {
-            $operator = $type === 'new' ? '>' : '<';
-            $query->where('id', $operator, $postId);
+        if (is_null($postId) && is_null($type)) {
+            $query->latest('id');
+        }
+        else if (!is_null($postId) && (is_null($type) || $type === 'new')) {
+            $query->where('id', '>=', $postId);
+        }
+        else if (!is_null($postId) && $type === 'old') {
+            $query->where('id', '<=', $postId);
         }
 
         $posts = $query
                     ->where('text', '<>', null)
-                    ->orderBy('id', 'desc')
                     ->limit(32)
                     ->get();
 
-        $posts = collect($posts)->reverse()->values()->map(function ($v, $k) {
+        $posts = collect($posts)->map(function ($v, $k) {
             return collect($v)->except(['user_id']);
         });
+
+        if (is_null($postId) && is_null($type)) {
+            $posts = $posts->reverse()->values();
+        }
 
         return $posts;
     }
