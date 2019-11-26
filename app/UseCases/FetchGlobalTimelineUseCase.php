@@ -19,23 +19,18 @@ class FetchGlobalTimelineUseCase
      */
     public function __invoke($postId = null, $type = null)
     {
+        $query = Post::with(['user:id,screen_name,avatar']);
+
         if ($postId !== null) {
             $operator = $type === 'new' ? '>' : '<';
-            // TODO: ここらへんModelに持っていきたい
-            $posts = Post::with(['user:id,screen_name,avatar'])
-                            ->where('id', $operator, $postId)
-                            ->where('text', '<>', null)
-                            ->orderBy('id', 'desc')
-                            ->limit(32)
-                            ->get();
-        } else {
-            // TODO: ここらへんModelに持っていきたい
-            $posts = Post::with(['user:id,screen_name,avatar'])
-                            ->where('text', '<>', null)
-                            ->orderBy('id', 'desc')
-                            ->limit(32)
-                            ->get();
+            $query->where('id', $operator, $postId);
         }
+
+        $posts = $query
+                    ->where('text', '<>', null)
+                    ->orderBy('id', 'desc')
+                    ->limit(32)
+                    ->get();
 
         $posts = collect($posts)->reverse()->values()->map(function ($v, $k) {
             return collect($v)->except(['user_id']);

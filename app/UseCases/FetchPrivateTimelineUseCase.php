@@ -25,25 +25,19 @@ class FetchPrivateTimelineUseCase
             return $v->id;
         });
 
+        $query = Post::with(['user:id,screen_name,avatar']);
+
         if ($postId !== null) {
             $operator = $type === 'new' ? '>' : '<';
-            // TODO: ここらへんModelに持っていきたい
-            $posts = Post::with(['user:id,screen_name,avatar'])
-                            ->where('id', $operator, $postId)
-                            ->whereIn('user_id', $followIds)
-                            ->where('text', '<>', null)
-                            ->orderBy('id', 'desc')
-                            ->limit(32)
-                            ->get();
-        } else {
-            // TODO: ここらへんModelに持っていきたい
-            $posts = Post::with(['user:id,screen_name,avatar'])
-                            ->where('text', '<>', null)
-                            ->whereIn('user_id', $followIds)
-                            ->orderBy('id', 'desc')
-                            ->limit(32)
-                            ->get();
+            $query->where('id', $operator, $postId);
         }
+
+        $posts = $query
+                    ->where('text', '<>', null)
+                    ->whereIn('user_id', $followIds)
+                    ->orderBy('id', 'desc')
+                    ->limit(32)
+                    ->get();
 
         $posts = collect($posts)->reverse()->values()->map(function ($v, $k) {
             return collect($v)->except(['user_id']);
