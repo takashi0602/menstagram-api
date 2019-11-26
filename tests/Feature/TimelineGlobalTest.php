@@ -6,7 +6,7 @@ use Tests\Feature\DataProviders\TimelineGlobalDataProvider;
 use Tests\TestCase;
 
 /**
- * ユーザーの登録
+ * グローバルタイムライン
  *
  * Class GlobalTimelineTest
  * @package Tests\Feature
@@ -89,7 +89,7 @@ class TimelineGlobalTest extends TestCase
     }
 
     /**
-     * 正常系(typeあり)
+     * 正常系(post_id, typeあり)
      *
      * @test
      * @dataProvider successTypeProvider
