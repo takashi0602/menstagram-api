@@ -57,7 +57,7 @@ class TimelineGlobalTest extends TestCase
     }
 
     /**
-     * 正常系
+     * 正常系(post_idあり)
      *
      * @test
      */
@@ -89,10 +89,10 @@ class TimelineGlobalTest extends TestCase
     }
 
     /**
-     * 正常系
+     * 正常系(typeあり)
      *
      * @test
-     * @dataProvider typeProvider
+     * @dataProvider successTypeProvider
      * @param $type
      */
     public function successTypeCase($type)
@@ -121,5 +121,40 @@ class TimelineGlobalTest extends TestCase
                     'updated_at',
                 ],
             ]);
+    }
+
+    /**
+     * 異常系(post_id)
+     *
+     * @test
+     * @dataProvider failPostIdProvider
+     * @param $postId
+     */
+    public function failPostIdCase($postId)
+    {
+        $response = $this->json('GET', '/api/v1/timeline/global', [
+            'post_id'   => $postId,
+        ]);
+
+        $response
+            ->assertStatus(400);
+    }
+
+    /**
+     * 異常系(type)
+     *
+     * @test
+     * @dataProvider failTypeProvider
+     * @param $type
+     */
+    public function failTypeCase($type)
+    {
+        $response = $this->json('GET', '/api/v1/timeline/global', [
+            'post_id'   => 50,
+            'type'      => $type,
+        ]);
+
+        $response
+            ->assertStatus(400);
     }
 }
