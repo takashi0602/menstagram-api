@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\Feature\DataProviders\TimelineGlobalDataProvider;
+use Tests\Feature\DataProviders\TimelinePrivateDataProvider;
 use Tests\TestCase;
 
 /**
- * グローバルタイムライン
+ * プライベートタイムライン
  *
- * Class GlobalTimelineTest
+ * Class TimelinePrivateTest
  * @package Tests\Feature
  */
-class TimelineGlobalTest extends TestCase
+class TimelinePrivateTest extends TestCase
 {
-    use TimelineGlobalDataProvider;
+    use TimelinePrivateDataProvider;
 
     /**
      * 初期化処理
@@ -31,7 +31,11 @@ class TimelineGlobalTest extends TestCase
      */
     public function successCase()
     {
-        $response = $this->get('/api/v1/timeline/global');
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->get('/api/v1/timeline/private');
 
         $response
             ->assertStatus(200)
@@ -61,9 +65,13 @@ class TimelineGlobalTest extends TestCase
      */
     public function successPostIdCase()
     {
-        $response = $this->json('GET', '/api/v1/timeline/global', [
-            'post_id' => 50,
-        ]);
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/timeline/private', [
+                            'post_id' => 50,
+                        ]);
 
         $response
             ->assertStatus(200)
@@ -95,10 +103,14 @@ class TimelineGlobalTest extends TestCase
      */
     public function successTypeCase($type)
     {
-        $response = $this->json('GET', '/api/v1/timeline/global', [
-            'post_id'   => 50,
-            'type'      => $type,
-        ]);
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/timeline/private', [
+                            'post_id'   => 50,
+                            'type'      => $type,
+                        ]);
 
         $response
             ->assertStatus(200)
@@ -130,9 +142,13 @@ class TimelineGlobalTest extends TestCase
      */
     public function failPostIdCase($postId)
     {
-        $response = $this->json('GET', '/api/v1/timeline/global', [
-            'post_id'   => $postId,
-        ]);
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/timeline/private', [
+                            'post_id'   => $postId,
+                        ]);
 
         $response
             ->assertStatus(400);
@@ -147,10 +163,14 @@ class TimelineGlobalTest extends TestCase
      */
     public function failTypeCase($type)
     {
-        $response = $this->json('GET', '/api/v1/timeline/global', [
-            'post_id'   => 50,
-            'type'      => $type,
-        ]);
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/timeline/private', [
+                            'post_id'   => 50,
+                            'type'      => $type,
+                        ]);
 
         $response
             ->assertStatus(400);

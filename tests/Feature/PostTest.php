@@ -48,8 +48,6 @@ class PostTest extends TestCase
 
         $postId = json_decode($response->content())->post_id;
 
-        \Log::info($postId);
-
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->post('/api/v1/post', [
