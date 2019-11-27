@@ -8,7 +8,7 @@ services:
     ports:
       - 8000:80
     volumes:
-      - .:/var/www
+      - nginx-sync:/var/www
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
@@ -18,7 +18,7 @@ services:
     container_name: menstagram_php
     build: ./docker/php
     volumes:
-      - .:/var/www
+      - php-sync:/var/www
     depends_on:
       - mysql
 
@@ -34,6 +34,14 @@ services:
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./docker/mysql/data:/var/lib/mysql
+      - mysql-sync:/var/lib/mysql
     ports:
       - 3307:3306
+
+volumes:
+  nginx-sync:
+    external: true
+  php-sync:
+    external: true
+  mysql-sync:
+    external: true
