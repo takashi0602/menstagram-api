@@ -4,18 +4,18 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use Illuminate\Http\UploadedFile;
-use Tests\Feature\DataProviders\PostDataProvider;
+use Tests\Feature\DataProviders\PostImagesDataProvider;
 use Tests\TestCase;
 
 /**
- * 投稿
+ * 画像投稿
  *
- * Class PostTest
+ * Class PostImagesTest
  * @package Tests\Feature
  */
 class PostTest extends TestCase
 {
-    use PostDataProvider;
+    use PostImagesDataProvider;
 
     protected $posts;
 
@@ -25,7 +25,7 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
+        parent::seeding([\CreatePostsSeeder::class]);
         $this->posts = Post::all();
     }
 
@@ -41,75 +41,36 @@ class PostTest extends TestCase
         $file = UploadedFile::fake()->image('test.jpg', 100, 100);
 
         $response = $this
-                    ->withHeader('Authorization', "Bearer $accessToken")
-                    ->post('/api/v1/post/images', [
-                        'image1' => $file,
-                    ]);
-
-        $postId = json_decode($response->content())->post_id;
-
-        $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->post('/api/v1/post', [
-                            'post_id'   => $postId,
-                            'text'      => 'test',
+                            'image1' => $file,
                         ]);
 
         $response
             ->assertStatus(200)
-            ->assertJsonStructure([]);
+            ->assertJsonStructure(['post_id']);
+
+        $this->assertDatabaseHas('posts', [
+            'id' => json_decode($response->content())->post_id,
+        ]);
     }
 
     /**
-     * 異常系(投稿ID)
+     * 異常系(画像)
      *
      * @test
-     * @dataProvider postIdProvider
-     * @param $postId
+     * @dataProvider imagesProvider
+     * @param $file
      */
-    public function failPostIdCase($postId)
+    public function failImagesCase($file)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-                        ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post', [
-                            'post_id'   => $postId,
-                            'text'      => 'test',
-                        ]);
-
-        $response
-            ->assertStatus(400)
-            ->assertJsonStructure([]);
-    }
-
-    /**
-     * 異常系(テキスト)
-     *
-     * @test
-     * @dataProvider textProvider
-     * @param $text
-     */
-    public function failTextCase($text)
-    {
-        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
-
-        $file = UploadedFile::fake()->image('test.jpg', 100, 100);
-
-        $response = $this
-                        ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/images', [
-                            'image1' => $file,
-                        ]);
-
-        $postId = json_decode($response->content())->post_id;
-
-        $response = $this
-                        ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post', [
-                            'post_id'   => $postId,
-                            'text'      => $text,
-                        ]);
+            ->withHeader('Authorization', "Bearer $accessToken")
+            ->post('/api/v1/post', [
+                'image1' => $file,
+            ]);
 
         $response
             ->assertStatus(400)
