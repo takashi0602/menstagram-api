@@ -1,4 +1,6 @@
 init:
+	bundler install
+	docker-sync start
 	docker-compose build --no-cache
 	docker-compose up -d
 	docker-compose exec php composer install
@@ -11,6 +13,7 @@ up:
 	docker-compose up -d
 
 down:
+	docker-sync stop
 	docker-compose down
 
 db:
