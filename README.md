@@ -5,6 +5,7 @@
 menstagram-apiはMenstagramのバックエンド開発のためのリポジトリです。
 
 ### 環境構築（macOS）
+現状, macOSでの環境のみdocker-syncによる高速化の恩恵を受けることができる.
 
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
@@ -12,12 +13,12 @@ $ cd menstagram-api
 $ make init
 ```
 
-### 環境構築（Windows）
+### 環境構築（Windows/Linux）
 
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
 $ cd menstagram-api
-$ make -f Makefile.win init
+$ make -f Makefile.gen init
 ```
 
 ### コマンド（macOS）
@@ -32,16 +33,16 @@ $ make qual     // 品質チェックツール(PHP Insights)の起動
 $ make test     // テスト(PHPUnit)の実行
 ```
 
-### コマンド（Windows）
+### コマンド（Windows/Linux）
 
 ```bash
-$ make -f Makefile.win up       // 起動
-$ make -f Makefile.win down     // 終了
-$ make -f Makefile.win db       // DBの作り直し
-$ make -f Makefile.win sh       // bashの起動
-$ make -f Makefile.win dbg      // デバッガ(Telescope)の起動
-$ make -f Makefile.win qual     // 品質チェックツール(PHP Insights)の起動
-$ make -f Makefile.win test     // テスト(PHPUnit)の実行
+$ make -f Makefile.gen up       // 起動
+$ make -f Makefile.gen down     // 終了
+$ make -f Makefile.gen db       // DBの作り直し
+$ make -f Makefile.gen sh       // bashの起動
+$ make -f Makefile.gen dbg      // デバッガ(Telescope)の起動
+$ make -f Makefile.gen qual     // 品質チェックツール(PHP Insights)の起動
+$ make -f Makefile.gen test     // テスト(PHPUnit)の実行
 ```
 
 ### コマンド（共通）
