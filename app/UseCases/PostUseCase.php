@@ -3,29 +3,29 @@
 namespace App\UseCases;
 
 use App\Models\Post;
-use App\Models\User;
 
 /**
- * 投稿
+ * 画像パスの保存
  *
- * Class PostUseCase
+ * Class PostImagesUseCase
  * @package App\UseCases
  */
 class PostUseCase
 {
     /**
      * @param $userId
-     * @param $request
-     * @return bool
+     * @param $filePaths
+     * @return array
      */
-    public function __invoke($userId, $request)
+    public function __invoke($userId, $filePaths)
     {
-        $post = Post::where('user_id', $userId)->where('id', $request->post_id)->where('text', null)->first();
-        if (collect($post)->isEmpty()) return false;
+        $postId = Post::create([
+            'user_id'   => $userId,
+            'images'    => $filePaths,
+        ])->id;
 
-        $post->update([
-            'text' => $request->text,
-        ]);
-        return true;
+        return [
+            'post_id' => $postId,
+        ];
     }
 }

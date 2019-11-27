@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostDetailRequest;
-use App\Http\Requests\PostImagesRequest;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\PostTextRequest;
 use App\UseCases\FetchPostDetailUseCase;
-use App\UseCases\PostImagesUseCase;
+use App\UseCases\PostTextUseCase;
 use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
 use App\UseCases\TakeAccessTokenUseCase;
@@ -22,49 +22,49 @@ use App\UseCases\TakeUserByAccessTokenUseCase;
 class PostController extends Controller
 {
     /**
-     * 投稿
+     * 画像投稿
      *
      * @param PostRequest $request
+     * @param StoreImagesUseCase $storeImagesUseCase
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
      * @param PostUseCase $postUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function post(PostRequest $request,
+                         StoreImagesUseCase $storeImagesUseCase,
                          TakeAccessTokenUseCase $takeAccessTokenUseCase,
                          TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
                          PostUseCase $postUseCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        // TODO: バリデーション化したい
-        if (!$postUseCase($userId, $request)) return response('{}', 400);
-
-        return response('{}', 200);
-    }
-
-    /**
-     * 画像送信
-     *
-     * @param PostImagesRequest $request
-     * @param StoreImagesUseCase $storeImagesUseCase
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param PostImagesUseCase $postImagesUseCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     */
-    public function images(PostImagesRequest $request,
-                           StoreImagesUseCase $storeImagesUseCase,
-                           TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                           PostImagesUseCase $postImagesUseCase)
-    {
         $filePaths = $storeImagesUseCase($request);
         $accessToken = $takeAccessTokenUseCase();
         $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $postImagesUseCase($userId, $filePaths);
+        $response = $postUseCase($userId, $filePaths);
 
         return response($response, 200);
+    }
+
+    /**
+     * テキスト投稿
+     *
+     * @param PostTextRequest $request
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
+     * @param PostTextUseCase $postTextUseCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function text(PostTextRequest $request,
+                         TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                         TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                         PostTextUseCase $postTextUseCase)
+    {
+        $accessToken = $takeAccessTokenUseCase();
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
+        // TODO: バリデーション化したい
+        if (!$postTextUseCase($userId, $request)) return response('{}', 400);
+
+        return response('{}', 200);
     }
 
     /**

@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * 画像の送信
+ * テキスト投稿
  *
- * Class PostImagesRequest
+ * Class PostTextRequest
  * @package App\Http\Requests
  */
-class PostImagesRequest extends FormRequest
+class PostTextRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,10 +32,8 @@ class PostImagesRequest extends FormRequest
     public function rules()
     {
         return [
-            'image1' => ['bail', 'image', 'max:4096', ],
-            'image2' => ['bail', 'image', 'max:4096', ],
-            'image3' => ['bail', 'image', 'max:4096', ],
-            'image4' => ['bail', 'image', 'max:4096', ],
+            'post_id'   => ['bail', 'required', 'integer', ],
+            'text'      => ['bail', 'required', 'string', 'min:1', 'max:256', ],
         ];
     }
 

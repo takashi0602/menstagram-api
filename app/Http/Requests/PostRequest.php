@@ -6,6 +6,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * 画像投稿
+ *
+ * Class PostImagesRequest
+ * @package App\Http\Requests
+ */
 class PostRequest extends FormRequest
 {
     /**
@@ -26,8 +32,10 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id'   => ['bail', 'required', 'integer', ],
-            'text'      => ['bail', 'required', 'string', 'min:1', 'max:256', ],
+            'image1' => ['bail', 'image', 'max:4096', ],
+            'image2' => ['bail', 'image', 'max:4096', ],
+            'image3' => ['bail', 'image', 'max:4096', ],
+            'image4' => ['bail', 'image', 'max:4096', ],
         ];
     }
 
