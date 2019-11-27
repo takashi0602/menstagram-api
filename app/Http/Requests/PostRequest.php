@@ -27,7 +27,7 @@ class PostRequest extends FormRequest
     {
         return [
             'post_id'   => ['bail', 'required', 'integer', ],
-            'text'      => ['bail', 'required', 'string', 'min:1', 'max:256', ],
+            'text'      => ['bail', 'required', 'string', 'max:256', ],
         ];
     }
 
