@@ -1,0 +1,29 @@
+init:
+	docker-compose -f docker-compose-win.yaml build --no-cache
+	docker-compose -f docker-compose-win.yaml up -d
+	docker-compose -f docker-compose-win.yaml exec php composer install
+	docker-compose -f docker-compose-win.yaml exec php cp .env.dev .env
+	docker-compose -f docker-compose-win.yaml exec php php artisan key:generate
+	make db
+	docker-compose -f docker-compose-win.yaml exec php php artisan storage:link
+
+up:
+	docker-compose -f docker-compose-win.yaml up -d
+
+down:
+	docker-compose -f docker-compose-win.yaml down
+
+db:
+	docker-compose -f docker-compose-win.yaml exec php php artisan migrate:fresh --seed
+
+sh:
+	docker-compose -f docker-compose-win.yaml exec php bash
+
+dbg:
+	open http://localhost:8000/telescope
+
+qual:
+	php artisan insights
+
+test:
+	docker-compose -f docker-compose-win.yaml exec php vendor/bin/phpunit
