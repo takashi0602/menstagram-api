@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * フォロー
+ * いいね
  *
- * Class Follow
+ * Class Like
  * @package App\Models
  */
-class Follow extends Model
+class Like extends Model
 {
     //
 }
