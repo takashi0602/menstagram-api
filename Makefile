@@ -10,6 +10,7 @@ init:
 	docker-compose exec php php artisan storage:link
 
 up:
+	docker-sync start
 	docker-compose up -d
 
 down:
