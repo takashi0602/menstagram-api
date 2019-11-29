@@ -1,23 +1,23 @@
 init:
-	docker-compose -f docker-compose-gen.yaml build --no-cache
-	docker-compose -f docker-compose-gen.yaml up -d
-	docker-compose -f docker-compose-gen.yaml exec php composer install
-	docker-compose -f docker-compose-gen.yaml exec php cp .env.dev .env
-	docker-compose -f docker-compose-gen.yaml exec php php artisan key:generate
+	docker-compose -f docker-compose-gen.yml build --no-cache
+	docker-compose -f docker-compose-gen.yml up -d
+	docker-compose -f docker-compose-gen.yml exec php composer install
+	docker-compose -f docker-compose-gen.yml exec php cp .env.dev .env
+	docker-compose -f docker-compose-gen.yml exec php php artisan key:generate
 	make db
-	docker-compose -f docker-compose-gen.yaml exec php php artisan storage:link
+	docker-compose -f docker-compose-gen.yml exec php php artisan storage:link
 
 up:
-	docker-compose -f docker-compose-gen.yaml up -d
+	docker-compose -f docker-compose-gen.yml up -d
 
 down:
-	docker-compose -f docker-compose-gen.yaml down
+	docker-compose -f docker-compose-gen.yml down
 
 db:
-	docker-compose -f docker-compose-gen.yaml exec php php artisan migrate:fresh --seed
+	docker-compose -f docker-compose-gen.yml exec php php artisan migrate:fresh --seed
 
 sh:
-	docker-compose -f docker-compose-gen.yaml exec php bash
+	docker-compose -f docker-compose-gen.yml exec php bash
 
 dbg:
 	open http://localhost:8000/telescope
@@ -26,4 +26,4 @@ qual:
 	php artisan insights
 
 test:
-	docker-compose -f docker-compose-gen.yaml exec php vendor/bin/phpunit
+	docker-compose -f docker-compose-gen.yml exec php vendor/bin/phpunit
