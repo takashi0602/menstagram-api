@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostDetailRequest;
+use App\Http\Requests\PostLikeRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\PostTextRequest;
 use App\UseCases\FetchPostDetailUseCase;
+use App\UseCases\LikeUseCase;
 use App\UseCases\PostTextUseCase;
 use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
@@ -68,12 +70,22 @@ class PostController extends Controller
     }
 
     /**
-     * 投稿に対するいいね
+     * いいね
      *
+     * @param PostLikeRequest $request
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
+     * @param LikeUseCase $likeUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function like()
+    public function like(PostLikeRequest $request,
+                         TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                         TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                         LikeUseCase $likeUseCase)
     {
+        $accessToken = $takeAccessTokenUseCase();
+        $userId = $takeUserByAccessTokenUseCase($accessToken);
+        $likeUseCase($userId, $request->post_id);
         return response([], 200);
     }
 
