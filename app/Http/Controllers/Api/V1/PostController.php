@@ -84,9 +84,9 @@ class PostController extends Controller
                          LikeUseCase $likeUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken);
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
         $likeUseCase($userId, $request->post_id);
-        return response([], 200);
+        return response('{}', 200);
     }
 
     /**

@@ -30,7 +30,7 @@ class PostLikeRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id' => ['bail', 'required', 'integer', 'exists:posts', ],
+            'post_id' => ['bail', 'required', 'integer', 'exists:posts,id', ],
         ];
     }
 }

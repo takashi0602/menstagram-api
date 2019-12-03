@@ -4,6 +4,7 @@ namespace App\UseCases;
 
 use App\Models\Like;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 
 /**
  * いいね
@@ -19,11 +20,13 @@ class LikeUseCase
      */
     public function __invoke($userId, $postId)
     {
-        Post::where('id', $postId)->increment('liked');
+        DB::transaction(function () use ($userId, $postId) {
+            Post::where('id', $postId)->increment('liked');
 
-        Like::create([
-            'user_id'=> $userId,
-            'post_id'=> $postId,
-        ]);
+            Like::create([
+                'user_id'=> $userId,
+                'post_id'=> $postId,
+            ]);
+        }, 5);
     }
 }
