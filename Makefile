@@ -1,5 +1,7 @@
 init:
 	bundler install
+	rm -rf ./docker/mysql/data/*
+	docker-sync clean
 	docker-sync start
 	docker-compose build --no-cache
 	docker-compose up -d

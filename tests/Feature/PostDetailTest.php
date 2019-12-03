@@ -35,9 +35,13 @@ class PostDetailTest extends TestCase
      */
     public function successCase()
     {
-        $response = $this->json('GET', '/api/v1/post/detail', [
-            'post_id' => 1,
-        ]);
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/post/detail', [
+                            'post_id' => 1,
+                        ]);
 
         $response
             ->assertStatus(200)
@@ -66,9 +70,13 @@ class PostDetailTest extends TestCase
      */
     public function failCase($postId)
     {
-        $response = $this->json('GET', '/api/v1/post/detail', [
-            'post_id' => $postId,
-        ]);
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/post/detail', [
+                            'post_id' => $postId,
+                        ]);
 
         $response
             ->assertStatus(400)
