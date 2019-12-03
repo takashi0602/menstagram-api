@@ -17,9 +17,13 @@ class LikeUseCase
     /**
      * @param $userId
      * @param $postId
+     * @return bool
      */
     public function __invoke($userId, $postId)
     {
+        $like = Like::where('user_id', $userId)->where('post_id', $postId)->get();
+        if (!collect($like)->isEmpty()) return false;
+
         DB::transaction(function () use ($userId, $postId) {
             Post::where('id', $postId)->increment('liked');
 
@@ -28,5 +32,7 @@ class LikeUseCase
                 'post_id'=> $postId,
             ]);
         }, 5);
+
+        return true;
     }
 }

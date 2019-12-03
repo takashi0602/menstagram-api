@@ -87,7 +87,7 @@ class PostController extends Controller
     {
         $accessToken = $takeAccessTokenUseCase();
         $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $likeUseCase($userId, $request->post_id);
+        if (!$likeUseCase($userId, $request->post_id)) return response('{}', 400);
         return response('{}', 200);
     }
 
@@ -107,7 +107,7 @@ class PostController extends Controller
     {
         $accessToken = $takeAccessTokenUseCase();
         $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $unlikeUseCase($userId, $request->post_id);
+        if(!$unlikeUseCase($userId, $request->post_id)) return response('{}', 400);
         return response('{}', 200);
     }
 
