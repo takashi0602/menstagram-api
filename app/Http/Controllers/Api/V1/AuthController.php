@@ -10,7 +10,6 @@ use App\UseCases\LogoutUserUseCase;
 use App\UseCases\RegisterUserUseCase;
 use App\UseCases\ExistsUserUseCase;
 use App\UseCases\TakeAccessTokenUseCase;
-use App\UseCases\TakeUserByAccessTokenUseCase;
 
 /**
  * 認証系API
