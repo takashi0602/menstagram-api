@@ -7,6 +7,7 @@ use App\Http\Requests\PostDetailRequest;
 use App\Http\Requests\PostLikeRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\PostTextRequest;
+use App\Http\Requests\PostUnlikeRequest;
 use App\UseCases\FetchPostDetailUseCase;
 use App\UseCases\LikeUseCase;
 use App\UseCases\PostTextUseCase;
@@ -14,6 +15,7 @@ use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
 use App\UseCases\TakeAccessTokenUseCase;
 use App\UseCases\TakeUserByAccessTokenUseCase;
+use App\UseCases\UnlikeUseCase;
 
 /**
  * 投稿系API
@@ -90,13 +92,23 @@ class PostController extends Controller
     }
 
     /**
-     * 投稿に対するいいねを外す
+     * いいねを外す
      *
+     * @param PostUnlikeRequest $request
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
+     * @param UnlikeUseCase $unlikeUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function unlike()
+    public function unlike(PostUnlikeRequest $request,
+                           TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                           UnlikeUseCase $unlikeUseCase)
     {
-        return response([], 200);
+        $accessToken = $takeAccessTokenUseCase();
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
+        $unlikeUseCase($userId, $request->post_id);
+        return response('{}', 200);
     }
 
     /**
