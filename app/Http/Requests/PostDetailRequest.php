@@ -26,7 +26,7 @@ class PostDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id' => ['bail', 'required', 'integer', ],
+            'post_id' => ['bail', 'required', 'integer', 'exists:posts,id', ],
         ];
     }
 

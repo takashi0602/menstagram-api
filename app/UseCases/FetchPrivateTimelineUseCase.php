@@ -3,6 +3,7 @@
 namespace App\UseCases;
 
 use App\Models\Follow;
+use App\Models\Like;
 use App\Models\Post;
 
 /**
@@ -36,8 +37,14 @@ class FetchPrivateTimelineUseCase
                     ->limit(32)
                     ->get();
 
-        $posts = collect($posts)->map(function ($v, $k) {
-            return collect($v)->except(['user_id']);
+        $posts = collect($posts)->map(function ($v, $k) use ($userId) {
+            $like = Like::where('user_id', $userId)->where('post_id', $v->id)->first();
+            $isLiked = true;
+            if (collect($like)->isEmpty()) $isLiked = false;
+
+            return collect($v)
+                        ->put('is_liked', $isLiked)
+                        ->except(['user_id']);
         });
 
         if (is_null($postId) && is_null($type)) $posts = $posts->reverse()->values();

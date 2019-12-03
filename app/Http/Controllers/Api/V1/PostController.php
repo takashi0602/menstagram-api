@@ -115,12 +115,19 @@ class PostController extends Controller
      * 投稿の詳細を見る
      *
      * @param PostDetailRequest $request
-     * @param FetchPostDetailUseCase $useCase
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
+     * @param FetchPostDetailUseCase $fetchPostDetailUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function detail(PostDetailRequest $request, FetchPostDetailUseCase $useCase)
+    public function detail(PostDetailRequest $request,
+                           TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                           FetchPostDetailUseCase $fetchPostDetailUseCase)
     {
-        $response = $useCase($request->post_id);
+        $accessToken = $takeAccessTokenUseCase();
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
+        $response = $fetchPostDetailUseCase($userId, $request->post_id);
         // TODO: バリデーション化したい
         if (collect($response)->isEmpty()) return response('{}', 400);
         return response($response, 200);

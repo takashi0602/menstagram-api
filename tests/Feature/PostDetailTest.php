@@ -50,6 +50,7 @@ class PostDetailTest extends TestCase
                 'text',
                 'images' => [],
                 'liked',
+                'is_liked',
                 'created_at',
                 'updated_at',
                 'user' => [
