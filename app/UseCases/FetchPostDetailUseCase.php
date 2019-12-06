@@ -2,6 +2,7 @@
 
 namespace App\UseCases;
 
+use App\Models\Like;
 use App\Models\Post;
 
 /**
@@ -13,17 +14,23 @@ use App\Models\Post;
 class FetchPostDetailUseCase
 {
     /**
+     * @param $userId
      * @param $postId
      * @return \Illuminate\Support\Collection
      */
-    public function __invoke($postId)
+    public function __invoke($userId, $postId)
     {
         $response = Post::where('id', $postId)
             ->where('images', '<>', null)
             ->with('user:id,user_id,screen_name,avatar')
             ->first();
 
-        $response = collect($response)->except(['user_id']);
+        $like = Like::where('user_id', $userId)->where('post_id', $postId)->first();
+        $isLiked = true;
+        if (collect($like)->isEmpty()) $isLiked = false;
+        $response = collect($response)->put('is_liked', $isLiked);
+
+        $response = $response->except(['user_id']);
 
         return $response;
     }

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateUsersSeeder::class);
         $this->call(CreatePostsSeeder::class);
         $this->call(CreateFollowsSeeder::class);
+        $this->call(CreateLikesSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         Model::reguard();

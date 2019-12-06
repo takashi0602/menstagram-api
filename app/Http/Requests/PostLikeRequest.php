@@ -6,7 +6,13 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PostDetailRequest extends FormRequest
+/**
+ * いいね
+ *
+ * Class PostLikeRequest
+ * @package App\Http\Requests
+ */
+class PostLikeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +39,7 @@ class PostDetailRequest extends FormRequest
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         $response = response('{}', 400);
         throw new HttpResponseException($response);

@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_id', 'screen_name', 'email', 'password', 'access_token'
+        'user_id', 'screen_name', 'email', 'password', 'access_token',
     ];
 
     /**
@@ -41,8 +41,4 @@ class User extends Authenticatable
     protected $dates = [
         'deleted_at',
     ];
-
-    public function Posts(){
-        return $this->hasMany('App\Model\Post');
-    }
 }
