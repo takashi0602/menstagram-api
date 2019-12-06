@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * いいね
@@ -32,5 +34,14 @@ class PostLikeRequest extends FormRequest
         return [
             'post_id' => ['bail', 'required', 'integer', 'exists:posts,id', ],
         ];
+    }
+
+    /**
+     * @param Validator $validator
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $response = response('{}', 400);
+        throw new HttpResponseException($response);
     }
 }
