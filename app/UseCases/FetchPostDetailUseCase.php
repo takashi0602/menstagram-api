@@ -21,9 +21,12 @@ class FetchPostDetailUseCase
     public function __invoke($userId, $postId)
     {
         $response = Post::where('id', $postId)
-            ->where('images', '<>', null)
-            ->with('user:id,user_id,screen_name,avatar')
-            ->first();
+                            ->where('images', '<>', null)
+                            ->with([
+                                'user:id,user_id,screen_name,avatar',
+                                'limitedLikes.user',
+                            ])
+                            ->first();
 
         $like = Like::where('user_id', $userId)->where('post_id', $postId)->first();
         $isLiked = true;
@@ -31,6 +34,16 @@ class FetchPostDetailUseCase
         $response = collect($response)->put('is_liked', $isLiked);
 
         $response = $response->except(['user_id']);
+
+        $response = $response->put('likes', $response['limited_likes']);
+        $response = $response->except(['limited_likes']);
+
+        $response['likes'] = collect($response['likes'])->map(function ($v, $k) {
+            return [
+                'user_id' => $v['user']['user_id'],
+                'avatar'  => $v['user']['avatar'],
+            ];
+        });
 
         return $response;
     }

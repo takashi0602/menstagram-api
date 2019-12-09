@@ -29,6 +29,22 @@ class Post extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function limitedLikes()
+    {
+        return $this->hasMany(Like::class)->limit(5);
+    }
+
+    /**
      * @param $value
      * @return mixed
      */
