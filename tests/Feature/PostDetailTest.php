@@ -59,6 +59,12 @@ class PostDetailTest extends TestCase
                     'screen_name',
                     'avatar',
                 ],
+                'likes' => [
+                    '*' => [
+                        'user_id',
+                        'avatar',
+                    ]
+                ],
             ]);
     }
 
