@@ -55,10 +55,10 @@ class AuthLoginTest extends TestCase
     protected function failBaseCase($user)
     {
         $response = $this->post('/api/v1/auth/login', $user);
+
         $response
             ->assertStatus(400)
             ->assertJsonStructure([]);
-        $this->assertDatabaseMissing('users', $user);
     }
 
     /**
