@@ -31,7 +31,7 @@ class FetchUserLikesUseCase
                     ->whereHas('likes', function ($query) use ($userId) {
                         $query->where('user_id', $userId);
                     })
-                    ->limit(32)
+                    ->limit(10)
                     ->get();
 
         $posts = collect($posts)->map(function ($v, $k) use ($userId) {
