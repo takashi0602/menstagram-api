@@ -7,9 +7,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * 画像投稿
+ * 投稿
  *
- * Class PostImagesRequest
+ * Class PostRequest
  * @package App\Http\Requests
  */
 class PostRequest extends FormRequest

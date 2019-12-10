@@ -41,7 +41,7 @@ class Post extends Model
      */
     public function limitedLikes()
     {
-        return $this->hasMany(Like::class)->limit(5);
+        return $this->hasMany(Like::class)->orderBy('id', 'desc')->limit(5);
     }
 
     /**

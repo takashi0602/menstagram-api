@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostDetailRequest;
 use App\Http\Requests\PostLikeRequest;
+use App\Http\Requests\PostLikerRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\PostTextRequest;
 use App\Http\Requests\PostUnlikeRequest;
 use App\UseCases\FetchPostDetailUseCase;
+use App\UseCases\FetchPostLikerUseCase;
 use App\UseCases\LikeUseCase;
 use App\UseCases\PostTextUseCase;
 use App\UseCases\PostUseCase;
@@ -26,7 +28,7 @@ use App\UseCases\UnlikeUseCase;
 class PostController extends Controller
 {
     /**
-     * 画像投稿
+     * 投稿
      *
      * @param PostRequest $request
      * @param StoreImagesUseCase $storeImagesUseCase
@@ -134,22 +136,22 @@ class PostController extends Controller
     }
 
     /**
-     * 投稿にいいねしたユーザー一覧を見る
+     * いいねしたユーザー一覧
      *
+     * @param PostLikerRequest $request
+     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
+     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
+     * @param FetchPostLikerUseCase $fetchPostLikerUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function liker()
+    public function liker(PostLikerRequest $request,
+                          TakeAccessTokenUseCase $takeAccessTokenUseCase,
+                          TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
+                          FetchPostLikerUseCase $fetchPostLikerUseCase)
     {
-        $response =  [
-            [
-                'id' =>  1,
-                'user' => [
-                    'user_id' => 'test_mock',
-                    'screen_name' => 'ダミーデータさん',
-                    'avater' => 'https://placehold.jp/150x150.png?text=%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3',
-                ]
-            ]
-        ];
+        $accessToken = $takeAccessTokenUseCase();
+        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
+        $response = $fetchPostLikerUseCase($userId, $request->post_id);
 
         return response($response, 200);
     }
