@@ -10,10 +10,20 @@ use Illuminate\Support\Str;
  * ユーザーのダミーデータの生成
  */
 $factory->define(User::class, function (Faker $faker) {
+
+    $userId = Str::random(10);
+    $email = $faker->email;
+    $user = User::where('user_id', $userId)->where('email', $email)->first();
+    while (collect($user)->isNotEmpty()) {
+        $userId = Str::random(10);
+        $email = $faker->email;
+        $user = User::where('user_id', $userId)->where('email', $email)->first();
+    }
+
     return [
-        'user_id'       => Str::random(10),
+        'user_id'       => $userId,
         'screen_name'   => $faker->firstName,
-        'email'         => $faker->email,
+        'email'         => $email,
         'avatar'        => '',  // TODO: 追加する
         'biography'     => Arr::random([ null, $faker->text(128), ]),
         'password'      => bcrypt('menstagram'),
