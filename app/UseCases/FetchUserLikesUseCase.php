@@ -2,17 +2,16 @@
 
 namespace App\UseCases;
 
-use App\Models\Follow;
 use App\Models\Like;
 use App\Models\Post;
 
 /**
- * プライベートタイムライン
+ * いいねした投稿一覧
  *
- * Class FetchPrivateTimelineUseCase
+ * Class FetchUserLikesUseCase
  * @package App\UseCases
  */
-class FetchPrivateTimelineUseCase
+class FetchUserLikesUseCase
 {
     /**
      * @param $userId
@@ -22,10 +21,6 @@ class FetchPrivateTimelineUseCase
      */
     public function __invoke($userId, $postId = null, $type = null)
     {
-        $followIds = collect(Follow::where('user_id', $userId)->get())->map(function ($v, $k) {
-            return $v->id;
-        });
-
         $query = Post::with(['user:id,screen_name,avatar']);
 
         if (is_null($postId) && is_null($type))                             $query->latest('id');
@@ -33,7 +28,9 @@ class FetchPrivateTimelineUseCase
         else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId);
 
         $posts = $query
-                    ->whereIn('user_id', $followIds)
+                    ->whereHas('likes', function ($query) use ($userId) {
+                        $query->where('user_id', $userId);
+                    })
                     ->limit(32)
                     ->get();
 
