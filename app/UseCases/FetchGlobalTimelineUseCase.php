@@ -28,7 +28,7 @@ class FetchGlobalTimelineUseCase
         else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId);
 
         $posts = $query
-                    ->limit(32)
+                    ->limit(10)
                     ->get();
 
         $posts = collect($posts)->map(function ($v, $k) use ($userId) {

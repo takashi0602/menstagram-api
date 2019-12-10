@@ -34,7 +34,7 @@ class FetchPrivateTimelineUseCase
 
         $posts = $query
                     ->whereIn('user_id', $followIds)
-                    ->limit(32)
+                    ->limit(10)
                     ->get();
 
         $posts = collect($posts)->map(function ($v, $k) use ($userId) {
