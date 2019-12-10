@@ -14,9 +14,10 @@ use App\Models\Post;
 class FetchGlobalTimelineUseCase
 {
     /**
+     * @param $userId
      * @param null $postId
      * @param null $type
-     * @return \Illuminate\Support\Collection
+     * @return Post[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
     public function __invoke($userId, $postId = null, $type = null)
     {

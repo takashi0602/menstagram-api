@@ -1,5 +1,3 @@
 <?php
 
-Route::get('/user/profile', function () {
-    return 'hello';
-});
+Route::get('/user/likes', 'UserController@likes');

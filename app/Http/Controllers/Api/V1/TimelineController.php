@@ -24,17 +24,17 @@ class TimelineController extends Controller
      * @param TimelineGlobalRequest $request
      * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
      * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param FetchGlobalTimelineUseCase $useCase
+     * @param FetchGlobalTimelineUseCase $fetchGlobalTimelineUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function _global(TimelineGlobalRequest $request,
                             TakeAccessTokenUseCase $takeAccessTokenUseCase,
                             TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                            FetchGlobalTimelineUseCase $useCase)
+                            FetchGlobalTimelineUseCase $fetchGlobalTimelineUseCase)
     {
         $accessToken = $takeAccessTokenUseCase();
         $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $useCase($userId, $request->post_id, $request->type);
+        $response = $fetchGlobalTimelineUseCase($userId, $request->post_id, $request->type);
         return response($response, 200);
     }
 
