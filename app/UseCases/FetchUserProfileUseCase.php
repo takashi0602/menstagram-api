@@ -14,24 +14,25 @@ use App\Models\User;
 class FetchUserProfileUseCase
 {
     /**
-     * @param $userId
+     * @param $fetchUserId
      * @return \Illuminate\Support\Collection
      */
-    public function __invoke($userId)
+    public function __invoke($fetchUserId)
     {
-        $user = User::where('id', $userId)->first();
+        $fetchUser = User::where('id', $fetchUserId)->first();
+        $loginUserId = user()->id;
 
-        $followIds = collect(Follow::where('user_id', user()->id)->get())->map(function ($v, $k) {
+        $followIds = collect(Follow::where('user_id', $loginUserId)->get())->map(function ($v, $k) {
             return $v->target_user_id;
-        })->push(user()->id);
+        })->push($loginUserId);
 
-        $user = collect($user)->except([
+        $user = collect($fetchUser)->except([
             'deleted_at',
             'created_at',
             'updated_at',
         ]);
 
-        $isFollowed = $followIds->contains($userId) ? true : false;
+        $isFollowed = $followIds->contains($fetchUserId) ? true : false;
         $user = $user->put('is_followed', $isFollowed);
 
         return $user;
