@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\DataProviders;
 
+use Illuminate\Http\UploadedFile;
+
 /**
- * 投稿
+ * 画像の送信
  *
  * Trait PostDataProvider
  * @package Tests\Feature\DataProviders
@@ -11,31 +13,16 @@ namespace Tests\Feature\DataProviders;
 trait PostDataProvider
 {
     /**
-     * 異常系(投稿ID)
+     * 異常系(画像)のテストデータの定義
      *
      * @return array
      */
-    public function postIdProvider()
+    public function imagesProvider()
     {
         return [
-            '投稿IDが存在しないパターン'     => [null],
-            '投稿IDが数値ではないパターン'   => ['test'],
-            '投稿IDが有効ではないパターン'   => [999],
-        ];
-    }
-
-    /**
-     * 異常系(テキスト)
-     *
-     * @return array
-     */
-    public function textProvider()
-    {
-        return [
-            'テキストが存在しないパターン'=> [null],
-            'テキストが文字列ではないパターン'=> [0],
-            'テキストが空白のパターン'=> [''],
-            'テキストが256文字を超えるパターン'=> ['testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest'],
+            '画像が含まれていないパターン'           => [null],
+            '画像ではないパターン'                  => ['takashi'],
+            '画像サイズが上限を超えているパターン'    => [UploadedFile::fake()->image('test.jpg', 100, 100)->size(5000)],
         ];
     }
 }

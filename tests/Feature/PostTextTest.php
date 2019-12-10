@@ -4,18 +4,18 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use Illuminate\Http\UploadedFile;
-use Tests\Feature\DataProviders\PostDataProvider;
+use Tests\Feature\DataProviders\PostTextDataProvider;
 use Tests\TestCase;
 
 /**
  * テキスト投稿
  *
- * Class PostTest
+ * Class PostTextTest
  * @package Tests\Feature
  */
 class PostTextTest extends TestCase
 {
-    use PostDataProvider;
+    use PostTextDataProvider;
 
     protected $posts;
 
