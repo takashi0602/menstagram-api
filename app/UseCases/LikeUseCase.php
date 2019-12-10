@@ -15,12 +15,13 @@ use Illuminate\Support\Facades\DB;
 class LikeUseCase
 {
     /**
-     * @param $userId
      * @param $postId
      * @return bool
      */
-    public function __invoke($userId, $postId)
+    public function __invoke($postId)
     {
+        $userId = user()->id;
+
         $like = Like::where('user_id', $userId)->where('post_id', $postId)->get();
         if (collect($like)->isNotEmpty()) return false;
 

@@ -7,8 +7,6 @@ use App\Http\Requests\UserLikesRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\UseCases\FetchUserLikesUseCase;
 use App\UseCases\FetchUserProfileUseCase;
-use App\UseCases\TakeAccessTokenUseCase;
-use App\UseCases\TakeUserByAccessTokenUseCase;
 
 /**
  * ユーザー系API
@@ -36,19 +34,12 @@ class UserController extends Controller
      * いいねした投稿一覧
      *
      * @param UserLikesRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param FetchUserLikesUseCase $fetchUserLikesUseCase
+     * @param FetchUserLikesUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function likes(UserLikesRequest $request,
-                          TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                          TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                          FetchUserLikesUseCase $fetchUserLikesUseCase)
+    public function likes(UserLikesRequest $request, FetchUserLikesUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $fetchUserLikesUseCase($userId, $request->post_id, $request->type);
+        $response = $useCase($request->post_id, $request->type);
         return response($response, 200);
     }
 }

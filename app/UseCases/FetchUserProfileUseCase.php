@@ -15,7 +15,7 @@ class FetchUserProfileUseCase
 {
     /**
      * @param $userId
-     * @return mixed
+     * @return \Illuminate\Support\Collection
      */
     public function __invoke($userId)
     {

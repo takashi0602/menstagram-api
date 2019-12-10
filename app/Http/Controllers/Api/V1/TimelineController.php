@@ -7,8 +7,6 @@ use App\Http\Requests\TimelineGlobalRequest;
 use App\Http\Requests\TimelinePrivateRequest;
 use App\UseCases\FetchGlobalTimelineUseCase;
 use App\UseCases\FetchPrivateTimelineUseCase;
-use App\UseCases\TakeAccessTokenUseCase;
-use App\UseCases\TakeUserByAccessTokenUseCase;
 
 /**
  * タイムラインAPI
@@ -22,19 +20,12 @@ class TimelineController extends Controller
      * グローバルタイムライン
      *
      * @param TimelineGlobalRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param FetchGlobalTimelineUseCase $fetchGlobalTimelineUseCase
+     * @param FetchGlobalTimelineUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function _global(TimelineGlobalRequest $request,
-                            TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                            TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                            FetchGlobalTimelineUseCase $fetchGlobalTimelineUseCase)
+    public function _global(TimelineGlobalRequest $request, FetchGlobalTimelineUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $fetchGlobalTimelineUseCase($userId, $request->post_id, $request->type);
+        $response = $useCase($request->post_id, $request->type);
         return response($response, 200);
     }
 
@@ -42,19 +33,12 @@ class TimelineController extends Controller
      * プライベートタイムライン
      *
      * @param TimelinePrivateRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param FetchPrivateTimelineUseCase $fetchPrivateTimelineUseCase
+     * @param FetchPrivateTimelineUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function _private(TimelinePrivateRequest $request,
-                             TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                             TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                             FetchPrivateTimelineUseCase $fetchPrivateTimelineUseCase)
+    public function _private(TimelinePrivateRequest $request, FetchPrivateTimelineUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $fetchPrivateTimelineUseCase($userId, $request->post_id);
+        $response = $useCase($request->post_id, $request->type);
         return response($response, 200);
     }
 }

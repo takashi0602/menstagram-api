@@ -15,13 +15,14 @@ use App\Models\Post;
 class FetchPrivateTimelineUseCase
 {
     /**
-     * @param $userId
      * @param null $postId
      * @param null $type
      * @return Post[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
-    public function __invoke($userId, $postId = null, $type = null)
+    public function __invoke($postId = null, $type = null)
     {
+        $userId = user()->id;
+
         $followIds = collect(Follow::where('user_id', $userId)->get())->map(function ($v, $k) {
             return $v->target_user_id;
         })->push($userId);

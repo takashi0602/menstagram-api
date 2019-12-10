@@ -13,14 +13,13 @@ use App\Models\Post;
 class PostUseCase
 {
     /**
-     * @param $userId
      * @param $filePaths
      * @return array
      */
-    public function __invoke($userId, $filePaths)
+    public function __invoke($filePaths)
     {
         $postId = Post::create([
-            'user_id'   => $userId,
+            'user_id'   => user()->id,
             'images'    => $filePaths,
         ])->id;
 

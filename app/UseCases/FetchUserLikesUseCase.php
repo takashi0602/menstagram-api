@@ -14,13 +14,14 @@ use App\Models\Post;
 class FetchUserLikesUseCase
 {
     /**
-     * @param $userId
      * @param null $postId
      * @param null $type
      * @return Post[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
-    public function __invoke($userId, $postId = null, $type = null)
+    public function __invoke($postId = null, $type = null)
     {
+        $userId = user()->id;
+
         $query = Post::with(['user:id,screen_name,avatar']);
 
         if (is_null($postId) && is_null($type))                             $query->latest('id');
