@@ -35,10 +35,10 @@ class FetchPostDetailUseCase
 
         $response = $response->except(['user_id']);
 
-        $response = $response->put('likes', $response['limited_likes']);
+        $response = $response->put('liker', $response['limited_likes']);
         $response = $response->except(['limited_likes']);
 
-        $response['likes'] = collect($response['likes'])->map(function ($v, $k) {
+        $response['liker'] = collect($response['liker'])->map(function ($v, $k) {
             return [
                 'user_id' => $v['user']['user_id'],
                 'avatar'  => $v['user']['avatar'],
