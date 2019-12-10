@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * 投稿詳細
+ * いいねしたユーザー一覧
  *
- * Class PostDetailRequest
+ * Class PostLikerRequest
  * @package App\Http\Requests
  */
-class PostDetailRequest extends FormRequest
+class PostLikerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
