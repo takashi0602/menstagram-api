@@ -23,8 +23,8 @@ class FetchPrivateTimelineUseCase
     public function __invoke($userId, $postId = null, $type = null)
     {
         $followIds = collect(Follow::where('user_id', $userId)->get())->map(function ($v, $k) {
-            return $v->id;
-        });
+            return $v->target_user_id;
+        })->push($userId);
 
         $query = Post::with(['user:id,screen_name,avatar']);
 
