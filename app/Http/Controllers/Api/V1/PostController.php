@@ -15,8 +15,6 @@ use App\UseCases\LikeUseCase;
 use App\UseCases\PostTextUseCase;
 use App\UseCases\PostUseCase;
 use App\UseCases\StoreImagesUseCase;
-use App\UseCases\TakeAccessTokenUseCase;
-use App\UseCases\TakeUserByAccessTokenUseCase;
 use App\UseCases\UnlikeUseCase;
 
 /**
@@ -32,22 +30,13 @@ class PostController extends Controller
      *
      * @param PostRequest $request
      * @param StoreImagesUseCase $storeImagesUseCase
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
      * @param PostUseCase $postUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function post(PostRequest $request,
-                         StoreImagesUseCase $storeImagesUseCase,
-                         TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                         TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                         PostUseCase $postUseCase)
+    public function post(PostRequest $request, StoreImagesUseCase $storeImagesUseCase, PostUseCase $postUseCase)
     {
         $filePaths = $storeImagesUseCase($request);
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $postUseCase($userId, $filePaths);
-
+        $response = $postUseCase($filePaths);
         return response($response, 200);
     }
 
@@ -55,21 +44,13 @@ class PostController extends Controller
      * テキスト投稿
      *
      * @param PostTextRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param PostTextUseCase $postTextUseCase
+     * @param PostTextUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function text(PostTextRequest $request,
-                         TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                         TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                         PostTextUseCase $postTextUseCase)
+    public function text(PostTextRequest $request, PostTextUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
         // TODO: バリデーション化したい
-        if (!$postTextUseCase($userId, $request)) return response('{}', 400);
-
+        if (!$useCase($request)) return response('{}', 400);
         return response('{}', 200);
     }
 
@@ -77,19 +58,12 @@ class PostController extends Controller
      * いいね
      *
      * @param PostLikeRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param LikeUseCase $likeUseCase
+     * @param LikeUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function like(PostLikeRequest $request,
-                         TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                         TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                         LikeUseCase $likeUseCase)
+    public function like(PostLikeRequest $request, LikeUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        if (!$likeUseCase($userId, $request->post_id)) return response('{}', 400);
+        if (!$useCase($request->post_id)) return response('{}', 400);
         return response('{}', 200);
     }
 
@@ -97,39 +71,25 @@ class PostController extends Controller
      * いいねを外す
      *
      * @param PostUnlikeRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param UnlikeUseCase $unlikeUseCase
+     * @param UnlikeUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function unlike(PostUnlikeRequest $request,
-                           TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                           UnlikeUseCase $unlikeUseCase)
+    public function unlike(PostUnlikeRequest $request, UnlikeUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        if(!$unlikeUseCase($userId, $request->post_id)) return response('{}', 400);
+        if(!$useCase($request->post_id)) return response('{}', 400);
         return response('{}', 200);
     }
 
     /**
-     * 投稿の詳細を見る
+     * 投稿詳細
      *
      * @param PostDetailRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param FetchPostDetailUseCase $fetchPostDetailUseCase
+     * @param FetchPostDetailUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function detail(PostDetailRequest $request,
-                           TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                           TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                           FetchPostDetailUseCase $fetchPostDetailUseCase)
+    public function detail(PostDetailRequest $request, FetchPostDetailUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $fetchPostDetailUseCase($userId, $request->post_id);
+        $response = $useCase($request->post_id);
         // TODO: バリデーション化したい
         if (collect($response)->isEmpty()) return response('{}', 400);
         return response($response, 200);
@@ -139,20 +99,12 @@ class PostController extends Controller
      * いいねしたユーザー一覧
      *
      * @param PostLikerRequest $request
-     * @param TakeAccessTokenUseCase $takeAccessTokenUseCase
-     * @param TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase
-     * @param FetchPostLikerUseCase $fetchPostLikerUseCase
+     * @param FetchPostLikerUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function liker(PostLikerRequest $request,
-                          TakeAccessTokenUseCase $takeAccessTokenUseCase,
-                          TakeUserByAccessTokenUseCase $takeUserByAccessTokenUseCase,
-                          FetchPostLikerUseCase $fetchPostLikerUseCase)
+    public function liker(PostLikerRequest $request, FetchPostLikerUseCase $useCase)
     {
-        $accessToken = $takeAccessTokenUseCase();
-        $userId = $takeUserByAccessTokenUseCase($accessToken)->id;
-        $response = $fetchPostLikerUseCase($userId, $request->post_id);
-
+        $response = $useCase($request->post_id);
         return response($response, 200);
     }
 }

@@ -13,12 +13,13 @@ use App\Models\Like;
 class FetchPostLikerUseCase
 {
     /**
-     * @param $userId
      * @param $postId
      * @return \Illuminate\Support\Collection
      */
-    public function __invoke($userId, $postId)
+    public function __invoke($postId)
     {
+        $userId = user()->id;
+
         $response = Like::where('post_id', $postId)
                             ->where('user_id', $userId)
                             ->with(['user'])
