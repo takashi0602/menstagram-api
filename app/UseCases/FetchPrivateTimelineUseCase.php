@@ -27,11 +27,11 @@ class FetchPrivateTimelineUseCase
             return $v->target_user_id;
         })->push($userId);
 
-        $query = Post::with(['user:id,screen_name,avatar']);
+        $query = Post::with(['user:id,user_id,screen_name,avatar']);
 
         if (is_null($postId) && is_null($type))                             $query->latest('id');
         else if (!is_null($postId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $postId);
-        else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId);
+        else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId)->orderBy('id', 'desc');
 
         $posts = $query
                     ->whereIn('user_id', $followIds)
@@ -44,11 +44,15 @@ class FetchPrivateTimelineUseCase
             if (collect($like)->isEmpty()) $isLiked = false;
 
             return collect($v)
+                        ->map(function ($v, $k) {
+                            if ($k === 'user') return collect($v)->except(['id']);
+                            return $v;
+                        })
                         ->put('is_liked', $isLiked)
                         ->except(['user_id']);
         });
 
-        if (is_null($postId) && is_null($type)) $posts = $posts->reverse()->values();
+        if ($type === 'old') $posts = $posts->reverse()->values();
 
         return $posts;
     }
