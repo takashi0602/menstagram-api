@@ -19,9 +19,9 @@ class UpdateUserUseCase
     {
         $userId = user()->id;
 
-        $user = User::where('id', $userId)->first();
-        $user->screen_name = $request->screen_name;
-        $user->biography = $request->biography;
-        $user->save();
+        User::where('id', $userId)->update([
+            'screen_name' => $request->screen_name,
+            'biography'   => $request->biography,
+        ]);
     }
 }

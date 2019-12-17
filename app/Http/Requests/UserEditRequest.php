@@ -38,7 +38,7 @@ class UserEditRequest extends FormRequest
     }
 
     /**
-     * @param Validator $validators
+     * @param Validator $validator
      */
     public function failedValidation(Validator $validator)
     {

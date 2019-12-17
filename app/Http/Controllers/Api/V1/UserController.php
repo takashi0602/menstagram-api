@@ -41,8 +41,8 @@ class UserController extends Controller
      */
     public function edit(UserEditRequest $request, UpdateUserUseCase $useCase)
     {
-        $response = $useCase($request);
-        return response($response, 200);
+        $useCase($request);
+        return response('{}', 200);
     }
 
     /**
