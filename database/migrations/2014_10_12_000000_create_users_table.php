@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 256)->unique();
             $table->string('password')->nullable();
             $table->string('avatar')->default(''); // TODO: デフォルトのパスを書く
-            $table->string('biography', 128)->nullable();
+            $table->string('biography', 128)->default('');
             $table->string('access_token')->nullable();
             $table->unsignedBigInteger('posted')->default(0);
             $table->unsignedBigInteger('following')->default(0);
