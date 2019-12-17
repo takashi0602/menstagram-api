@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserEditRequest;
 use App\Http\Requests\UserLikesRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\UseCases\FetchUserLikesUseCase;
 use App\UseCases\FetchUserProfileUseCase;
+use App\UseCases\UpdateUserUseCase;
 
 /**
  * ユーザー系API
@@ -26,8 +28,21 @@ class UserController extends Controller
     public function profile(UserProfileRequest $request, FetchUserProfileUseCase $useCase)
     {
         $userId = $request->user_id ? user($request->user_id)->id : user()->id;
-        $user = $useCase($userId);
-        return response($user, 200);
+        $response = $useCase($userId);
+        return response($response, 200);
+    }
+
+    /**
+     * ユーザーの編集
+     *
+     * @param UserEditRequest $request
+     * @param UpdateUserUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function edit(UserEditRequest $request, UpdateUserUseCase $useCase)
+    {
+        $response = $useCase($request);
+        return response($response, 200);
     }
 
     /**
