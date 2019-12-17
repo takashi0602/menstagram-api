@@ -52,7 +52,7 @@ class FetchPrivateTimelineUseCase
                         ->except(['user_id']);
         });
 
-        if ($type === 'old') $posts = $posts->reverse()->values();
+        if ($type !== 'new') $posts = $posts->reverse()->values();
 
         return $posts;
     }
