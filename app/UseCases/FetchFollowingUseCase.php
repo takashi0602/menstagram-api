@@ -34,6 +34,8 @@ class FetchFollowingUseCase
             return collect($v->followingUser)->only(['user_id', 'screen_name', 'avatar']);
         });
 
+        if ($type !== 'new') $following = $following->reverse()->values();
+
         return $following;
     }
 }
