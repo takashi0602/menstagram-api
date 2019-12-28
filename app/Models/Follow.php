@@ -17,8 +17,8 @@ class Follow extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function followingUser()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'target_user_id');
     }
 }

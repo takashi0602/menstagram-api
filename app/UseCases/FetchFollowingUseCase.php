@@ -22,7 +22,7 @@ class FetchFollowingUseCase
     {
         $userId = $userId ? user($userId)->id : user()->id;
 
-        $query = Follow::with(['user'])->where('user_id', $userId);
+        $query = Follow::with(['followingUser'])->where('user_id', $userId);
 
         if (is_null($followId) && is_null($type))                             $query->latest('id');
         else if (!is_null($followId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $followId);
@@ -31,7 +31,7 @@ class FetchFollowingUseCase
         $following = $query->limit(100)->get();
 
         $following = collect($following)->map(function ($v, $k) {
-            return collect($v->user)->only(['user_id', 'screen_name', 'avatar']);
+            return collect($v->followingUser)->only(['user_id', 'screen_name', 'avatar']);
         });
 
         return $following;
