@@ -16,7 +16,7 @@ class FetchFollowingUseCase
      * @param null $userId
      * @param null $followId
      * @param null $type
-     * @return Follow[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return Follow[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
     public function __invoke($userId = null, $followId = null, $type = null)
     {
