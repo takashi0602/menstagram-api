@@ -71,7 +71,7 @@ class UserController extends Controller
      */
     public function follow(UserFollowRequest $request, FollowUseCase $useCase)
     {
-        if (!$useCase($request->user_id)) return response('{}', 400);
+        if (!$useCase($request->target_user_id)) return response('{}', 400);
         return response('{}', 200);
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
      */
     public function unfollow(UserUnfollowRequest $request, UnfollowUseCase $useCase)
     {
-        if (!$useCase($request->user_id)) return response('{}', 400);
+        if (!$useCase($request->target_user_id)) return response('{}', 400);
         return response('{}', 200);
     }
 }

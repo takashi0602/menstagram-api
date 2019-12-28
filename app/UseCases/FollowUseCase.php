@@ -22,6 +22,7 @@ class FollowUseCase
         $targetId = user($targetUserId)->id;
 
         if (Follow::where('user_id', $id)->where('target_user_id', $targetId)->exists()) return false;
+        if ($id === $targetId) return false;
 
         Follow::create([
             'user_id'        => $id,
