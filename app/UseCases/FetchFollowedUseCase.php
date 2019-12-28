@@ -10,8 +10,8 @@ namespace App\UseCases;
  */
 class FetchFollowedUseCase
 {
-    public function __invoke()
+    public function __invoke($userId = null, $followId = null, $type = null)
     {
-        //
+        $userId = $userId ? $userId : user()->user_id;
     }
 }

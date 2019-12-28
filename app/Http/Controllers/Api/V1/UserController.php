@@ -10,6 +10,7 @@ use App\Http\Requests\UserFollowRequest;
 use App\Http\Requests\UserLikesRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\UserUnfollowRequest;
+use App\UseCases\FetchFollowedUseCase;
 use App\UseCases\FetchFollowingUseCase;
 use App\UseCases\FetchUserLikesUseCase;
 use App\UseCases\FetchUserProfileUseCase;
@@ -100,7 +101,7 @@ class UserController extends Controller
      */
     public function following(UserFollowingRequest $request, FetchFollowingUseCase $useCase)
     {
-        $response = $useCase($request);
+        $response = $useCase($request->user_id, $request->follow_id, $request->type);
         return response($response, 200);
     }
 
@@ -108,12 +109,12 @@ class UserController extends Controller
      * フォロワー一覧
      *
      * @param UserFollowedRequest $request
-     * @param FetchFollowingUseCase $useCase
+     * @param FetchFollowedUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function followed(UserFollowedRequest $request, FetchFollowingUseCase $useCase)
+    public function followed(UserFollowedRequest $request, FetchFollowedUseCase $useCase)
     {
-        $response = $useCase($request);
+        $response = $useCase($request->user_id, $request->follow_id, $request->type);
         return response($response, 200);
     }
 }
