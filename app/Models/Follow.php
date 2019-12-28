@@ -21,4 +21,9 @@ class Follow extends Model
     {
         return $this->belongsTo(User::class, 'target_user_id');
     }
+
+    public function followedUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
