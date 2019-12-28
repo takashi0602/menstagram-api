@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserFollowRequest;
 use App\Http\Requests\UserLikesRequest;
 use App\Http\Requests\UserProfileRequest;
+use App\Http\Requests\UserUnfollowRequest;
 use App\UseCases\FetchUserLikesUseCase;
 use App\UseCases\FetchUserProfileUseCase;
+use App\UseCases\FollowUseCase;
+use App\UseCases\UnfollowUseCase;
 use App\UseCases\UpdateUserUseCase;
 
 /**
@@ -56,5 +60,31 @@ class UserController extends Controller
     {
         $response = $useCase($request->post_id, $request->type);
         return response($response, 200);
+    }
+
+    /**
+     * フォロー
+     *
+     * @param UserFollowRequest $request
+     * @param FollowUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function follow(UserFollowRequest $request, FollowUseCase $useCase)
+    {
+        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        return response('{}', 200);
+    }
+
+    /**
+     * アンフォロー
+     *
+     * @param UserUnfollowRequest $request
+     * @param UnfollowUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function unfollow(UserUnfollowRequest $request, UnfollowUseCase $useCase)
+    {
+        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        return response('{}', 200);
     }
 }
