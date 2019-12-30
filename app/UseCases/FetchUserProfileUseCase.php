@@ -33,7 +33,9 @@ class FetchUserProfileUseCase
         ]);
 
         $isFollowed = $followIds->contains($fetchUserId) ? true : false;
-        $user = $user->put('is_followed', $isFollowed);
+        $isMe = $user['id'] === $loginUserId ? true : false;
+
+        $user = $user->put('is_followed', $isFollowed)->put('is_me', $isMe);
 
         return $user;
     }
