@@ -18,7 +18,8 @@ trait UserFollowingDataProvider
     public function successTypeProvider()
     {
         return [
-
+            'typeがoldのパターン' => ['old'],
+            'typeがnewのパターン' => ['new'],
         ];
     }
 
@@ -30,7 +31,10 @@ trait UserFollowingDataProvider
     public function failUserIdProvider()
     {
         return [
-
+            'ユーザーIDが空文字のパターン' => [''],
+            'ユーザーIDがa-zA-Z0-9の範囲に無いパターン' => ['めんすたぐらむ'],
+            'ユーザーIDが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
+            'ユーザーIDの条件は満たしているが存在しないユーザーIDのパターン' => ['takashi'],
         ];
     }
 
@@ -42,7 +46,8 @@ trait UserFollowingDataProvider
     public function failFollowIdProvider()
     {
         return [
-
+            'follow_idが文字列のパターン'   => ['takashi'],
+            'follow_idが存在しないパターン' => [999],
         ];
     }
 
@@ -54,7 +59,7 @@ trait UserFollowingDataProvider
     public function failTypeProvider()
     {
         return [
-
+            'typeが存在しないパターン' => ['takashi'],
         ];
     }
 }
