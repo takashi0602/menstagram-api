@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserFollowedRequest;
+use App\Http\Requests\UserFollowingRequest;
 use App\Http\Requests\UserFollowRequest;
 use App\Http\Requests\UserLikesRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\UserUnfollowRequest;
+use App\UseCases\FetchFollowedUseCase;
+use App\UseCases\FetchFollowingUseCase;
 use App\UseCases\FetchUserLikesUseCase;
 use App\UseCases\FetchUserProfileUseCase;
 use App\UseCases\FollowUseCase;
@@ -86,5 +90,31 @@ class UserController extends Controller
     {
         if (!$useCase($request->target_user_id)) return response('{}', 400);
         return response('{}', 200);
+    }
+
+    /**
+     * フォロー一覧
+     *
+     * @param UserFollowingRequest $request
+     * @param FetchFollowingUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function following(UserFollowingRequest $request, FetchFollowingUseCase $useCase)
+    {
+        $response = $useCase($request->user_id, $request->follow_id, $request->type);
+        return response($response, 200);
+    }
+
+    /**
+     * フォロワー一覧
+     *
+     * @param UserFollowedRequest $request
+     * @param FetchFollowedUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function followed(UserFollowedRequest $request, FetchFollowedUseCase $useCase)
+    {
+        $response = $useCase($request->user_id, $request->follow_id, $request->type);
+        return response($response, 200);
     }
 }

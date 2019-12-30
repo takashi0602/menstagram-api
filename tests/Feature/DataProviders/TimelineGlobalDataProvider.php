@@ -31,7 +31,7 @@ trait TimelineGlobalDataProvider
     public function failPostIdProvider()
     {
         return [
-            'post_idが空文字のパターン'   => [''],
+            'post_idが文字列のパターン'   => ['takashi'],
             'post_idが存在しないパターン' => [999],
         ];
     }
