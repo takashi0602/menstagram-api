@@ -15,7 +15,8 @@ class LogoutUserUseCase
     public function __invoke()
     {
         User::where('access_token', access_token())->update([
-            'access_token' => null,
+            'access_token'             => null,
+            'access_token_deadline_at' => null,
         ]);
     }
 }

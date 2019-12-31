@@ -3,6 +3,7 @@
 namespace App\UseCases;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -25,11 +26,12 @@ class RegisterUserUseCase
         $accessToken = Str::random(80);
 
         User::create([
-            'user_id'       => $userId,
-            'screen_name'   => $screenName,
-            'email'         => $email,
-            'password'      => bcrypt($password),
-            'access_token'  => hash('sha256', $accessToken),
+            'user_id'                  => $userId,
+            'screen_name'              => $screenName,
+            'email'                    => $email,
+            'password'                 => bcrypt($password),
+            'access_token'             => hash('sha256', $accessToken),
+            'access_token_deadline_at' => Carbon::now(),
         ]);
 
         return $accessToken;
