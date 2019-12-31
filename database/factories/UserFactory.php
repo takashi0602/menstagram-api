@@ -24,8 +24,8 @@ $factory->define(User::class, function (Faker $faker) {
         'user_id'       => $userId,
         'screen_name'   => $faker->firstName,
         'email'         => $email,
-        'avatar'        => '',  // TODO: 追加する
-        'biography'     => Arr::random([ null, $faker->text(128), ]),
+        'avatar'        => 'https://placehold.jp/150x150.png',
+        'biography'     => $faker->text(128),
         'password'      => bcrypt('menstagram'),
         'access_token'  => Arr::random([ null, hash('sha256', Str::random(80)), ]),
         'posted'        => $faker->numberBetween(1, 999999999),
