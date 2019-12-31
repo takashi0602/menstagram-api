@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('posted')->default(0);
             $table->unsignedBigInteger('following')->default(0);
             $table->unsignedBigInteger('followed')->default(0);
+            $table->timestamp('access_token_deadline_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
