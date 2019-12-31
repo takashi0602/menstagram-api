@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * ユーザーがいいねした投稿一覧
+ * ユーザーの投稿一覧
  *
- * Class UserLikesRequest
+ * Class UserPostsRequest
  * @package App\Http\Requests
  */
-class UserLikesRequest extends FormRequest
+class UserPostsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,6 +32,7 @@ class UserLikesRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id'=> ['bail', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users,user_id', ],
             'post_id'   => ['bail', 'integer', 'exists:posts,id', ],
             'type'      => ['bail', 'in:old,new', ],
         ];

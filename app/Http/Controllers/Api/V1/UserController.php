@@ -8,11 +8,13 @@ use App\Http\Requests\UserFollowedRequest;
 use App\Http\Requests\UserFollowingRequest;
 use App\Http\Requests\UserFollowRequest;
 use App\Http\Requests\UserLikesRequest;
+use App\Http\Requests\UserPostsRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\UserUnfollowRequest;
 use App\UseCases\FetchFollowedUseCase;
 use App\UseCases\FetchFollowingUseCase;
 use App\UseCases\FetchUserLikesUseCase;
+use App\UseCases\FetchUserPostsUseCase;
 use App\UseCases\FetchUserProfileUseCase;
 use App\UseCases\FollowUseCase;
 use App\UseCases\UnfollowUseCase;
@@ -37,6 +39,19 @@ class UserController extends Controller
     {
         $userId = $request->user_id ? user($request->user_id)->id : user()->id;
         $response = $useCase($userId);
+        return response($response, 200);
+    }
+
+    /**
+     * ユーザーの投稿一覧
+     *
+     * @param UserPostsRequest $request
+     * @param FetchUserPostsUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function posts(UserPostsRequest $request, FetchUserPostsUseCase $useCase)
+    {
+        $response = $useCase($request->user_id, $request->post_id, $request->type);
         return response($response, 200);
     }
 
