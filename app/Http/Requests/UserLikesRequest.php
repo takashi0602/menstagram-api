@@ -6,6 +6,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * ユーザーがいいねした投稿一覧
+ *
+ * Class UserLikesRequest
+ * @package App\Http\Requests
+ */
 class UserLikesRequest extends FormRequest
 {
     /**
