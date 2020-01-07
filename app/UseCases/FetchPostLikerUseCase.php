@@ -4,7 +4,6 @@ namespace App\UseCases;
 
 use App\Models\Follow;
 use App\Models\Like;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * いいねしたユーザー一覧の取得
