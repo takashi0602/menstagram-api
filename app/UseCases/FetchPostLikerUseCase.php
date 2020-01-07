@@ -18,10 +18,7 @@ class FetchPostLikerUseCase
      */
     public function __invoke($postId)
     {
-        $userId = user()->id;
-
         $response = Like::where('post_id', $postId)
-                            ->where('user_id', $userId)
                             ->with(['user'])
                             ->orderBy('id', 'desc')
                             ->limit(100)
@@ -29,9 +26,10 @@ class FetchPostLikerUseCase
 
         $response = collect($response)->map(function ($v, $k) {
             return [
-                'user_id' => $v['user']['user_id'],
-                'screen_name' => $v['user']['user_id'],
-                'avatar'  => $v['user']['avatar'],
+                'user_id'      => $v['user']['user_id'],
+                'screen_name'  => $v['user']['user_id'],
+                'avatar'       => $v['user']['avatar'],
+                'is_following' => true,
             ];
         });
 
