@@ -3,6 +3,8 @@
 namespace App\UseCases;
 
 use App\Models\Follow;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /**
  * アンフォロー
@@ -24,7 +26,13 @@ class UnfollowUseCase
         if (Follow::where('user_id', $id)->where('target_user_id', $targetId)->doesntExist()) return false;
         if ($id === $targetId) return false;
 
-        Follow::where('user_id', user()->id)->where('target_user_id', user($targetUserId)->id)->delete();
+        DB::transaction(function () use ($id, $targetId) {
+            User::where('id', $id)->decrement('following');
+            User::where('id', $targetId)->decrement('followed');
+
+            Follow::where('user_id', $id)->where('target_user_id', $targetId)->delete();
+
+        }, 5);
 
         return true;
     }

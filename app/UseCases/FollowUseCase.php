@@ -3,6 +3,8 @@
 namespace App\UseCases;
 
 use App\Models\Follow;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /**
  * フォロー
@@ -24,10 +26,15 @@ class FollowUseCase
         if (Follow::where('user_id', $id)->where('target_user_id', $targetId)->exists()) return false;
         if ($id === $targetId) return false;
 
-        Follow::create([
-            'user_id'        => $id,
-            'target_user_id' => $targetId,
-        ]);
+        DB::transaction(function () use ($id, $targetId) {
+            User::where('id', $id)->increment('following');
+            User::where('id', $targetId)->increment('followed');
+
+            Follow::create([
+                'user_id'        => $id,
+                'target_user_id' => $targetId,
+            ]);
+        }, 5);
 
         return true;
     }
