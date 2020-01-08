@@ -16,10 +16,11 @@ class PostUseCase
 {
     /**
      * @param $filePaths
+     * @return array
      */
     public function __invoke($filePaths)
     {
-        DB::transaction(function () use ($filePaths) {
+        $postId = DB::transaction(function () use ($filePaths) {
             User::where('id', user()->id)->increment('posted');
 
             $postId = Post::create([
@@ -27,7 +28,9 @@ class PostUseCase
                 'images'  => $filePaths,
             ])->id;
 
-            return [ 'post_id' => $postId, ];
+            return $postId;
         }, 5);
+
+        return [ 'post_id' => $postId, ];
     }
 }
