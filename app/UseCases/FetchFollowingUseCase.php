@@ -31,7 +31,9 @@ class FetchFollowingUseCase
         $following = $query->limit(100)->get();
 
         $following = collect($following)->map(function ($v, $k) {
-            return collect($v->followingUser)->only(['user_id', 'screen_name', 'avatar']);
+            return collect($v->followingUser)
+                        ->only(['user_id', 'screen_name', 'avatar'])
+                        ->put('is_me', user()->id === $v->followingUser->id ? true : false);
         });
 
         if ($type !== 'new') $following = $following->reverse()->values();

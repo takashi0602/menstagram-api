@@ -37,6 +37,8 @@ class PostLikerTest extends TestCase
                     'user_id',
                     'screen_name',
                     'avatar',
+                    'is_following',
+                    'is_me',
                 ]
             ]);
     }
