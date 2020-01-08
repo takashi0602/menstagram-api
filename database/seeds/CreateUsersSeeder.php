@@ -1,8 +1,9 @@
 <?php
 
-use Carbon\Carbon;
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Carbon\Carbon;
+use Faker\Generator as Faker;
+use Illuminate\Database\Seeder;
 
 /**
  * ユーザーのダミーデータの生成
@@ -14,9 +15,9 @@ class CreateUsersSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @return void
+     * @param Faker $faker
      */
-    public function run()
+    public function run(Faker $faker)
     {
         User::truncate();
 
@@ -25,10 +26,13 @@ class CreateUsersSeeder extends Seeder
             'user_id'                  => 'menstagram',
             'screen_name'              => 'Menstagram',
             'email'                    => 'system@menstagram.com',
-            'avatar'                   => 'https://placehold.jp/150x150.png',
+            'avatar'                   => 'http://placehold.it/150x150',
             'biography'                => 'menstagram',
             'password'                 => bcrypt('menstagram'),
             'access_token'             => hash('sha256', 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW'),
+            'posted'                   => $faker->numberBetween(1, 999999999),
+            'following'                => $faker->numberBetween(1, 9999999999),
+            'followed'                 => $faker->numberBetween(1, 9999999999),
             'access_token_deadline_at' => Carbon::now(),
         ]);
 

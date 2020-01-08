@@ -104,5 +104,10 @@ class UserUnfollowTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertJsonStructure([]);
+
+        $this->assertDatabaseHas('follows', [
+            'user_id'        => $this->users[0]->id,
+            'target_user_id' => $this->users[1]->id,
+        ]);
     }
 }

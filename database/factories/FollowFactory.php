@@ -18,7 +18,7 @@ $factory->define(Follow::class, function (Faker $faker) {
     }
 
     return [
-        'user_id'           => $userId,
-        'target_user_id'    => $targetUserId,
+        'user_id'        => $userId,
+        'target_user_id' => $targetUserId,
     ];
 });
