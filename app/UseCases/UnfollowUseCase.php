@@ -31,7 +31,6 @@ class UnfollowUseCase
             User::where('id', $targetId)->decrement('followed');
 
             Follow::where('user_id', $id)->where('target_user_id', $targetId)->delete();
-
         }, 5);
 
         return true;
