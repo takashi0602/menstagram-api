@@ -44,6 +44,7 @@ class UserFollowingTest extends TestCase
                     'user_id',
                     'screen_name',
                     'avatar',
+                    'is_me',
                 ]
             ]);
     }
@@ -70,6 +71,7 @@ class UserFollowingTest extends TestCase
                     'user_id',
                     'screen_name',
                     'avatar',
+                    'is_me',
                 ]
             ]);
     }
@@ -96,6 +98,7 @@ class UserFollowingTest extends TestCase
                     'user_id',
                     'screen_name',
                     'avatar',
+                    'is_me',
                 ]
             ]);
     }
@@ -125,6 +128,7 @@ class UserFollowingTest extends TestCase
                     'user_id',
                     'screen_name',
                     'avatar',
+                    'is_me',
                 ]
             ]);
     }
