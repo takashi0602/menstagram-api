@@ -47,7 +47,7 @@ class UserPostsTest extends TestCase
                         '*' => [],
                     ],
                     'user' => [
-                        'id',
+                        'user_id',
                         'screen_name',
                         'avatar',
                     ],
@@ -84,7 +84,7 @@ class UserPostsTest extends TestCase
                         '*' => [],
                     ],
                     'user' => [
-                        'id',
+                        'user_id',
                         'screen_name',
                         'avatar',
                     ],
@@ -124,7 +124,7 @@ class UserPostsTest extends TestCase
                         '*' => [],
                     ],
                     'user' => [
-                        'id',
+                        'user_id',
                         'screen_name',
                         'avatar',
                     ],
