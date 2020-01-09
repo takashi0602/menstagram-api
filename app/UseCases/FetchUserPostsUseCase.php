@@ -23,7 +23,7 @@ class FetchUserPostsUseCase
     {
         $userId = $userId ? user($userId)->id : user()->id;
 
-        $query = Post::with(['user:id,screen_name,avatar']);
+        $query = Post::with(['user:id,user_id,screen_name,avatar']);
 
         if (is_null($postId) && is_null($type))                             $query->latest('id');
         else if (!is_null($postId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $postId);
@@ -40,6 +40,10 @@ class FetchUserPostsUseCase
             if (collect($like)->isEmpty()) $isLiked = false;
 
             return collect($v)
+                ->map(function ($v, $k) {
+                    if ($k === 'user') return collect($v)->except(['id']);
+                    return $v;
+                })
                 ->put('is_liked', $isLiked)
                 ->except(['user_id']);
         });
