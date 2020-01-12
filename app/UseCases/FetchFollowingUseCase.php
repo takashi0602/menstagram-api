@@ -50,9 +50,9 @@ class FetchFollowingUseCase
 
         $query = Follow::with(['followingUser'])->where('user_id', $userId);
 
-        if (is_null($followId) && is_null($type))                             $query->latest('id');
-        else if (!is_null($followId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $followId);
-        else if (!is_null($followId) && $type === 'old')                      $query->where('id', '<=', $followId)->orderBy('id', 'desc');
+        if (is_null($followId) && is_null($type))                            $query->latest('id');
+        else if (!is_null($followId) && (is_null($type) || $type === 'new')) $query->where('id', '>=', $followId);
+        else if (!is_null($followId) && $type === 'old')                     $query->where('id', '<=', $followId)->orderBy('id', 'desc');
 
         $following = collect($query->limit(100)->get());
         if ($type != 'new') $following = $following->reverse()->values();
