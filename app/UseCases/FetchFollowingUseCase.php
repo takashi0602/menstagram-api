@@ -33,8 +33,6 @@ class FetchFollowingUseCase
                         ->put('is_me', user()->id === $v->followingUser->id ? true : false);
         });
 
-        if ($type !== 'new') $following = $following->reverse()->values();
-
         return $following;
     }
 
