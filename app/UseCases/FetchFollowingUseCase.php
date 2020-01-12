@@ -20,7 +20,7 @@ class FetchFollowingUseCase
      */
     public function __invoke($userId = null, $followId = null, $type = null)
     {
-        $following = $this->fetchFollowingUsers($userId, $followId, $type);
+        $following = $this->fetchFollowingUsers($userId, $followId, $type, 100);
 
         $followingByLoginUser = $this->fetchFollowingUsers()->map(function ($v, $k) {
             return $v->followingUser->id;
@@ -44,7 +44,7 @@ class FetchFollowingUseCase
      * @param null $type
      * @return \Illuminate\Support\Collection
      */
-    private function fetchFollowingUsers($userId = null, $followId = null, $type = null)
+    private function fetchFollowingUsers($userId = null, $followId = null, $type = null, $limit = null)
     {
         $userId = $userId ? user($userId)->id : user()->id;
 
@@ -54,7 +54,9 @@ class FetchFollowingUseCase
         else if (!is_null($followId) && (is_null($type) || $type === 'new')) $query->where('id', '>=', $followId);
         else if (!is_null($followId) && $type === 'old')                     $query->where('id', '<=', $followId)->orderBy('id', 'desc');
 
-        $following = collect($query->limit(100)->get());
+        if ($limit) $query->limit($limit);
+
+        $following = collect($query->get());
         if ($type != 'new') $following = $following->reverse()->values();
         return $following;
     }
