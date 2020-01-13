@@ -17,11 +17,9 @@ class UpdateUserUseCase
      */
     public function __invoke($request)
     {
-        $userId = user()->id;
-
-        User::where('id', $userId)->update([
-            'screen_name' => $request->screen_name,
-            'biography'   => $request->biography,
-        ]);
+        $user = User::where('id', user()->id)->first();
+        if ($request->has('screen_name')) $user->screen_name = $request->screen_name;
+        if ($request->has('biography'))   $user->biography = $request->biography;
+        $user->save();
     }
 }

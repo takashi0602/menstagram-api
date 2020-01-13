@@ -32,8 +32,8 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'screen_name' => ['bail', 'string', 'min:1', 'max:16', ],
-            'biography'   => ['bail', 'string', 'min:1', 'max:128', ],
+            'screen_name' => ['bail', 'filled', 'string', 'max:16', ],
+            'biography'   => ['bail', 'string', 'between:1,128', ],
         ];
     }
 
