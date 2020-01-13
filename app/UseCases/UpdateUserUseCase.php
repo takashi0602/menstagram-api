@@ -17,11 +17,13 @@ class UpdateUserUseCase
      */
     public function __invoke($request)
     {
-        $userId = user()->id;
+        // TODO: 暫定対応
+        // TODO: バリデーションで対応するのが理想
+        if ($request->has('biography') && !$request->biography) $request->biography = '';
 
-        User::where('id', $userId)->update([
-            'screen_name' => $request->screen_name,
-            'biography'   => $request->biography,
-        ]);
+        $user = User::where('id', user()->id)->first();
+        if ($request->has('screen_name')) $user->screen_name = $request->screen_name;
+        if ($request->has('biography'))   $user->biography = $request->biography;
+        $user->save();
     }
 }
