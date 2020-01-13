@@ -32,8 +32,6 @@ trait UserEditDataProvider
     public function biographyProvider()
     {
         return [
-            'bioが抜けているパターン' => [null],
-            'bioが空文字のパターン' => [''],
             'bioが16文字を超えているパターン' => ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'],
         ];
     }
