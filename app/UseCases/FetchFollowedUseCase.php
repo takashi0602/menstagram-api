@@ -30,7 +30,7 @@ class FetchFollowedUseCase
             return collect($v->followedUser)
                         ->only(['user_id', 'screen_name', 'avatar'])
                         ->put('is_following', collect($followingByLoginUser)->contains($v->followedUser->id) ? true : false)
-                        ->put('is_me', user()->id === $v->followedUser ? true : false);
+                        ->put('is_me', user()->id === $v->followedUser->id ? true : false);
         });
 
         return $followed;
