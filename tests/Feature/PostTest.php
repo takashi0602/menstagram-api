@@ -48,7 +48,10 @@ class PostTest extends TestCase
 
         $response
             ->assertStatus(200)
-            ->assertJsonStructure(['post_id']);
+            ->assertJsonStructure([
+                'post_id',
+                'is_ramen',
+            ]);
 
         $this->assertDatabaseHas('posts', [
             'id' => json_decode($response->content())->post_id,
