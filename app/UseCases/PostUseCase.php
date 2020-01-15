@@ -4,6 +4,7 @@ namespace App\UseCases;
 
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -20,17 +21,26 @@ class PostUseCase
      */
     public function __invoke($filePaths)
     {
-        $postId = DB::transaction(function () use ($filePaths) {
-            User::where('id', user()->id)->increment('posted');
+        // TODO: ラーメン判定を実装するまでの暫定的な措置
+        $isRamen = Arr::random([true, false]);
 
-            $postId = Post::create([
-                'user_id' => user()->id,
-                'images'  => $filePaths,
-            ])->id;
+        $postId = 0;
+        if ($isRamen) {
+            $postId = DB::transaction(function () use ($filePaths) {
+                User::where('id', user()->id)->increment('posted');
 
-            return $postId;
-        }, 5);
+                $postId = Post::create([
+                    'user_id' => user()->id,
+                    'images'  => $filePaths,
+                ])->id;
 
-        return [ 'post_id' => $postId, ];
+                return $postId;
+            }, 5);
+        }
+
+        return [
+            'post_id'  => $postId,
+            'is_ramen' => $isRamen,
+        ];
     }
 }
