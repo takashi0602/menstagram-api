@@ -17,21 +17,19 @@ class PostUseCase
 {
     /**
      * @param $filePaths
+     * @param $isRamens
      * @return array
      */
-    public function __invoke($filePaths)
+    public function __invoke($filePaths, $isRamens)
     {
-        // TODO: ラーメン判定を実装するまでの暫定的な措置
-        $isRamen = Arr::random([true, false]);
-
         $postId = 0;
-        if ($isRamen) {
-            $postId = DB::transaction(function () use ($filePaths) {
+        if (collect($isRamens)->contains(true)) {
+            $postId = DB::transaction(function () use ($filePaths, $isRamens) {
                 User::where('id', user()->id)->increment('posted');
 
                 $postId = Post::create([
                     'user_id' => user()->id,
-                    'images'  => $filePaths,
+                    'images'  => $this->filteredFilePaths($filePaths, $isRamens),
                 ])->id;
 
                 return $postId;
@@ -40,7 +38,23 @@ class PostUseCase
 
         return [
             'post_id'  => $postId,
-            'is_ramen' => $isRamen,
+            'is_ramens' => $isRamens,
         ];
+    }
+
+    /**
+     * isRamensの真偽値に基づいてfilePathsをフィルタにかける
+     *
+     * @param $filePaths
+     * @param $isRamens
+     * @return array
+     */
+    private function filteredFilePaths($filePaths, $isRamens)
+    {
+        $filteredFilePaths = [];
+        for ($i = 0; $i < count($filePaths); $i++) {
+            if ($isRamens) $filteredFilePaths[] = $filePaths[$i];
+        }
+        return $filteredFilePaths;
     }
 }

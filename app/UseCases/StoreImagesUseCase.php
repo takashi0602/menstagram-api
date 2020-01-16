@@ -15,15 +15,17 @@ class StoreImagesUseCase
 {
     /**
      * @param $request
+     * @param $isRamens
      * @return \Illuminate\Support\Collection
      */
-    public function __invoke($request)
+    public function __invoke($request, $isRamens)
     {
         $filePaths = collect([]);
         for ($i = 1; $i <= 4; $i++) {
             $file = $request->file("image$i");
 
             if (is_null($file)) continue;
+            if (!$isRamens[$i - 1]) continue;
 
             $fileName = $this->getFileName($file);
             $storageFilePath = storage_path("app/public/posts/$fileName");
