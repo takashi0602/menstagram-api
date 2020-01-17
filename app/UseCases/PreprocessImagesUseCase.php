@@ -14,7 +14,7 @@ class PreprocessImagesUseCase
 {
     /**
      * @param $request
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function __invoke($request)
     {
@@ -27,7 +27,7 @@ class PreprocessImagesUseCase
             $image = $this->trimImage($image)->encode('jpg');
             $images->push($image);
         }
-        return $images;
+        return $images->all();
     }
 
     /**
