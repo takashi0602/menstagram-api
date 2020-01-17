@@ -18,19 +18,14 @@ class JudgeRamenUseCase
      */
     public function __invoke($images)
     {
-        $client = new \GuzzleHttp\Client();
-        $tmp = $client->request('POST', env('MENSTAGRAM_AI_URL') . '/api/v1/ramen/judge', [
-            'multipart' => $this->reshapeImages($images),
-        ]);
-        \Log::info($tmp->getBody());
+        $response = $this->fetchJudgeRamenResponse($images);
 
-        // TODO: 実際にはGuzzleを使用する
-        $response = collect([
-            Arr::random([true, false]),
-            Arr::random([true, false]),
-            Arr::random([true, false]),
-            Arr::random([true, false]),
-        ])->random(collect($images)->count())->all();
+//        $response = collect([
+//            Arr::random([true, false]),
+//            Arr::random([true, false]),
+//            Arr::random([true, false]),
+//            Arr::random([true, false]),
+//        ])->random(collect($images)->count())->all();
 
         return $response;
     }
@@ -55,5 +50,20 @@ class JudgeRamenUseCase
             ];
         }
         return $newImages;
+    }
+
+    /**
+     * ラーメン判定結果の取得
+     *
+     * @param $images
+     * @return array
+     */
+    private function fetchJudgeRamenResponse($images)
+    {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', env('MENSTAGRAM_AI_URL') . '/api/v1/ramen/judge', [
+            'multipart' => $this->reshapeImages($images),
+        ])->getBody();
+        return (array)json_decode($response);
     }
 }
