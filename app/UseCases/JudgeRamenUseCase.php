@@ -19,8 +19,12 @@ class JudgeRamenUseCase
     public function __invoke($request)
     {
         $client = new \GuzzleHttp\Client();
-        $hoge = $client->request('GET', env('MENSTAGRAM_AI_URL'));
-//        \Log::info($hoge->getBody());
+        $tmp = $client->request('POST', env('MENSTAGRAM_AI_URL') . '/api/v1/ramen/judge', [
+            'form_params' => [
+                'hoge' => 'hoge'
+            ]
+        ]);
+        \Log::info($tmp->getBody());
 
         // TODO: 実際にはGuzzleを使用する
         $response = collect([

@@ -41,9 +41,10 @@ class PostController extends Controller
                          PostUseCase $postUseCase)
     {
         $isRamens = $judgeRamenUseCase($request);
-        $filePaths = $storeImagesUseCase($request, $isRamens);
-        $response = $postUseCase($filePaths, $isRamens);
-        return response($response, 200);
+//        $filePaths = $storeImagesUseCase($request, $isRamens);
+//        $response = $postUseCase($filePaths, $isRamens);
+//        return response($response, 200);
+        return [];
     }
 
     /**
