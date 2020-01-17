@@ -45,10 +45,13 @@ class JudgeRamenUseCase
     {
         $newImages = [];
         for ($i = 0; $i < collect($images)->count(); $i++) {
+            $tmp = tmpfile();
+            fwrite($tmp, $images[$i]);
+            fseek($tmp, 0);
             $newImages[] = [
                 'Content-type' => 'multipart/form-data',
                 'name'     => 'image' . ($i + 1),
-                'contents' => fopen('https://pbs.twimg.com/profile_images/1010246779252555776/7ECQc35k_400x400.jpg', 'r'),
+                'contents' => fopen(stream_get_meta_data($tmp)['uri'], 'r'),
             ];
         }
         return $newImages;
