@@ -13,10 +13,10 @@ use Illuminate\Support\Arr;
 class JudgeRamenUseCase
 {
     /**
-     * @param $request
+     * @param $images
      * @return array
      */
-    public function __invoke($request)
+    public function __invoke($images)
     {
         $client = new \GuzzleHttp\Client();
         $tmp = $client->request('POST', env('MENSTAGRAM_AI_URL') . '/api/v1/ramen/judge', [
@@ -32,7 +32,7 @@ class JudgeRamenUseCase
             Arr::random([true, false]),
             Arr::random([true, false]),
             Arr::random([true, false]),
-        ])->random(collect($request)->count())->all();
+        ])->random(collect($images)->count())->all();
 
         return $response;
     }
