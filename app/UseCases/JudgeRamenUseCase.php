@@ -2,8 +2,6 @@
 
 namespace App\UseCases;
 
-use Illuminate\Support\Arr;
-
 /**
  * ラーメン判定
  *
@@ -18,16 +16,7 @@ class JudgeRamenUseCase
      */
     public function __invoke($images)
     {
-        $response = $this->fetchJudgeRamenResponse($images);
-
-//        $response = collect([
-//            Arr::random([true, false]),
-//            Arr::random([true, false]),
-//            Arr::random([true, false]),
-//            Arr::random([true, false]),
-//        ])->random(collect($images)->count())->all();
-
-        return $response;
+        return $this->fetchJudgeRamenResponse($images);
     }
 
     /**
