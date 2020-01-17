@@ -12,6 +12,8 @@ services:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
+    networks:
+      - menstagram
 
   # Web API
   php:
@@ -21,6 +23,8 @@ services:
       - php-sync:/var/www
     depends_on:
       - mysql
+    networks:
+      - menstagram
 
   # データベース
   mysql:
@@ -37,6 +41,8 @@ services:
       - mysql-sync:/var/lib/mysql
     ports:
       - 3307:3306
+    networks:
+      - menstagram
 
 volumes:
   nginx-sync:
@@ -44,4 +50,8 @@ volumes:
   php-sync:
     external: true
   mysql-sync:
+    external: true
+
+networks:
+  menstagram:
     external: true

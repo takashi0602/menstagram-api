@@ -10,6 +10,7 @@ menstagram-apiはMenstagramのバックエンド開発のためのリポジト�
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
 $ cd menstagram-api
+$ docker network create menstagram  // menstagram-aiですでに作成している場合は実行しなくて良い
 $ make init
 ```
 
@@ -18,6 +19,7 @@ $ make init
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
 $ cd menstagram-api
+$ docker network create menstagram  // menstagram-aiですでに作成している場合は実行しなくて良い
 $ make -f Makefile.gen init
 ```
 
