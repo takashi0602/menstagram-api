@@ -3,7 +3,7 @@ version: '3'
 services:
   # Webサーバ
   nginx:
-    container_name: menstagram_nginx
+    container_name: menstagram_api_nginx
     image: nginx
     ports:
       - 8000:80
@@ -15,7 +15,7 @@ services:
 
   # Web API
   php:
-    container_name: menstagram_php
+    container_name: menstagram_api_php
     build: ./docker/php
     volumes:
       - .:/var/www
@@ -24,7 +24,7 @@ services:
 
   # データベース
   mysql:
-    container_name: menstagram_mysql
+    container_name: menstagram_api_mysql
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: menstagram
