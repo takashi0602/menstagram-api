@@ -1,8 +1,9 @@
 # menstagram-api
 
-**🍜 SUSURU FOREVER, SUSURU ANYWHERE 🍜**
+<img src="logo.png" width="500">
 
-menstagram-apiはMenstagramのバックエンド開発のためのリポジトリです。
+**🍜 SUSURU FOREVER, SUSURU ANYWHERE 🍜**  
+menstagram-apiはMenstagramのWeb API開発のためのリポジトリです。
 
 ### 環境構築（macOS）
 現状, macOSでの環境のみdocker-syncによる高速化の恩恵を受けることができる.
