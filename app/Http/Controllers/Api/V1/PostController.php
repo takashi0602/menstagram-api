@@ -15,6 +15,7 @@ use App\UseCases\JudgeRamenUseCase;
 use App\UseCases\LikeUseCase;
 use App\UseCases\PostTextUseCase;
 use App\UseCases\PostUseCase;
+use App\UseCases\PreprocessImagesUseCase;
 use App\UseCases\StoreImagesUseCase;
 use App\UseCases\UnlikeUseCase;
 
@@ -30,18 +31,21 @@ class PostController extends Controller
      * 投稿
      *
      * @param PostRequest $request
+     * @param PreprocessImagesUseCase $preprocessImagesUseCase
      * @param JudgeRamenUseCase $judgeRamenUseCase
      * @param StoreImagesUseCase $storeImagesUseCase
      * @param PostUseCase $postUseCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function post(PostRequest $request,
+                         PreprocessImagesUseCase $preprocessImagesUseCase,
                          JudgeRamenUseCase $judgeRamenUseCase,
                          StoreImagesUseCase $storeImagesUseCase,
                          PostUseCase $postUseCase)
     {
-        $isRamens = $judgeRamenUseCase($request);
-        $filePaths = $storeImagesUseCase($request, $isRamens);
+        $images = $preprocessImagesUseCase($request);
+        $isRamens = $judgeRamenUseCase($images);
+        $filePaths = $storeImagesUseCase($images, $isRamens);
         $response = $postUseCase($filePaths, $isRamens);
         return response($response, 200);
     }

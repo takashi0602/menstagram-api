@@ -4,7 +4,6 @@ namespace App\UseCases;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -23,7 +22,7 @@ class PostUseCase
     public function __invoke($filePaths, $isRamens)
     {
         $postId = 0;
-        if (collect($isRamens)->contains(true)) {
+        if (!collect($isRamens)->contains(false)) {
             $postId = DB::transaction(function () use ($filePaths, $isRamens) {
                 User::where('id', user()->id)->increment('posted');
 

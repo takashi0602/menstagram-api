@@ -2,8 +2,6 @@
 
 namespace App\UseCases;
 
-use Illuminate\Support\Arr;
-
 /**
  * ラーメン判定
  *
@@ -13,23 +11,48 @@ use Illuminate\Support\Arr;
 class JudgeRamenUseCase
 {
     /**
-     * @param $request
+     * @param $images
      * @return array
      */
-    public function __invoke($request)
+    public function __invoke($images)
+    {
+        return $this->fetchJudgeRamenResponse($images);
+    }
+
+    /**
+     * Guzzleのリクエスト用にimagesの形状を変換
+     *
+     * @param $images
+     * @return array
+     */
+    private function reshapeImages($images)
+    {
+        $newImages = [];
+        for ($i = 0; $i < collect($images)->count(); $i++) {
+            $tmp = tmpfile();
+            fwrite($tmp, $images[$i]);
+            fseek($tmp, 0);
+            $newImages[] = [
+                'Content-type' => 'multipart/form-data',
+                'name'     => 'image' . ($i + 1),
+                'contents' => fopen(stream_get_meta_data($tmp)['uri'], 'r'),
+            ];
+        }
+        return $newImages;
+    }
+
+    /**
+     * ラーメン判定結果の取得
+     *
+     * @param $images
+     * @return array
+     */
+    private function fetchJudgeRamenResponse($images)
     {
         $client = new \GuzzleHttp\Client();
-        $hoge = $client->request('GET', env('MENSTAGRAM_AI_URL'));
-//        \Log::info($hoge->getBody());
-
-        // TODO: 実際にはGuzzleを使用する
-        $response = collect([
-            Arr::random([true, false]),
-            Arr::random([true, false]),
-            Arr::random([true, false]),
-            Arr::random([true, false]),
-        ])->random(collect($request)->count())->all();
-
-        return $response;
+        $response = $client->request('POST', env('MENSTAGRAM_AI_URL') . '/api/v1/ramen/judge', [
+            'multipart' => $this->reshapeImages($images),
+        ])->getBody();
+        return (array)json_decode($response);
     }
 }

@@ -27,10 +27,10 @@ $ make -f Makefile.gen init
 ### コマンド（macOS）
 
 ```bash
-$ make up       // 起動
+$ make up       // 起動(localhost:8000)
 $ make down     // 終了
 $ make db       // DBの作り直し
-$ make sh       // bashの起動
+$ make sh       // Bashの起動
 $ make dbg      // デバッガ(Telescope)の起動
 $ make qual     // 品質チェックツール(PHP Insights)の起動
 $ make test     // テスト(PHPUnit)の実行
@@ -39,10 +39,10 @@ $ make test     // テスト(PHPUnit)の実行
 ### コマンド（Windows/Linux）
 
 ```bash
-$ make -f Makefile.gen up       // 起動
+$ make -f Makefile.gen up       // 起動(localhost:8000)
 $ make -f Makefile.gen down     // 終了
 $ make -f Makefile.gen db       // DBの作り直し
-$ make -f Makefile.gen sh       // bashの起動
+$ make -f Makefile.gen sh       // Bashの起動
 $ make -f Makefile.gen dbg      // デバッガ(Telescope)の起動
 $ make -f Makefile.gen qual     // 品質チェックツール(PHP Insights)の起動
 $ make -f Makefile.gen test     // テスト(PHPUnit)の実行

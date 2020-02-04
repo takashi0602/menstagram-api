@@ -3,13 +3,15 @@ version: '3'
 services:
   # Webサーバ
   nginx:
-    container_name: menstagram_nginx
+    container_name: menstagram_api_nginx
     image: nginx
     ports:
       - 8000:80
     volumes:
       - nginx-sync:/var/www
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    environment:
+      TZ: 'Asia/Tokyo'
     depends_on:
       - php
     networks:
@@ -17,10 +19,12 @@ services:
 
   # Web API
   php:
-    container_name: menstagram_php
+    container_name: menstagram_api_php
     build: ./docker/php
     volumes:
       - php-sync:/var/www
+    environment:
+      TZ: 'Asia/Tokyo'
     depends_on:
       - mysql
     networks:
@@ -28,19 +32,19 @@ services:
 
   # データベース
   mysql:
-    container_name: menstagram_mysql
+    container_name: menstagram_api_mysql
     image: mysql:5.7
+    ports:
+      - 3307:3306
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql-sync:/var/lib/mysql
     environment:
       MYSQL_DATABASE: menstagram
       MYSQL_USER: menstagram
       MYSQL_PASSWORD: menstagram
       MYSQL_ROOT_PASSWORD: menstagram
       TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - mysql-sync:/var/lib/mysql
-    ports:
-      - 3307:3306
     networks:
       - menstagram
 
