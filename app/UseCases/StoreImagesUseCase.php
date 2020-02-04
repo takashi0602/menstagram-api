@@ -16,10 +16,11 @@ class StoreImagesUseCase
     /**
      * @param $images
      * @param $isRamens
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function __invoke($images, $isRamens)
     {
+        if (collect($isRamens)->contains(false)) return [];
         $filePaths = collect([]);
         for ($i = 0; $i < collect($images)->count(); $i++) {
             $image = Image::make($images[$i]);
@@ -29,6 +30,6 @@ class StoreImagesUseCase
             $publicFilePath = asset("storage/posts/$fileName");
             $filePaths->push($publicFilePath);
         }
-        return $filePaths;
+        return $filePaths->all();
     }
 }
