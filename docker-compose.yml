@@ -23,6 +23,7 @@ services:
     build: ./docker/php
     volumes:
       - php-sync:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     environment:
       TZ: 'Asia/Tokyo'
     depends_on:
