@@ -32,10 +32,10 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'image1' => ['bail', 'image', 'max:4096', ],
-            'image2' => ['bail', 'image', 'max:4096', ],
-            'image3' => ['bail', 'image', 'max:4096', ],
-            'image4' => ['bail', 'image', 'max:4096', ],
+            'image1' => ['bail', 'image', 'max:5120', ],
+            'image2' => ['bail', 'image', 'max:5120', ],
+            'image3' => ['bail', 'image', 'max:5120', ],
+            'image4' => ['bail', 'image', 'max:5120', ],
         ];
     }
 
