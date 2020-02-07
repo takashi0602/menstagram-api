@@ -26,7 +26,7 @@ class CreateUsersSeeder extends Seeder
             'user_id'                  => 'menstagram',
             'screen_name'              => 'Menstagram',
             'email'                    => 'system@menstagram.com',
-            'avatar'                   => 'http://placehold.it/150x150',
+            'avatar'                   => asset('avatars/default/000' . mt_rand(1, 7) . '.png'),
             'biography'                => 'menstagram',
             'password'                 => bcrypt('menstagram'),
             'access_token'             => hash('sha256', 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW'),

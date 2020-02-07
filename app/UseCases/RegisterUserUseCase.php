@@ -30,6 +30,7 @@ class RegisterUserUseCase
             'screen_name'              => $screenName,
             'email'                    => $email,
             'password'                 => bcrypt($password),
+            'avatar'                   => asset('avatars/default/000' . mt_rand(1, 7) . '.png'),
             'access_token'             => hash('sha256', $accessToken),
             'access_token_deadline_at' => Carbon::now(),
         ]);

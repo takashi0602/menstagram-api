@@ -27,7 +27,7 @@ class StoreImagesUseCase
             $fileName = Str::random(16) . '.jpg';
             $storageFilePath = storage_path("app/public/posts/$fileName");
             $image->save($storageFilePath);
-            $publicFilePath = asset("storage/posts/$fileName");
+            $publicFilePath = asset("posts/$fileName");
             $filePaths->push($publicFilePath);
         }
         return $filePaths->all();
