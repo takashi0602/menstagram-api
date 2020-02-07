@@ -26,7 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'user_id'                  => $userId,
         'screen_name'              => $faker->firstName,
         'email'                    => $email,
-        'avatar'                   => 'http://placehold.it/150x150',
+        'avatar'                   => asset('avatars/default/000' . mt_rand(1, 7) . '.png'),
         'biography'                => $faker->text(128),
         'password'                 => bcrypt('menstagram'),
         'access_token'             => $accessToken,
