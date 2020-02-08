@@ -27,3 +27,6 @@ qual:
 
 test:
 	docker-compose exec php vendor/bin/phpunit
+
+tunnel:
+	ssh -R 80:localhost:8000 ssh.localhost.run

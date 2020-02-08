@@ -41,4 +41,13 @@ class User extends Authenticatable
     protected $dates = [
         'deleted_at',
     ];
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getAvatarAttribute($value)
+    {
+        return config('app.url') . $value;
+    }
 }

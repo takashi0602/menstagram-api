@@ -12,10 +12,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Post extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'user_id', 'text', 'images', 'liked',
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'images' => 'array',
     ];
@@ -42,6 +48,17 @@ class Post extends Model
     public function limitedLikes()
     {
         return $this->hasMany(Like::class)->orderBy('id', 'desc')->limit(5);
+    }
+
+    /**
+     * @param $value
+     * @return array
+     */
+    public function getImagesAttribute($value)
+    {
+        return collect(json_decode($value))->map(function ($v, $k) {
+            return config('app.url') . $v;
+        })->all();
     }
 
     /**

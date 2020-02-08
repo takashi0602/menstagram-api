@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
  * 投稿のダミーデータの生成
  */
 $factory->define(Post::class, function (Faker $faker) {
-    $imagePath = 'http://placehold.it/300x300';
+    $imagePath = asset('seeds/sample.png');
 
     return [
         'user_id' => $faker->numberBetween(1, 10),

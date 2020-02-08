@@ -38,5 +38,6 @@ $ make sh       // Bashの起動
 $ make dbg      // デバッガ(Telescope)の起動
 $ make qual     // 品質チェックツール(PHP Insights)の起動
 $ make test     // テスト(PHPUnit)の実行
+$ make tunnel   // localhost.runで公開
 $ php artisan make:usecase {name}   // ユースケースのレンプレートを生成
 ```
