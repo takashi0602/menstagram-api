@@ -14,6 +14,8 @@ services:
       TZ: 'Asia/Tokyo'
     depends_on:
       - php
+    networks:
+      - menstagram
 
   # Web API
   php:
@@ -25,6 +27,8 @@ services:
       TZ: 'Asia/Tokyo'
     depends_on:
       - mysql
+    networks:
+      - menstagram
 
   # データベース
   mysql:
@@ -41,3 +45,9 @@ services:
       MYSQL_PASSWORD: menstagram
       MYSQL_ROOT_PASSWORD: menstagram
       TZ: 'Asia/Tokyo'
+    networks:
+      - menstagram
+
+networks:
+  menstagram:
+    external: true
