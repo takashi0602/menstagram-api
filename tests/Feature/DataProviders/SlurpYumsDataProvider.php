@@ -5,7 +5,7 @@ namespace Tests\Feature\DataProviders;
 /**
  * スラープにヤムしたユーザー一覧
  *
- * Trait PostDetailDataProvider
+ * Trait SlurpYumsDataProvider
  * @package Tests\Feature\DataProviders
  */
 trait SlurpYumsDataProvider

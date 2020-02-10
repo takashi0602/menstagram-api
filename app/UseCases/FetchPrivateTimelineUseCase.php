@@ -27,7 +27,7 @@ class FetchPrivateTimelineUseCase
             return $v->target_user_id;
         })->push($userId);
 
-        $query = Slurp::with(['user:id,user_id,screen_name,avatar']);
+        $query = Slurp::with(['user:id,user_id,user_name,avatar']);
 
         if (is_null($slurpId) && is_null($type))                             $query->latest('id');
         else if (!is_null($slurpId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $slurpId);

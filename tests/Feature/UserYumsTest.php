@@ -97,7 +97,7 @@ class UserYumsTest extends TestCase
     }
 
     /**
-     * 正常系(post_id, typeあり)
+     * 正常系(スラープID, typeあり)
      *
      * @test
      * @dataProvider successTypeProvider
@@ -137,7 +137,7 @@ class UserYumsTest extends TestCase
     }
 
     /**
-     * 異常系(post_id)
+     * 異常系(スラープID)
      *
      * @test
      * @dataProvider failSlurpIdProvider

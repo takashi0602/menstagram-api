@@ -6,9 +6,9 @@ use Tests\Feature\DataProviders\UserSlurpsDataProvider;
 use Tests\TestCase;
 
 /**
- * ユーザーの投稿一覧
+ * ユーザーのスラープ一覧
  *
- * Class UserPostsTest
+ * Class UserSlurpsTest
  * @package Tests\Feature
  */
 class UserSlurpsTest extends TestCase
@@ -60,11 +60,11 @@ class UserSlurpsTest extends TestCase
     }
 
     /**
-     * 正常系(post_idあり)
+     * 正常系(スラープIDあり)
      *
      * @test
      */
-    public function successPostIdCase()
+    public function successSlurpIdCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
@@ -97,7 +97,7 @@ class UserSlurpsTest extends TestCase
     }
 
     /**
-     * 正常系(post_id, typeあり)
+     * 正常系(スラープID, typeあり)
      *
      * @test
      * @dataProvider successTypeProvider

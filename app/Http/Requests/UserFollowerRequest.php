@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 /**
  * フォロワー一覧
  *
- * Class UserFollowedRequest
+ * Class UserFollowerRequest
  * @package App\Http\Requests
  */
 class UserFollowerRequest extends FormRequest

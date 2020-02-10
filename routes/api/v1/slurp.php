@@ -1,8 +1,8 @@
 <?php
 
-Route::post('/slurp', 'PostController@slurp');
-Route::post('/slurp/text', 'PostController@text');
-Route::post('/slurp/yum', 'PostController@yum');
-Route::post('/slurp/unyum', 'PostController@unyum');
-Route::get('/slurp/detail', 'PostController@detail');
-Route::get('/slurp/yums', 'PostController@yums');
+Route::post('/slurp', 'SlurpController@slurp');
+Route::post('/slurp/text', 'SlurpController@text');
+Route::post('/slurp/yum', 'SlurpController@yum');
+Route::post('/slurp/unyum', 'SlurpController@unyum');
+Route::get('/slurp/detail', 'SlurpController@detail');
+Route::get('/slurp/yums', 'SlurpController@yums');

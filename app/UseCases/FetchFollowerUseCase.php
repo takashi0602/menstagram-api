@@ -7,7 +7,7 @@ use App\Models\Follow;
 /**
  * フォロワーの取得
  *
- * Class FetchFollowedUseCase
+ * Class FetchFollowerUseCase
  * @package App\UseCases
  */
 class FetchFollowerUseCase
@@ -27,7 +27,7 @@ class FetchFollowerUseCase
         });
 
         $follower = collect($follower)->map(function ($v, $k) use ($followByLoginUser) {
-            return collect($v->followedUser)
+            return collect($v->follower)
                         ->only(['user_id', 'user_name', 'avatar'])
                         ->put('is_follow', collect($followByLoginUser)->contains($v->follower->id) ? true : false)
                         ->put('is_me', user()->id === $v->follower->id ? true : false);

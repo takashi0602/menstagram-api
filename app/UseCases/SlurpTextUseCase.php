@@ -18,10 +18,10 @@ class SlurpTextUseCase
      */
     public function __invoke($request)
     {
-        $post = Slurp::where('user_id', user()->id)->where('id', $request->post_id)->where('text', null)->first();
-        if (collect($post)->isEmpty()) return false;
+        $slurp = Slurp::where('user_id', user()->id)->where('id', $request->slurp_id)->where('text', null)->first();
+        if (collect($slurp)->isEmpty()) return false;
 
-        $post->update([
+        $slurp->update([
             'text' => $request->text,
         ]);
         return true;

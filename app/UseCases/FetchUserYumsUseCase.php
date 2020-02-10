@@ -6,7 +6,7 @@ use App\Models\Yum;
 use App\Models\Slurp;
 
 /**
- * ヤムした投稿一覧
+ * ヤムしたスラープ一覧
  *
  * Class FetchUserYumsUseCase
  * @package App\UseCases

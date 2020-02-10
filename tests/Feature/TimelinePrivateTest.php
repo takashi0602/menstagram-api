@@ -143,7 +143,7 @@ class TimelinePrivateTest extends TestCase
      * @dataProvider failSlurpIdProvider
      * @param $slurpId
      */
-    public function failPostIdCase($slurpId)
+    public function failSlurpIdCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 

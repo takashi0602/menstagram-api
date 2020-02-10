@@ -8,7 +8,7 @@ use Tests\TestCase;
 /**
  * フォロー一覧
  *
- * Class UserFollowingTest
+ * Class UserGetFollowTest
  * @package Tests\Feature
  */
 class UserGetFollowTest extends TestCase

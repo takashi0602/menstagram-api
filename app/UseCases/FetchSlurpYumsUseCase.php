@@ -40,11 +40,11 @@ class FetchSlurpYumsUseCase
 
         $response = collect($yums)->map(function ($v, $k) use ($followIds) {
             return [
-                'user_id'      => $v['user']['user_id'],
-                'user_name'    => $v['user']['user_id'],
-                'avatar'       => $v['user']['avatar'],
-                'is_following' => collect($followIds)->contains($v['user']['id']) ? true : false,
-                'is_me'        => user()->id === $v['user']['id'] ? true : false,
+                'user_id'   => $v['user']['user_id'],
+                'user_name' => $v['user']['user_id'],
+                'avatar'    => $v['user']['avatar'],
+                'is_follow' => collect($followIds)->contains($v['user']['id']) ? true : false,
+                'is_me'     => user()->id === $v['user']['id'] ? true : false,
             ];
         });
 

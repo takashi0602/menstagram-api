@@ -7,7 +7,7 @@ use App\Models\Follow;
 /**
  * フォロー一覧の取得
  *
- * Class FetchFollowingUseCase
+ * Class FetchFollowUseCase
  * @package App\UseCases
  */
 class FetchFollowUseCase
@@ -26,14 +26,14 @@ class FetchFollowUseCase
             return $v->follow->id;
         });
 
-        $following = $follow->map(function ($v, $k) use ($followByLoginUser) {
+        $follow = $follow->map(function ($v, $k) use ($followByLoginUser) {
             return collect($v->follow)
-                        ->only(['user_id', 'screen_name', 'avatar'])
-                        ->put('is_following', collect($followByLoginUser)->contains($v->follow->id) ? true : false)
+                        ->only(['user_id', 'user_name', 'avatar'])
+                        ->put('is_follow', collect($followByLoginUser)->contains($v->follow->id) ? true : false)
                         ->put('is_me', user()->id === $v->follow->id ? true : false);
         });
 
-        return $following;
+        return $follow;
     }
 
     /**
