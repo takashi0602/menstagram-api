@@ -50,8 +50,8 @@ class AuthLogoutTest extends TestCase
             ->assertJsonStructure([]);
 
         $this->assertDatabaseHas('users', [
-            'user_id'       => $user['user_id'],
-            'access_token'  => null,
+            'user_id'      => $user['user_id'],
+            'access_token' => null,
         ]);
     }
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Tests\Feature\DataProviders\UserFollowedDataProvider;
+use Tests\Feature\DataProviders\UserFollowerDataProvider;
 use Tests\TestCase;
 
 /**
@@ -11,9 +11,9 @@ use Tests\TestCase;
  * Class UserFollowedTest
  * @package Tests\Feature
  */
-class UserFollowedTest extends TestCase
+class UserFollowerTest extends TestCase
 {
-    use UserFollowedDataProvider;
+    use UserFollowerDataProvider;
 
     /**
      * 初期化処理
@@ -34,17 +34,17 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->get('/api/v1/user/followed');
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->get('/api/v1/user/follower');
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -60,19 +60,19 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/user/followed', [
-                'user_id' => 'menstagram',
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/follower', [
+                            'user_id' => 'menstagram',
+                        ]);
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -88,19 +88,19 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/user/followed', [
-                'follow_id' => 5,
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/follower', [
+                            'follow_id' => 5,
+                        ]);
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -118,20 +118,20 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/user/followed', [
-                'follow_id' => 5,
-                'type'      => $type,
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/follower', [
+                            'follow_id' => 5,
+                            'type'      => $type,
+                        ]);
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -149,10 +149,10 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/user/followed', [
-                'user_id' => $userId,
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/follower', [
+                            'user_id' => $userId,
+                        ]);
 
         $response
             ->assertStatus(400)
@@ -171,10 +171,10 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/user/followed', [
-                'follow_id' => $followId,
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/follower', [
+                            'follow_id' => $followId,
+                        ]);
 
         $response
             ->assertStatus(400)
@@ -193,10 +193,10 @@ class UserFollowedTest extends TestCase
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/user/followed', [
-                'type' => $type,
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/follower', [
+                            'type' => $type,
+                        ]);
 
         $response
             ->assertStatus(400)

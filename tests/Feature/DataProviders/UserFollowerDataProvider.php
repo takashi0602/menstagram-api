@@ -5,10 +5,10 @@ namespace Tests\Feature\DataProviders;
 /**
  * フォロワー一覧
  *
- * Trait UserFollowedDataProvider
+ * Trait UserFollowerDataProvider
  * @package Tests\Feature\DataProviders
  */
-trait UserFollowedDataProvider
+trait UserFollowerDataProvider
 {
     /**
      * 正常系(type)のテストデータの定義
@@ -46,7 +46,7 @@ trait UserFollowedDataProvider
     public function failFollowIdProvider()
     {
         return [
-            'follow_idが文字列のパターン'   => ['takashi'],
+            'follow_idが文字列のパターン' => ['takashi'],
             'follow_idが存在しないパターン' => [999],
         ];
     }

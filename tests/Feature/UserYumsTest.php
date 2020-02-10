@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\Feature\DataProviders\UserPostsDataProvider;
+use Tests\Feature\DataProviders\UserYumsDataProvider;
 use Tests\TestCase;
 
 /**
- * ユーザーの投稿一覧
+ * ヤムしたスラープ一覧
  *
- * Class UserPostsTest
+ * Class UserYumsTest
  * @package Tests\Feature
  */
-class UserPostsTest extends TestCase
+class UserYumsTest extends TestCase
 {
-    use UserPostsDataProvider;
+    use UserYumsDataProvider;
 
     /**
      * 初期化処理
@@ -21,7 +21,7 @@ class UserPostsTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
+        parent::seeding([\CreateUsersSeeder::class, \CreateSlurpsSeeder::class]);
     }
 
     /**
@@ -35,7 +35,7 @@ class UserPostsTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->get('/api/v1/user/posts');
+                        ->get('/api/v1/user/yums');
 
         $response
             ->assertStatus(200)
@@ -48,11 +48,11 @@ class UserPostsTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -60,18 +60,18 @@ class UserPostsTest extends TestCase
     }
 
     /**
-     * 正常系(post_idあり)
+     * 正常系(スラープIDあり)
      *
      * @test
      */
-    public function successPostIdCase()
+    public function successSlurpIdCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/posts', [
-                            'post_id' => 50,
+                        ->json('GET', '/api/v1/user/yums', [
+                            'slurp_id' => 50,
                         ]);
 
         $response
@@ -85,11 +85,11 @@ class UserPostsTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -109,9 +109,9 @@ class UserPostsTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/posts', [
-                            'post_id'   => 50,
-                            'type'      => $type,
+                        ->json('GET', '/api/v1/user/yums', [
+                            'slurp_id' => 50,
+                            'type'     => $type,
                         ]);
 
         $response
@@ -125,11 +125,11 @@ class UserPostsTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -137,41 +137,20 @@ class UserPostsTest extends TestCase
     }
 
     /**
-     * 異常系(ユーザーID)
-     *
-     * @test
-     * @dataProvider failUserIdProvider
-     * @param $userId
-     */
-    public function failUserIdCase($userId)
-    {
-        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
-
-        $response = $this
-                        ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/posts', [
-                            'user_id'   => $userId,
-                        ]);
-
-        $response
-            ->assertStatus(400);
-    }
-
-    /**
      * 異常系(post_id)
      *
      * @test
-     * @dataProvider failPostIdProvider
-     * @param $postId
+     * @dataProvider failSlurpIdProvider
+     * @param $slurpId
      */
-    public function failPostIdCase($postId)
+    public function failSlurpIdCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/posts', [
-                            'post_id'   => $postId,
+                        ->json('GET', '/api/v1/user/yums', [
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response
@@ -191,9 +170,9 @@ class UserPostsTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/posts', [
-                            'post_id'   => 50,
-                            'type'      => $type,
+                        ->json('GET', '/api/v1/user/yums', [
+                            'slurp_id' => 50,
+                            'type'     => $type,
                         ]);
 
         $response

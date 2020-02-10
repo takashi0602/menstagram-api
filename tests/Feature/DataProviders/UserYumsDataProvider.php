@@ -3,12 +3,12 @@
 namespace Tests\Feature\DataProviders;
 
 /**
- * いいねした投稿一覧
+ * ヤムしたスラープ一覧
  *
- * Trait TimelineGlobalDataProvider
+ * Trait UserYumsDataProvider
  * @package Tests\Feature\DataProviders
  */
-trait UserLikesDataProvider
+trait UserYumsDataProvider
 {
     /**
      * 正常系(type)のテストデータの定義
@@ -24,15 +24,15 @@ trait UserLikesDataProvider
     }
 
     /**
-     * 異常系(post_id)のテストデータの定義
+     * 異常系(スラープID)のテストデータの定義
      *
      * @return array
      */
-    public function failPostIdProvider()
+    public function failSlurpIdProvider()
     {
         return [
-            'post_idが空文字のパターン'   => [''],
-            'post_idが存在しないパターン' => [999],
+            'slurp_idが空文字のパターン' => [''],
+            'slurp_idが存在しないパターン' => [999],
         ];
     }
 

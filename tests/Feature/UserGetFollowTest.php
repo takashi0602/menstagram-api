@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Tests\Feature\DataProviders\UserFollowingDataProvider;
+use Tests\Feature\DataProviders\UserGetFollowDataProvider;
 use Tests\TestCase;
 
 /**
@@ -11,9 +11,9 @@ use Tests\TestCase;
  * Class UserFollowingTest
  * @package Tests\Feature
  */
-class UserFollowingTest extends TestCase
+class UserGetFollowTest extends TestCase
 {
-    use UserFollowingDataProvider;
+    use UserGetFollowDataProvider;
 
     /**
      * 初期化処理
@@ -35,16 +35,16 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->get('/api/v1/user/following');
+                        ->get('/api/v1/user/follow');
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -61,7 +61,7 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/following', [
+                        ->json('GET', '/api/v1/user/follow', [
                             'user_id' => 'menstagram',
                         ]);
 
@@ -70,9 +70,9 @@ class UserFollowingTest extends TestCase
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -89,7 +89,7 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/following', [
+                        ->json('GET', '/api/v1/user/follow', [
                             'follow_id' => 5,
                         ]);
 
@@ -98,9 +98,9 @@ class UserFollowingTest extends TestCase
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -119,7 +119,7 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/following', [
+                        ->json('GET', '/api/v1/user/follow', [
                             'follow_id' => 5,
                             'type'      => $type,
                         ]);
@@ -129,9 +129,9 @@ class UserFollowingTest extends TestCase
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -150,7 +150,7 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/following', [
+                        ->json('GET', '/api/v1/user/follow', [
                             'user_id' => $userId,
                         ]);
 
@@ -172,7 +172,7 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/following', [
+                        ->json('GET', '/api/v1/user/follow', [
                             'follow_id' => $followId,
                         ]);
 
@@ -194,7 +194,7 @@ class UserFollowingTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/following', [
+                        ->json('GET', '/api/v1/user/follow', [
                             'type' => $type,
                         ]);
 

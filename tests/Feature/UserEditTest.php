@@ -21,7 +21,7 @@ class UserEditTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
+        parent::seeding([\CreateUsersSeeder::class, \CreateSlurpsSeeder::class]);
     }
 
     /**
@@ -32,14 +32,14 @@ class UserEditTest extends TestCase
     public function successCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
-        $screenName = 'test';
+        $userName = 'test';
         $biography = 'test';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->patch('/api/v1/user/edit', [
-                            'screen_name' => $screenName,
-                            'biography'   => $biography,
+                            'user_name' => $userName,
+                            'biography' => $biography,
                         ]);
 
         $response
@@ -47,27 +47,27 @@ class UserEditTest extends TestCase
             ->assertJsonStructure([]);
 
         $this->assertDatabaseHas('users', [
-            'screen_name' => $screenName,
-            'biography'   => $biography,
+            'user_name' => $userName,
+            'biography' => $biography,
         ]);
     }
 
     /**
-     * 異常系(スクリーンネーム)
+     * 異常系(ユーザーネーム)
      *
      * @test
-     * @dataProvider screenNameProvider
-     * @param $screenName
+     * @dataProvider userNameProvider
+     * @param $userName
      */
-    public function failScreenNameCase($screenName)
+    public function failScreenNameCase($userName)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->patch('/api/v1/user/edit', [
-                            'screen_name' => $screenName,
-                            'biography'   => 'test',
+                            'user_name' => $userName,
+                            'biography' => 'test',
                         ]);
 
         $response
@@ -89,8 +89,8 @@ class UserEditTest extends TestCase
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->patch('/api/v1/user/edit', [
-                            'screen_name' => 'test',
-                            'biography'   => $biography,
+                            'user_name' => 'test',
+                            'biography' => $biography,
                         ]);
 
         $response

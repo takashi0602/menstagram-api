@@ -2,22 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Models\Post;
+use App\Models\Slurp;
 use Illuminate\Http\UploadedFile;
-use Tests\Feature\DataProviders\PostTextDataProvider;
+use Tests\Feature\DataProviders\SlurpTextDataProvider;
 use Tests\TestCase;
 
 /**
- * テキスト投稿
+ * スラープ(テキスト)
  *
- * Class PostTextTest
+ * Class SlurpTextTest
  * @package Tests\Feature
  */
-class PostTextTest extends TestCase
+class SlurpTextTest extends TestCase
 {
-    use PostTextDataProvider;
+    use SlurpTextDataProvider;
 
-    protected $posts;
+    protected $slurps;
 
     /**
      * 初期化処理
@@ -25,8 +25,8 @@ class PostTextTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
-        $this->posts = Post::all();
+        parent::seeding([\CreateUsersSeeder::class, \CreateSlurpsSeeder::class]);
+        $this->slurps = Slurp::all();
     }
 
     /**
@@ -42,21 +42,21 @@ class PostTextTest extends TestCase
 
         $response = $this
                     ->withHeader('Authorization', "Bearer $accessToken")
-                    ->post('/api/v1/post', [
+                    ->post('/api/v1/slurps', [
                         'image1' => $file,
                     ]);
 
-        $postId = json_decode($response->getContent())->post_id;
+        $slurpId = json_decode($response->getContent())->slurp_id;
 
         // TODO: 現状、is_ramens[0]がtrueの場合のみ走るようになっている
         // TODO: 100%ラーメンと判定される画像を投げるようにしたい
-        if ($postId === 0) return;
+        if ($slurpId === 0) return;
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/text', [
-                            'post_id'   => $postId,
-                            'text'      => 'test',
+                        ->post('/api/v1/slurp/text', [
+                            'slurp_id' => $slurpId,
+                            'text'     => 'test',
                         ]);
 
         $response
@@ -65,21 +65,21 @@ class PostTextTest extends TestCase
     }
 
     /**
-     * 異常系(投稿ID)
+     * 異常系(スラープID)
      *
      * @test
-     * @dataProvider postIdProvider
-     * @param $postId
+     * @dataProvider slurpIdProvider
+     * @param $slurpId
      */
-    public function failPostIdCase($postId)
+    public function failSlurpIdCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/text', [
-                            'post_id'   => $postId,
-                            'text'      => 'test',
+                        ->post('/api/v1/slurp/text', [
+                            'slurp_id' => $slurpId,
+                            'text'     => 'test',
                         ]);
 
         $response
@@ -102,17 +102,17 @@ class PostTextTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post', [
+                        ->post('/api/v1/slurp', [
                             'image1' => $file,
                         ]);
 
-        $postId = json_decode($response->getContent())->post_id;
+        $slurpId = json_decode($response->getContent())->slurp_id;
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/text', [
-                            'post_id'   => $postId,
-                            'text'      => $text,
+                        ->post('/api/v1/slurp/text', [
+                            'slurp_id' => $slurpId,
+                            'text'     => $text,
                         ]);
 
         $response

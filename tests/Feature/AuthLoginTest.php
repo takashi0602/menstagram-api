@@ -36,8 +36,8 @@ class AuthLoginTest extends TestCase
     public function successCase()
     {
         $user = [
-            'user_id'       => $this->users[0]->user_id,
-            'password'      => 'menstagram',
+            'user_id'  => $this->users[0]->user_id,
+            'password' => 'menstagram',
         ];
 
         $response = $this->post('/api/v1/auth/login', $user);
@@ -71,8 +71,8 @@ class AuthLoginTest extends TestCase
     public function failUserIdCase($userId)
     {
         $user = [
-            'user_id'   => $userId,
-            'password'  => 'menstagram',
+            'user_id'  => $userId,
+            'password' => 'menstagram',
         ];
 
         $this->failBaseCase($user);
@@ -88,8 +88,8 @@ class AuthLoginTest extends TestCase
     public function failPasswordCase($password)
     {
         $user = [
-            'user_id'   => $this->users[0]->user_id,
-            'password'  => $password,
+            'user_id'  => $this->users[0]->user_id,
+            'password' => $password,
         ];
 
         $this->failBaseCase($user);

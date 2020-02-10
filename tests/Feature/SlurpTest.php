@@ -2,22 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Models\Post;
+use App\Models\Slurp;
 use Illuminate\Http\UploadedFile;
-use Tests\Feature\DataProviders\PostDataProvider;
+use Tests\Feature\DataProviders\SlurpDataProvider;
 use Tests\TestCase;
 
 /**
- * 画像投稿
+ * スラープ(画像)
  *
- * Class PostTest
+ * Class SlurpTest
  * @package Tests\Feature
  */
-class PostTest extends TestCase
+class SlurpTest extends TestCase
 {
-    use PostDataProvider;
+    use SlurpDataProvider;
 
-    protected $posts;
+    protected $slurps;
 
     /**
      * 初期化処理
@@ -25,8 +25,8 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreatePostsSeeder::class]);
-        $this->posts = Post::all();
+        parent::seeding([\CreateSlurpsSeeder::class]);
+        $this->slurps = Slurp::all();
     }
 
     /**
@@ -42,22 +42,22 @@ class PostTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post', [
+                        ->post('/api/v1/slurp', [
                             'image1' => $file,
                         ]);
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'post_id',
+                'slurp_id',
                 'is_ramens' => [],
             ]);
 
         // TODO: 現状、is_ramens[0]がtrueの場合のみ走るようになっている
         // TODO: 100%ラーメンと判定される画像を投げるようにしたい
         if (json_decode($response->getContent())->is_ramens[0]) {
-            $this->assertDatabaseHas('posts', [
-                'id' => json_decode($response->getContent())->post_id,
+            $this->assertDatabaseHas('slurps', [
+                'id' => json_decode($response->getContent())->slurp_id,
             ]);
         }
 
@@ -76,7 +76,7 @@ class PostTest extends TestCase
 
         $response = $this
             ->withHeader('Authorization', "Bearer $accessToken")
-            ->post('/api/v1/post', [
+            ->post('/api/v1/slurp', [
                 'image1' => $file,
             ]);
 

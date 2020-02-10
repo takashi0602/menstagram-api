@@ -21,7 +21,7 @@ class TimelinePrivateTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
+        parent::seeding([\CreateUsersSeeder::class, \CreateSlurpsSeeder::class]);
     }
 
     /**
@@ -48,11 +48,11 @@ class TimelinePrivateTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -60,18 +60,18 @@ class TimelinePrivateTest extends TestCase
     }
 
     /**
-     * 正常系(post_idあり)
+     * 正常系(スラープIDあり)
      *
      * @test
      */
-    public function successPostIdCase()
+    public function successSlurpIdCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->json('GET', '/api/v1/timeline/private', [
-                            'post_id' => 50,
+                            'slurp_id' => 50,
                         ]);
 
         $response
@@ -85,11 +85,11 @@ class TimelinePrivateTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -97,7 +97,7 @@ class TimelinePrivateTest extends TestCase
     }
 
     /**
-     * 正常系(post_id, typeあり)
+     * 正常系(スラープID, typeあり)
      *
      * @test
      * @dataProvider successTypeProvider
@@ -110,8 +110,8 @@ class TimelinePrivateTest extends TestCase
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->json('GET', '/api/v1/timeline/private', [
-                            'post_id'   => 50,
-                            'type'      => $type,
+                            'slurp_id' => 50,
+                            'type'     => $type,
                         ]);
 
         $response
@@ -125,11 +125,11 @@ class TimelinePrivateTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -137,20 +137,20 @@ class TimelinePrivateTest extends TestCase
     }
 
     /**
-     * 異常系(post_id)
+     * 異常系(スラープID)
      *
      * @test
-     * @dataProvider failPostIdProvider
-     * @param $postId
+     * @dataProvider failSlurpIdProvider
+     * @param $slurpId
      */
-    public function failPostIdCase($postId)
+    public function failPostIdCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->json('GET', '/api/v1/timeline/private', [
-                            'post_id'   => $postId,
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response
@@ -171,8 +171,8 @@ class TimelinePrivateTest extends TestCase
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
                         ->json('GET', '/api/v1/timeline/private', [
-                            'post_id'   => 50,
-                            'type'      => $type,
+                            'slurp_id' => 50,
+                            'type'     => $type,
                         ]);
 
         $response

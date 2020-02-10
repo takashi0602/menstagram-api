@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\Feature\DataProviders\PostLikerDataProvider;
+use Tests\Feature\DataProviders\SlurpYumsDataProvider;
 use Tests\TestCase;
 
 /**
+ * スラープにヤムしたユーザー一覧
  *
- *
- * Class PostLikerTest
+ * Class SlurpYumsTest
  * @package Tests\Feature
  */
-class PostLikerTest extends TestCase
+class SlurpYumsTest extends TestCase
 {
-    use PostLikerDataProvider;
+    use SlurpYumsDataProvider;
 
     /**
      * 正常系
@@ -26,8 +26,8 @@ class PostLikerTest extends TestCase
 
         $response = $this
             ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/post/liker', [
-                'post_id' => 1,
+            ->json('GET', '/api/v1/slurp/yums', [
+                'slurp_id' => 1,
             ]);
 
         $response
@@ -35,9 +35,9 @@ class PostLikerTest extends TestCase
             ->assertJsonStructure([
                 '*' => [
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
-                    'is_following',
+                    'is_follow',
                     'is_me',
                 ]
             ]);
@@ -47,17 +47,17 @@ class PostLikerTest extends TestCase
      * 異常系
      *
      * @test
-     * @dataProvider postIdProvider
-     * @param $postId
+     * @dataProvider slurpIdProvider
+     * @param $slurpId
      */
-    public function failCase($postId)
+    public function failCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
             ->withHeader('Authorization', "Bearer $accessToken")
-            ->json('GET', '/api/v1/post/liker', [
-                'post_id' => $postId,
+            ->json('GET', '/api/v1/slurp/yums', [
+                'slurp_id' => $slurpId,
             ]);
 
         $response

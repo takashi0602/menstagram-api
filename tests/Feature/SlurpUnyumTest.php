@@ -2,21 +2,21 @@
 
 namespace Tests\Feature;
 
-use App\Models\Like;
-use Tests\Feature\DataProviders\PostLikeDataProvider;
+use App\Models\Yum;
+use Tests\Feature\DataProviders\SlurpUnyumDataProvider;
 use Tests\TestCase;
 
 /**
- * いいね
+ * ヤムを外す
  *
- * Class PostLikeTest
+ * Class SlurpUnyumTest
  * @package Tests\Feature
  */
-class PostLikeTest extends TestCase
+class SlurpUnyumTest extends TestCase
 {
-    use PostLikeDataProvider;
+    use SlurpUnyumDataProvider;
 
-    protected $likes;
+    protected $yums;
 
     /**
      * 初期化処理
@@ -24,8 +24,8 @@ class PostLikeTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreatePostsSeeder::class, \CreateLikesSeeder::class]);
-        $this->likes = Like::all();
+        parent::seeding([\CreateSlurpsSeeder::class, \CreateYumsSeeder::class]);
+        $this->yums = Yum::all();
     }
 
     /**
@@ -37,41 +37,47 @@ class PostLikeTest extends TestCase
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
         $userId = 1;
-        $postId = 1;
+        $slurpId = 1;
 
-        $this->likes->where('user_id', $userId)->where('post_id', $postId)->each->delete();
+        $this->yums->where('user_id', $userId)->where('slurp_id', $slurpId)->each->delete();
+
+        $this
+            ->withHeader('Authorization', "Bearer $accessToken")
+            ->post('/api/v1/slurp/yum', [
+                'slurp_id' => $slurpId,
+            ]);
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/like', [
-                            'post_id' => $postId,
+                        ->post('/api/v1/slurp/unyum', [
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([]);
 
-        $this->assertDatabaseHas('likes', [
-            'user_id' => $userId,
-            'post_id' => $postId,
+        $this->assertDatabaseMissing('yums', [
+            'user_id'  => $userId,
+            'slurp_id' => $slurpId,
         ]);
     }
 
     /**
-     * 異常系(投稿ID)
+     * 異常系(スラープID)
      *
      * @test
-     * @dataProvider postIdProvider
-     * @param $postId
+     * @dataProvider slurpIdProvider
+     * @param $slurpId
      */
-    public function failPostIdCase($postId)
+    public function failPostIdCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/like', [
-                            'post_id' => $postId,
+                        ->post('/api/v1/slurp/unyum', [
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response
@@ -80,27 +86,21 @@ class PostLikeTest extends TestCase
     }
 
     /**
-     * 異常系(すでにいいねをしているパターン)
+     * 異常系(ヤムされていないスラープのパターン)
      *
      * @test
      */
-    public function failAlreadyExistsCase()
+    public function failNotExistsCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
-        $postId = 1;
+        $slurpId = 1;
 
-        $this->likes->where('user_id', 1)->where('post_id', $postId)->each->delete();
-
-        $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->post('/api/v1/post/like', [
-                'post_id' => $postId,
-            ]);
+        $this->yums->where('user_id', 1)->where('slurp_id', $slurpId)->each->delete();
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->post('/api/v1/post/like', [
-                            'post_id' => $postId,
+                        ->post('/api/v1/slurp/unyum', [
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response

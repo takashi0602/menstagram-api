@@ -35,14 +35,14 @@ class UserProfileTest extends TestCase
             ->assertJsonStructure([
                 'id',
                 'user_id',
-                'screen_name',
+                'user_name',
                 'email',
                 'avatar',
                 'biography',
-                'posted',
-                'following',
-                'followed',
-                'is_followed',
+                'slurp_count',
+                'follow_count',
+                'follower_count',
+                'is_follow',
             ]);
     }
 

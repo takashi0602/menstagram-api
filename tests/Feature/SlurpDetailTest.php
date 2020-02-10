@@ -2,21 +2,21 @@
 
 namespace Tests\Feature;
 
-use App\Models\Post;
-use Tests\Feature\DataProviders\PostDetailDataProvider;
+use App\Models\Slurp;
+use Tests\Feature\DataProviders\SlurpDetailDataProvider;
 use Tests\TestCase;
 
 /**
- * 投稿詳細
+ * スラープ詳細
  *
- * Class PostDetailTest
+ * Class SlurpDetailTest
  * @package Tests\Feature
  */
-class PostDetailTest extends TestCase
+class SlurpDetailTest extends TestCase
 {
-    use PostDetailDataProvider;
+    use SlurpDetailDataProvider;
 
-    protected $posts;
+    protected $slurps;
 
     /**
      * 初期化処理
@@ -24,8 +24,8 @@ class PostDetailTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreatePostsSeeder::class]);
-        $this->posts =  Post::all();
+        parent::seeding([\CreateSlurpsSeeder::class]);
+        $this->slurps =  Slurp::all();
     }
 
     /**
@@ -39,8 +39,8 @@ class PostDetailTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/post/detail', [
-                            'post_id' => 1,
+                        ->json('GET', '/api/v1/slurp/detail', [
+                            'slurp_id' => 1,
                         ]);
 
         $response
@@ -49,17 +49,17 @@ class PostDetailTest extends TestCase
                 'id',
                 'text',
                 'images' => [],
-                'liked',
-                'is_liked',
+                'yum_count',
+                'is_yum',
                 'created_at',
                 'updated_at',
                 'user' => [
                     'id',
                     'user_id',
-                    'screen_name',
+                    'user_name',
                     'avatar',
                 ],
-                'liker' => [
+                'yums' => [
                     '*' => [
                         'user_id',
                         'avatar',
@@ -72,17 +72,17 @@ class PostDetailTest extends TestCase
      * 異常系
      *
      * @test
-     * @dataProvider postIdProvider
-     * @param $postId
+     * @dataProvider slurpIdProvider
+     * @param $slurpId
      */
-    public function failCase($postId)
+    public function failCase($slurpId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/post/detail', [
-                            'post_id' => $postId,
+                        ->json('GET', '/api/v1/slurp/detail', [
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response

@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\Feature\DataProviders\UserLikesDataProvider;
+use Tests\Feature\DataProviders\UserSlurpsDataProvider;
 use Tests\TestCase;
 
 /**
- * いいねした投稿一覧
+ * ユーザーの投稿一覧
  *
- * Class UserLikesTest
+ * Class UserPostsTest
  * @package Tests\Feature
  */
-class UserLikesTest extends TestCase
+class UserSlurpsTest extends TestCase
 {
-    use UserLikesDataProvider;
+    use UserSlurpsDataProvider;
 
     /**
      * 初期化処理
@@ -21,7 +21,7 @@ class UserLikesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        parent::seeding([\CreateUsersSeeder::class, \CreatePostsSeeder::class]);
+        parent::seeding([\CreateUsersSeeder::class, \CreateSlurpsSeeder::class]);
     }
 
     /**
@@ -35,7 +35,7 @@ class UserLikesTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->get('/api/v1/user/likes');
+                        ->get('/api/v1/user/slurps');
 
         $response
             ->assertStatus(200)
@@ -48,11 +48,11 @@ class UserLikesTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yums',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -70,8 +70,8 @@ class UserLikesTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/likes', [
-                            'post_id' => 50,
+                        ->json('GET', '/api/v1/user/slurps', [
+                            'slurp_id' => 50,
                         ]);
 
         $response
@@ -85,11 +85,11 @@ class UserLikesTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -109,9 +109,9 @@ class UserLikesTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/likes', [
-                            'post_id'   => 50,
-                            'type'      => $type,
+                        ->json('GET', '/api/v1/user/slurps', [
+                            'slurp_id' => 50,
+                            'type'     => $type,
                         ]);
 
         $response
@@ -125,11 +125,11 @@ class UserLikesTest extends TestCase
                     ],
                     'user' => [
                         'user_id',
-                        'screen_name',
+                        'user_name',
                         'avatar',
                     ],
-                    'liked',
-                    'is_liked',
+                    'yum_count',
+                    'is_yum',
                     'created_at',
                     'updated_at',
                 ],
@@ -137,20 +137,41 @@ class UserLikesTest extends TestCase
     }
 
     /**
-     * 異常系(post_id)
+     * 異常系(ユーザーID)
      *
      * @test
-     * @dataProvider failPostIdProvider
-     * @param $postId
+     * @dataProvider failUserIdProvider
+     * @param $userId
      */
-    public function failPostIdCase($postId)
+    public function failUserIdCase($userId)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/likes', [
-                            'post_id'   => $postId,
+                        ->json('GET', '/api/v1/user/slurps', [
+                            'user_id' => $userId,
+                        ]);
+
+        $response
+            ->assertStatus(400);
+    }
+
+    /**
+     * 異常系(スラープID)
+     *
+     * @test
+     * @dataProvider failSlurpIdProvider
+     * @param $slurpId
+     */
+    public function failSlurpIdCase($slurpId)
+    {
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->json('GET', '/api/v1/user/slurps', [
+                            'slurp_id' => $slurpId,
                         ]);
 
         $response
@@ -170,9 +191,9 @@ class UserLikesTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->json('GET', '/api/v1/user/likes', [
-                            'post_id'   => 50,
-                            'type'      => $type,
+                        ->json('GET', '/api/v1/user/slurps', [
+                            'slurp_id' => 50,
+                            'type'     => $type,
                         ]);
 
         $response
