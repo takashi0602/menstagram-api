@@ -1,10 +1,10 @@
 <?php
 
 Route::get('/user/profile', 'UserController@profile');
-Route::get('/user/posts', 'UserController@posts');
+Route::get('/user/slurps', 'UserController@slurps');
 Route::patch('/user/edit', 'UserController@edit');
-Route::get('/user/likes', 'UserController@likes');
-Route::post('/user/follow', 'UserController@follow');
+Route::get('/user/yums', 'UserController@yums');
+Route::post('/user/follow', 'UserController@postFollow');
 Route::post('/user/unfollow', 'UserController@unfollow');
-Route::get('/user/following', 'UserController@following');
-Route::get('/user/followed', 'UserController@followed');
+Route::get('/user/follow', 'UserController@getFollow');
+Route::get('/user/follower', 'UserController@follower');

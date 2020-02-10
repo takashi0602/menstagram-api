@@ -32,8 +32,8 @@ class AuthLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'=> ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users', ],
-            'password'=> ['bail', 'required', 'string', 'min:8', ],
+            'user_id'  => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users', ],
+            'password' => ['bail', 'required', 'string', 'min:8', ],
         ];
     }
 

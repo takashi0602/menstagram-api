@@ -25,7 +25,7 @@ class TimelineController extends Controller
      */
     public function _global(TimelineGlobalRequest $request, FetchGlobalTimelineUseCase $useCase)
     {
-        $response = $useCase($request->post_id, $request->type);
+        $response = $useCase($request->slurp_id, $request->type);
         return response($response, 200);
     }
 
@@ -38,7 +38,7 @@ class TimelineController extends Controller
      */
     public function _private(TimelinePrivateRequest $request, FetchPrivateTimelineUseCase $useCase)
     {
-        $response = $useCase($request->post_id, $request->type);
+        $response = $useCase($request->slurp_id, $request->type);
         return response($response, 200);
     }
 }

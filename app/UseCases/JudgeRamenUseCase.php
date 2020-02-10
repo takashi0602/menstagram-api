@@ -34,8 +34,8 @@ class JudgeRamenUseCase
             fseek($tmp, 0);
             $newImages[] = [
                 'Content-type' => 'multipart/form-data',
-                'name'     => 'image' . ($i + 1),
-                'contents' => fopen(stream_get_meta_data($tmp)['uri'], 'r'),
+                'name'         => 'image' . ($i + 1),
+                'contents'     => fopen(stream_get_meta_data($tmp)['uri'], 'r'),
             ];
         }
         return $newImages;

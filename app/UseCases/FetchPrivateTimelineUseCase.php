@@ -3,8 +3,8 @@
 namespace App\UseCases;
 
 use App\Models\Follow;
-use App\Models\Like;
-use App\Models\Post;
+use App\Models\Yum;
+use App\Models\Slurp;
 
 /**
  * プライベートタイムライン
@@ -15,11 +15,11 @@ use App\Models\Post;
 class FetchPrivateTimelineUseCase
 {
     /**
-     * @param null $postId
+     * @param null $slurpId
      * @param null $type
-     * @return Post[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     * @return Slurp[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
-    public function __invoke($postId = null, $type = null)
+    public function __invoke($slurpId = null, $type = null)
     {
         $userId = user()->id;
 
@@ -27,33 +27,33 @@ class FetchPrivateTimelineUseCase
             return $v->target_user_id;
         })->push($userId);
 
-        $query = Post::with(['user:id,user_id,screen_name,avatar']);
+        $query = Slurp::with(['user:id,user_id,user_name,avatar']);
 
-        if (is_null($postId) && is_null($type))                             $query->latest('id');
-        else if (!is_null($postId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $postId);
-        else if (!is_null($postId) && $type === 'old')                      $query->where('id', '<=', $postId)->orderBy('id', 'desc');
+        if (is_null($slurpId) && is_null($type))                             $query->latest('id');
+        else if (!is_null($slurpId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $slurpId);
+        else if (!is_null($slurpId) && $type === 'old')                      $query->where('id', '<=', $slurpId)->orderBy('id', 'desc');
 
-        $posts = $query
+        $slurps = $query
                     ->whereIn('user_id', $followIds)
                     ->limit(10)
                     ->get();
 
-        $posts = collect($posts)->map(function ($v, $k) use ($userId) {
-            $like = Like::where('user_id', $userId)->where('post_id', $v->id)->first();
-            $isLiked = true;
-            if (collect($like)->isEmpty()) $isLiked = false;
+        $slurps = collect($slurps)->map(function ($v, $k) use ($userId) {
+            $yum = Yum::where('user_id', $userId)->where('slurp_id', $v->id)->first();
+            $isYum = true;
+            if (collect($yum)->isEmpty()) $isYum = false;
 
             return collect($v)
                         ->map(function ($v, $k) {
                             if ($k === 'user') return collect($v)->except(['id']);
                             return $v;
                         })
-                        ->put('is_liked', $isLiked)
+                        ->put('is_yum', $isYum)
                         ->except(['user_id']);
         });
 
-        if ($type !== 'new') $posts = $posts->reverse()->values();
+        if ($type !== 'new') $slurps = $slurps->reverse()->values();
 
-        return $posts;
+        return $slurps;
     }
 }

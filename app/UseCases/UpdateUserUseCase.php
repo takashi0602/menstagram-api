@@ -22,8 +22,8 @@ class UpdateUserUseCase
         if ($request->has('biography') && !$request->biography) $request->biography = '';
 
         $user = User::where('id', user()->id)->first();
-        if ($request->has('screen_name')) $user->screen_name = $request->screen_name;
-        if ($request->has('biography'))   $user->biography = $request->biography;
+        if ($request->has('user_name')) $user->user_name = $request->user_name;
+        if ($request->has('biography')) $user->biography = $request->biography;
         $user->save();
     }
 }

@@ -24,15 +24,15 @@ class CreateUsersSeeder extends Seeder
         // 固定ユーザーの生成
         User::create([
             'user_id'                  => 'menstagram',
-            'screen_name'              => 'Menstagram',
+            'user_name'                => 'Menstagram',
             'email'                    => 'system@menstagram.com',
             'avatar'                   => asset('avatars/default/000' . mt_rand(1, 7) . '.png'),
             'biography'                => 'menstagram',
             'password'                 => bcrypt('menstagram'),
             'access_token'             => hash('sha256', 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW'),
-            'posted'                   => $faker->numberBetween(1, 999999999),
-            'following'                => $faker->numberBetween(1, 9999999999),
-            'followed'                 => $faker->numberBetween(1, 9999999999),
+            'slurp_count'              => $faker->numberBetween(1, 999999999),
+            'follow_count'             => $faker->numberBetween(1, 9999999999),
+            'follower_count'           => $faker->numberBetween(1, 9999999999),
             'access_token_deadline_at' => Carbon::now(),
         ]);
 

@@ -27,8 +27,8 @@ class FollowUseCase
         if ($id === $targetId) return false;
 
         DB::transaction(function () use ($id, $targetId) {
-            User::where('id', $id)->increment('following');
-            User::where('id', $targetId)->increment('followed');
+            User::where('id', $id)->increment('follow_count');
+            User::where('id', $targetId)->increment('follower_count');
 
             Follow::create([
                 'user_id'        => $id,

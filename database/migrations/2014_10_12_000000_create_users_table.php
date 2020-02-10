@@ -21,15 +21,15 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('user_id', 16)->unique();
-            $table->string('screen_name', 16);
+            $table->string('user_name', 16);
             $table->string('email', 256)->unique();
             $table->string('password')->nullable();
             $table->string('avatar');
             $table->string('biography', 128)->default('');
             $table->string('access_token')->nullable();
-            $table->unsignedBigInteger('posted')->default(0);
-            $table->unsignedBigInteger('following')->default(0);
-            $table->unsignedBigInteger('followed')->default(0);
+            $table->unsignedBigInteger('slurp_count')->default(0);
+            $table->unsignedBigInteger('follow_count')->default(0);
+            $table->unsignedBigInteger('follower_count')->default(0);
             $table->timestamp('access_token_deadline_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
