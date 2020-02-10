@@ -5,11 +5,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * いいね
+ * スラープ
  *
- * Class CreateLikesTable
+ * Class CreateSlurpsTable
  */
-class CreateLikesTable extends Migration
+class CreateSlurpsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,14 +18,15 @@ class CreateLikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('likes', function (Blueprint $table) {
+        Schema::create('slurps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('post_id');
+            $table->string('text', 256)->nullable();
+            $table->json('images');
+            $table->unsignedBigInteger('yum_count')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('posts');
         });
     }
 
@@ -36,6 +37,6 @@ class CreateLikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likes');
+        Schema::dropIfExists('slurps');
     }
 }

@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 投稿
+ * スラープ
  *
- * Class Post
+ * Class Slurp
  * @package App\Models
  */
-class Post extends Model
+class Slurp extends Model
 {
     /**
      * @var array
      */
     protected $fillable = [
-        'user_id', 'text', 'images', 'liked',
+        'user_id', 'text', 'images', 'yum_count',
     ];
 
     /**
@@ -37,17 +37,17 @@ class Post extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function likes()
+    public function yums()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Yum::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function limitedLikes()
+    public function limitedYums()
     {
-        return $this->hasMany(Like::class)->orderBy('id', 'desc')->limit(5);
+        return $this->hasMany(Yum::class)->orderBy('id', 'desc')->limit(5);
     }
 
     /**

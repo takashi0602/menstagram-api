@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * いいね
+ * ヤム
  *
- * Class Like
+ * Class Yum
  * @package App\Models
  */
-class Like extends Model
+class Yum extends Model
 {
     protected $fillable = [
-        'user_id', 'post_id',
+        'user_id', 'slurp_id',
     ];
 
     /**
