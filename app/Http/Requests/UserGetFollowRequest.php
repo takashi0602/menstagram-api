@@ -7,9 +7,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * フォロー
+ * フォロー一覧
  *
- * Class UserFollowRequest
+ * Class UserGetFollowRequest
  * @package App\Http\Requests
  */
 class UserGetFollowRequest extends FormRequest
@@ -32,7 +32,9 @@ class UserGetFollowRequest extends FormRequest
     public function rules()
     {
         return [
-            'target_user_id' => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'user_id'   => ['bail', 'string', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'follow_id' => ['bail', 'integer', 'exists:follows,id', ],
+            'type'      => ['bail', 'in:old,new', ],
         ];
     }
 

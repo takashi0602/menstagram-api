@@ -22,7 +22,7 @@ trait SlurpDataProvider
         return [
             '画像が含まれていないパターン' => [null],
             '画像ではないパターン' => ['takashi'],
-            '画像サイズが上限を超えているパターン' => [UploadedFile::fake()->image('test.jpg', 100, 100)->size(5000)],
+            '画像サイズが上限を超えているパターン' => [UploadedFile::fake()->image('test.jpg', 100, 100)->size(5121)],
         ];
     }
 }

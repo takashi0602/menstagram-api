@@ -42,7 +42,7 @@ class SlurpTextTest extends TestCase
 
         $response = $this
                     ->withHeader('Authorization', "Bearer $accessToken")
-                    ->post('/api/v1/slurps', [
+                    ->post('/api/v1/slurp', [
                         'image1' => $file,
                     ]);
 

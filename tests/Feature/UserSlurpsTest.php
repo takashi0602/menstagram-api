@@ -51,7 +51,7 @@ class UserSlurpsTest extends TestCase
                         'user_name',
                         'avatar',
                     ],
-                    'yums',
+                    'yum_count',
                     'is_yum',
                     'created_at',
                     'updated_at',
