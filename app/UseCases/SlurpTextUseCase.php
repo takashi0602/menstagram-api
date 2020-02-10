@@ -2,15 +2,15 @@
 
 namespace App\UseCases;
 
-use App\Models\Post;
+use App\Models\Slurp;
 
 /**
- * テキスト投稿
+ * スラープ(テキスト)
  *
- * Class PostTextUseCase
+ * Class SlurpTextUseCase
  * @package App\UseCases
  */
-class PostTextUseCase
+class SlurpTextUseCase
 {
     /**
      * @param $request
@@ -18,7 +18,7 @@ class PostTextUseCase
      */
     public function __invoke($request)
     {
-        $post = Post::where('user_id', user()->id)->where('id', $request->post_id)->where('text', null)->first();
+        $post = Slurp::where('user_id', user()->id)->where('id', $request->post_id)->where('text', null)->first();
         if (collect($post)->isEmpty()) return false;
 
         $post->update([

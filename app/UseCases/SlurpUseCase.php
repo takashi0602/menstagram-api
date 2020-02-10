@@ -2,17 +2,17 @@
 
 namespace App\UseCases;
 
-use App\Models\Post;
+use App\Models\Slurp;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 /**
  * 画像パスの保存
  *
- * Class PostImagesUseCase
+ * Class SlurpUseCase
  * @package App\UseCases
  */
-class PostUseCase
+class SlurpUseCase
 {
     /**
      * @param $filePaths
@@ -21,22 +21,22 @@ class PostUseCase
      */
     public function __invoke($filePaths, $isRamens)
     {
-        $postId = 0;
+        $slurpId = 0;
         if (!collect($isRamens)->contains(false)) {
-            $postId = DB::transaction(function () use ($filePaths, $isRamens) {
-                User::where('id', user()->id)->increment('posted');
+            $slurpId = DB::transaction(function () use ($filePaths, $isRamens) {
+                User::where('id', user()->id)->increment('slurp_count');
 
-                $postId = Post::create([
+                $slurpId = Slurp::create([
                     'user_id' => user()->id,
                     'images'  => $this->filteredFilePaths($filePaths, $isRamens),
                 ])->id;
 
-                return $postId;
+                return $slurpId;
             }, 5);
         }
 
         return [
-            'post_id'  => $postId,
+            'slurp_id'  => $slurpId,
             'is_ramens' => $isRamens,
         ];
     }

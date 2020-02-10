@@ -10,7 +10,7 @@ use App\Models\Follow;
  * Class FetchFollowingUseCase
  * @package App\UseCases
  */
-class FetchFollowingUseCase
+class FetchFollowUseCase
 {
     /**
      * @param null $userId
@@ -20,17 +20,17 @@ class FetchFollowingUseCase
      */
     public function __invoke($userId = null, $followId = null, $type = null)
     {
-        $following = $this->fetchFollowingUsers($userId, $followId, $type, 100);
+        $follow = $this->fetchFollow($userId, $followId, $type, 100);
 
-        $followingByLoginUser = $this->fetchFollowingUsers()->map(function ($v, $k) {
-            return $v->followingUser->id;
+        $followByLoginUser = $this->fetchFollow()->map(function ($v, $k) {
+            return $v->follow->id;
         });
 
-        $following = $following->map(function ($v, $k) use ($followingByLoginUser) {
-            return collect($v->followingUser)
+        $following = $follow->map(function ($v, $k) use ($followByLoginUser) {
+            return collect($v->follow)
                         ->only(['user_id', 'screen_name', 'avatar'])
-                        ->put('is_following', collect($followingByLoginUser)->contains($v->followingUser->id) ? true : false)
-                        ->put('is_me', user()->id === $v->followingUser->id ? true : false);
+                        ->put('is_following', collect($followByLoginUser)->contains($v->follow->id) ? true : false)
+                        ->put('is_me', user()->id === $v->follow->id ? true : false);
         });
 
         return $following;
@@ -44,20 +44,18 @@ class FetchFollowingUseCase
      * @param null $type
      * @return \Illuminate\Support\Collection
      */
-    private function fetchFollowingUsers($userId = null, $followId = null, $type = null, $limit = null)
+    private function fetchFollow($userId = null, $followId = null, $type = null)
     {
         $userId = $userId ? user($userId)->id : user()->id;
 
-        $query = Follow::with(['followingUser'])->where('user_id', $userId);
+        $query = Follow::with(['follow'])->where('user_id', $userId);
 
         if (is_null($followId) && is_null($type))                            $query->latest('id');
         else if (!is_null($followId) && (is_null($type) || $type === 'new')) $query->where('id', '>=', $followId);
         else if (!is_null($followId) && $type === 'old')                     $query->where('id', '<=', $followId)->orderBy('id', 'desc');
 
-        if ($limit) $query->limit($limit);
-
-        $following = collect($query->get());
-        if ($type != 'new') $following = $following->reverse()->values();
-        return $following;
+        $follow = collect($query->get());
+        if ($type != 'new') $follow = $follow->reverse()->values();
+        return $follow;
     }
 }

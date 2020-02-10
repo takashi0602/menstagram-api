@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserEditRequest;
-use App\Http\Requests\UserFollowedRequest;
-use App\Http\Requests\UserFollowingRequest;
-use App\Http\Requests\UserFollowRequest;
-use App\Http\Requests\UserLikesRequest;
-use App\Http\Requests\UserPostsRequest;
+use App\Http\Requests\UserFollowerRequest;
+use App\Http\Requests\UserPostFollowRequest;
+use App\Http\Requests\UserGetFollowRequest;
+use App\Http\Requests\UserYumsRequest;
+use App\Http\Requests\UserSlurpsRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\UserUnfollowRequest;
-use App\UseCases\FetchFollowedUseCase;
-use App\UseCases\FetchFollowingUseCase;
-use App\UseCases\FetchUserLikesUseCase;
-use App\UseCases\FetchUserPostsUseCase;
+use App\UseCases\FetchFollowerUseCase;
+use App\UseCases\FetchFollowUseCase;
+use App\UseCases\FetchUserYumsUseCase;
+use App\UseCases\FetchUserSlurpsUseCase;
 use App\UseCases\FetchUserProfileUseCase;
 use App\UseCases\FollowUseCase;
 use App\UseCases\UnfollowUseCase;
@@ -43,15 +43,15 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザーの投稿一覧
+     * ユーザーのスラープ一覧
      *
-     * @param UserPostsRequest $request
-     * @param FetchUserPostsUseCase $useCase
+     * @param UserSlurpsRequest $request
+     * @param FetchUserSlurpsUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function posts(UserPostsRequest $request, FetchUserPostsUseCase $useCase)
+    public function slurps(UserSlurpsRequest $request, FetchUserSlurpsUseCase $useCase)
     {
-        $response = $useCase($request->user_id, $request->post_id, $request->type);
+        $response = $useCase($request->user_id, $request->slurp_id, $request->type);
         return response($response, 200);
     }
 
@@ -69,26 +69,26 @@ class UserController extends Controller
     }
 
     /**
-     * いいねした投稿一覧
+     * ヤムしたスラープ一覧
      *
-     * @param UserLikesRequest $request
-     * @param FetchUserLikesUseCase $useCase
+     * @param UserYumsRequest $request
+     * @param FetchUserYumsUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function likes(UserLikesRequest $request, FetchUserLikesUseCase $useCase)
+    public function yums(UserYumsRequest $request, FetchUserYumsUseCase $useCase)
     {
-        $response = $useCase($request->post_id, $request->type);
+        $response = $useCase($request->slurp_id, $request->type);
         return response($response, 200);
     }
 
     /**
      * フォロー
      *
-     * @param UserFollowRequest $request
+     * @param UserPostFollowRequest $request
      * @param FollowUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function follow(UserFollowRequest $request, FollowUseCase $useCase)
+    public function postFollow(UserPostFollowRequest $request, FollowUseCase $useCase)
     {
         if (!$useCase($request->target_user_id)) return response('{}', 400);
         return response('{}', 200);
@@ -110,11 +110,11 @@ class UserController extends Controller
     /**
      * フォロー一覧
      *
-     * @param UserFollowingRequest $request
-     * @param FetchFollowingUseCase $useCase
+     * @param UserGetFollowRequest $request
+     * @param FetchFollowUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function following(UserFollowingRequest $request, FetchFollowingUseCase $useCase)
+    public function getFollow(UserGetFollowRequest $request, FetchFollowUseCase $useCase)
     {
         $response = $useCase($request->user_id, $request->follow_id, $request->type);
         return response($response, 200);
@@ -123,11 +123,11 @@ class UserController extends Controller
     /**
      * フォロワー一覧
      *
-     * @param UserFollowedRequest $request
-     * @param FetchFollowedUseCase $useCase
+     * @param UserFollowerRequest $request
+     * @param FetchFollowerUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function followed(UserFollowedRequest $request, FetchFollowedUseCase $useCase)
+    public function follower(UserFollowerRequest $request, FetchFollowerUseCase $useCase)
     {
         $response = $useCase($request->user_id, $request->follow_id, $request->type);
         return response($response, 200);

@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * フォロー
+ * スラープ詳細
  *
- * Class UserFollowRequest
+ * Class SlurpDetailRequest
  * @package App\Http\Requests
  */
-class UserFollowRequest extends FormRequest
+class SlurpDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +32,7 @@ class UserFollowRequest extends FormRequest
     public function rules()
     {
         return [
-            'target_user_id' => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'slurp_id' => ['bail', 'required', 'integer', 'exists:slurps,id', ],
         ];
     }
 

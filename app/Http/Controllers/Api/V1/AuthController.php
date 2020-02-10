@@ -27,7 +27,7 @@ class AuthController extends Controller
      */
     public function register(AuthRegisterRequest $request, RegisterUserUseCase $useCase)
     {
-        $accessToken = $useCase($request->user_id, $request->screen_name, $request->email, $request->password);
+        $accessToken = $useCase($request->user_id, $request->user_name, $request->email, $request->password);
         return response(['access_token' => $accessToken], 200);
     }
 

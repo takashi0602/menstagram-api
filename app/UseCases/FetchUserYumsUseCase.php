@@ -2,39 +2,36 @@
 
 namespace App\UseCases;
 
-use App\Models\Follow;
 use App\Models\Yum;
 use App\Models\Slurp;
 
 /**
- * プライベートタイムライン
+ * ヤムした投稿一覧
  *
- * Class FetchPrivateTimelineUseCase
+ * Class FetchUserYumsUseCase
  * @package App\UseCases
  */
-class FetchPrivateTimelineUseCase
+class FetchUserYumsUseCase
 {
     /**
      * @param null $slurpId
      * @param null $type
-     * @return Slurp[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     * @return slurp[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
     public function __invoke($slurpId = null, $type = null)
     {
         $userId = user()->id;
 
-        $followIds = collect(Follow::where('user_id', $userId)->get())->map(function ($v, $k) {
-            return $v->target_user_id;
-        })->push($userId);
-
-        $query = Slurp::with(['user:id,user_id,screen_name,avatar']);
+        $query = Slurp::with(['user:id,user_id,user_name,avatar']);
 
         if (is_null($slurpId) && is_null($type))                             $query->latest('id');
         else if (!is_null($slurpId) && (is_null($type) || $type === 'new'))  $query->where('id', '>=', $slurpId);
-        else if (!is_null($slurpId) && $type === 'old')                      $query->where('id', '<=', $slurpId)->orderBy('id', 'desc');
+        else if (!is_null($slurpId) && $type === 'old')                      $query->where('id', '<=', $slurpId);
 
         $slurps = $query
-                    ->whereIn('user_id', $followIds)
+                    ->whereHas('yums', function ($query) use ($userId) {
+                        $query->where('user_id', $userId);
+                    })
                     ->limit(10)
                     ->get();
 
@@ -52,7 +49,7 @@ class FetchPrivateTimelineUseCase
                         ->except(['user_id']);
         });
 
-        if ($type !== 'new') $slurps = $slurps->reverse()->values();
+        if (is_null($slurpId) && is_null($type)) $slurps = $slurps->reverse()->values();
 
         return $slurps;
     }

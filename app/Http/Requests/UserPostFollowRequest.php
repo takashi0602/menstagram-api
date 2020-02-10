@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * フォロワー一覧
+ * フォロー一覧
  *
- * Class UserFollowedRequest
+ * Class UserFollowingRequest
  * @package App\Http\Requests
  */
-class UserFollowedRequest extends FormRequest
+class UserPostFollowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,9 +32,9 @@ class UserFollowedRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'   => ['bail', 'string', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'user_id' => ['bail', 'string', 'min:1', 'max:16', 'exists:users,user_id', ],
             'follow_id' => ['bail', 'integer', 'exists:follows,id', ],
-            'type'      => ['bail', 'in:old,new', ],
+            'type'    => ['bail', 'in:old,new', ],
         ];
     }
 

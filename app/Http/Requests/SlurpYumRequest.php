@@ -7,12 +7,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * テキスト投稿
+ * ヤム
  *
- * Class PostTextRequest
+ * Class SlurpYumRequest
  * @package App\Http\Requests
  */
-class PostTextRequest extends FormRequest
+class SlurpYumRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,15 +32,14 @@ class PostTextRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id'   => ['bail', 'required', 'integer', ],
-            'text'      => ['bail', 'required', 'string', 'min:1', 'max:256', ],
+            'slurp_id' => ['bail', 'required', 'integer', 'exists:slurps,id', ],
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         $response = response('{}', 400);
         throw new HttpResponseException($response);

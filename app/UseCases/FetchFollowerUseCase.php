@@ -10,7 +10,7 @@ use App\Models\Follow;
  * Class FetchFollowedUseCase
  * @package App\UseCases
  */
-class FetchFollowedUseCase
+class FetchFollowerUseCase
 {
     /**
      * @param null $userId
@@ -20,20 +20,20 @@ class FetchFollowedUseCase
      */
     public function __invoke($userId = null, $followId = null, $type = null)
     {
-        $followed = $this->fetchFollowedUsers($userId, $followId, $type);
+        $follower = $this->fetchFollower($userId, $followId, $type);
 
-        $followingByLoginUser = $this->fetchFollowingUsersByLoginUser()->map(function ($v, $k) {
-            return $v->followingUser->id;
+        $followByLoginUser = $this->fetchFollowByLoginUser()->map(function ($v, $k) {
+            return $v->follow->id;
         });
 
-        $followed = collect($followed)->map(function ($v, $k) use ($followingByLoginUser) {
+        $follower = collect($follower)->map(function ($v, $k) use ($followByLoginUser) {
             return collect($v->followedUser)
-                        ->only(['user_id', 'screen_name', 'avatar'])
-                        ->put('is_following', collect($followingByLoginUser)->contains($v->followedUser->id) ? true : false)
-                        ->put('is_me', user()->id === $v->followedUser->id ? true : false);
+                        ->only(['user_id', 'user_name', 'avatar'])
+                        ->put('is_follow', collect($followByLoginUser)->contains($v->follower->id) ? true : false)
+                        ->put('is_me', user()->id === $v->follower->id ? true : false);
         });
 
-        return $followed;
+        return $follower;
     }
 
     /**
@@ -44,19 +44,19 @@ class FetchFollowedUseCase
      * @param null $type
      * @return \Illuminate\Support\Collection
      */
-    private function fetchFollowedUsers($userId = null, $followId = null, $type = null)
+    private function fetchFollower($userId = null, $followId = null, $type = null)
     {
         $userId = $userId ? user($userId)->id : user()->id;
 
-        $query = Follow::with(['followedUser'])->where('target_user_id', $userId);
+        $query = Follow::with(['follower'])->where('target_user_id', $userId);
 
         if (is_null($followId) && is_null($type))                            $query->latest('id');
         else if (!is_null($followId) && (is_null($type) || $type === 'new')) $query->where('id', '>=', $followId);
         else if (!is_null($followId) && $type === 'old')                     $query->where('id', '<=', $followId)->orderBy('id', 'desc');
 
-        $followed = collect($query->limit(100)->get());
-        if ($type !== 'new') $followed = $followed->reverse()->values();
-        return $followed;
+        $follower = collect($query->limit(100)->get());
+        if ($type !== 'new') $follower = $follower->reverse()->values();
+        return $follower;
     }
 
     /**
@@ -64,8 +64,8 @@ class FetchFollowedUseCase
      *
      * @return \Illuminate\Support\Collection
      */
-    private function fetchFollowingUsersByLoginUser()
+    private function fetchFollowByLoginUser()
     {
-        return collect(Follow::with(['followingUser'])->where('user_id', user()->id)->get());
+        return collect(Follow::with(['follow'])->where('user_id', user()->id)->get());
     }
 }

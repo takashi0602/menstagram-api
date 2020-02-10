@@ -3,31 +3,31 @@
 namespace App\UseCases;
 
 use App\Models\Follow;
-use App\Models\Like;
+use App\Models\Yum;
 
 /**
- * いいねしたユーザー一覧の取得
+ * ヤムしたユーザー一覧の取得
  *
- * Class FetchPostLikerUseCase
+ * Class FetchSlurpYumsUseCase
  * @package App\UseCases
  */
-class FetchPostLikerUseCase
+class FetchSlurpYumsUseCase
 {
     /**
-     * @param $postId
+     * @param $slurpId
      * @return \Illuminate\Support\Collection
      */
-    public function __invoke($postId)
+    public function __invoke($slurpId)
     {
-        $likes = Like::where('post_id', $postId)
+        $yums = Yum::where('slurp_id', $slurpId)
                         ->with(['user'])
                         ->orderBy('id', 'desc')
                         ->limit(100)
                         ->get();
 
         $userIds = [];
-        foreach ($likes as $like) {
-            $userIds[] = $like->user->id;
+        foreach ($yums as $yum) {
+            $userIds[] = $yum->user->id;
         }
 
         $follows = Follow::where('user_id', user()->id)
@@ -38,10 +38,10 @@ class FetchPostLikerUseCase
             return $v->target_user_id;
         });
 
-        $response = collect($likes)->map(function ($v, $k) use ($followIds) {
+        $response = collect($yums)->map(function ($v, $k) use ($followIds) {
             return [
                 'user_id'      => $v['user']['user_id'],
-                'screen_name'  => $v['user']['user_id'],
+                'user_name'    => $v['user']['user_id'],
                 'avatar'       => $v['user']['avatar'],
                 'is_following' => collect($followIds)->contains($v['user']['id']) ? true : false,
                 'is_me'        => user()->id === $v['user']['id'] ? true : false,

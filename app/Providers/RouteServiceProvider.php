@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
         $this->mapV1AuthApiRoutes();
         $this->mapV1UserApiRoutes();
-        $this->mapV1PostApiRoutes();
+        $this->mapV1SlurpApiRoutes();
         $this->mapV1TimelineApiRoutes();
         $this->mapV1NoticeApiRoutes();
         $this->mapV1ReportApiRoutes();
@@ -80,14 +80,14 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * 投稿系API
+     * スラープ系API
      */
-    protected function mapV1PostApiRoutes()
+    protected function mapV1SlurpApiRoutes()
     {
         Route::prefix('api/v1')
                 ->middleware('auth.bearer')
                 ->namespace("$this->namespace\Api\V1")
-                ->group(base_path('routes/api/v1/post.php'));
+                ->group(base_path('routes/api/v1/slurp.php'));
     }
 
     /**
