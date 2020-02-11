@@ -1,5 +1,6 @@
 init:
 	bundler install
+	mkdir -p ./docker/mysql/data
 	rm -rf ./docker/mysql/data/*
 	docker-sync clean
 	docker-sync start
