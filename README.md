@@ -33,11 +33,12 @@ $ make init
 ```bash
 $ make up       // 起動(localhost:8000)
 $ make down     // 終了
+$ make ps       // コンテナの状態(プロセス)の確認
 $ make db       // DBの作り直し
 $ make sh       // Bashの起動
+$ make test     // テスト(PHPUnit)の実行
 $ make dbg      // デバッガ(Telescope)の起動
 $ make qual     // 品質チェックツール(PHP Insights)の起動
-$ make test     // テスト(PHPUnit)の実行
 $ make tunnel   // localhost.runで公開
 $ php artisan make:usecase {name}   // ユースケースのレンプレートを生成
 ```
