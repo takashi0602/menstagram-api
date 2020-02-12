@@ -32,7 +32,7 @@ class UserFollowerRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'   => ['string', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'user_id'   => ['regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', 'exists:users,user_id', ],
             'follow_id' => ['integer', 'exists:follows,id', ],
             'type'      => ['in:old,new', ],
         ];
@@ -45,8 +45,7 @@ class UserFollowerRequest extends FormRequest
     {
         return [
             'user_id.string'    => 'ユーザーIDは文字列のみ使用可能です。',
-            'user_id.min'       => 'ユーザーIDは1文字以上のみ使用可能です。',
-            'user_id.max'       => 'ユーザーIDは16文字以下のみ使用可能です。',
+            'user_id.between'   => 'ユーザーIDは1〜16文字のみ使用可能です。',
             'user_id.exists'    => '指定したユーザーIDは存在しません。',
 
             'follow_id.integer' => 'フォローIDは数値のみ使用可能です',
