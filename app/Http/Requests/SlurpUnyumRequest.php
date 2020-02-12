@@ -56,7 +56,7 @@ class SlurpUnyumRequest extends FormRequest
         $response['errors'] = $validator->errors()->toArray();
 
         throw new HttpResponseException(
-            response()->json($response, 400)
+            response($response, 400)
         );
     }
 }
