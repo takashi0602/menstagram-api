@@ -27,7 +27,7 @@ class RegisterUserUseCase
 
         User::create([
             'user_id'                  => $userId,
-            'screen_name'              => $screenName,
+            'user_name'                => $screenName,
             'email'                    => $email,
             'password'                 => bcrypt($password),
             'avatar'                   => asset('avatars/default/000' . mt_rand(1, 7) . '.png'),

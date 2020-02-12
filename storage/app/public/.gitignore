@@ -1,4 +1,4 @@
 avatars/custom/*
-posts/*
+slurps/*
 !avatars/custom/.gitkeep
-!posts/.gitkeep
+!slurps/.gitkeep

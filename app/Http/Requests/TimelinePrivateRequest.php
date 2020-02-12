@@ -32,8 +32,8 @@ class TimelinePrivateRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id' => ['bail', 'integer', 'exists:posts,id', ],
-            'type'      => ['bail', 'in:old,new', ],
+            'slurp_id' => ['bail', 'integer', 'exists:slurps,id', ],
+            'type'     => ['bail', 'in:old,new', ],
         ];
     }
 

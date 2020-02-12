@@ -11,16 +11,16 @@ namespace Tests\Feature\DataProviders;
 trait UserEditDataProvider
 {
     /**
-     * 正常系(スクリーンネーム)のテストデータの定義
+     * 正常系(ユーザーネーム)のテストデータの定義
      *
      * @return array
      */
-    public function screenNameProvider()
+    public function userNameProvider()
     {
         return [
-            'スクリーンネームが抜けているパターン' => [null],
-            'スクリーンネームが空文字のパターン' => [''],
-            'スクリーンネームが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
+            'ユーザーネームが抜けているパターン' => [null],
+            'ユーザーネームが空文字のパターン' => [''],
+            'ユーザーネームが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
         ];
     }
 

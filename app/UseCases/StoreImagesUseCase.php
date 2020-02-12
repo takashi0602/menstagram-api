@@ -25,9 +25,9 @@ class StoreImagesUseCase
         for ($i = 0; $i < collect($images)->count(); $i++) {
             $image = Image::make($images[$i]);
             $fileName = Str::random(16) . '.jpg';
-            $storageFilePath = storage_path("app/public/posts/$fileName");
+            $storageFilePath = storage_path("app/public/slurps/$fileName");
             $image->save($storageFilePath);
-            $publicFilePath = asset("posts/$fileName");
+            $publicFilePath = asset("slurps/$fileName");
             $filePaths->push($publicFilePath);
         }
         return $filePaths->all();

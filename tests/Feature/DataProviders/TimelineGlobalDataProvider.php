@@ -24,15 +24,15 @@ trait TimelineGlobalDataProvider
     }
 
     /**
-     * 異常系(post_id)のテストデータの定義
+     * 異常系(スラープID)のテストデータの定義
      *
      * @return array
      */
-    public function failPostIdProvider()
+    public function failSlurpIdProvider()
     {
         return [
-            'post_idが文字列のパターン'   => ['takashi'],
-            'post_idが存在しないパターン' => [999],
+            'slurp_idが文字列のパターン' => ['takashi'],
+            'slurp_idが存在しないパターン' => [999],
         ];
     }
 

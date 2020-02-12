@@ -36,10 +36,10 @@ class AuthRegisterTest extends TestCase
     public function successCase()
     {
         $user = [
-            'user_id'       => 'Menstagram_9999',
-            'screen_name'   => 'Menstagram_9999',
-            'email'         => 'menstagram_9999@menstagram.com',
-            'password'      => 'Menstagram_9999',
+            'user_id'   => 'Menstagram_9999',
+            'user_name' => 'Menstagram_9999',
+            'email'     => 'menstagram_9999@menstagram.com',
+            'password'  => 'Menstagram_9999',
         ];
 
         $response = $this->post('/api/v1/auth/register', $user);
@@ -49,9 +49,9 @@ class AuthRegisterTest extends TestCase
             ->assertJsonStructure(['access_token']);
 
         $this->assertDatabaseHas('users', [
-            'user_id'       => $user['user_id'],
-            'screen_name'   => $user['screen_name'],
-            'email'         => $user['email'],
+            'user_id'   => $user['user_id'],
+            'user_name' => $user['user_name'],
+            'email'     => $user['email'],
         ]);
 
         $this->users->where('user_id', $user['user_id'])->each->delete();
@@ -83,29 +83,27 @@ class AuthRegisterTest extends TestCase
     public function failUserIdCase($userId)
     {
         $user = [
-            'user_id'       => $userId,
-            'screen_name'   => 'Menstagram9999',
-            'email'         => 'menstagram9999@menstagram.com',
-            'password'      => 'Menstagram9999',
+            'user_id'   => $userId,
+            'user_name' => 'Menstagram9999',
+            'email'     => 'menstagram9999@menstagram.com',
+            'password'  => 'Menstagram9999',
         ];
 
         $this->failBaseCase($user, $userId);
     }
 
     /**
-     * 異常系(スクリーンネーム)
+     * 異常系(ユーザーネーム)
      *
-     * @test
-     * @dataProvider screenNameProvider
-     * @param $screenName
+     * @param $userName
      */
-    public function failScreenNameCase($screenName)
+    public function failScreenNameCase($userName)
     {
         $user = [
-            'user_id'       => 'Menstagram_9999',
-            'screen_name'   => $screenName,
-            'email'         => 'menstagram_9999@menstagram.com',
-            'password'      => 'Menstagram_9999',
+            'user_id'   => 'Menstagram_9999',
+            'user_name' => $userName,
+            'email'     => 'menstagram_9999@menstagram.com',
+            'password'  => 'Menstagram_9999',
         ];
 
         $this->failBaseCase($user, $user['user_id']);
@@ -121,10 +119,10 @@ class AuthRegisterTest extends TestCase
     public function failEmailCase($email)
     {
         $user = [
-            'user_id'       => 'Menstagram_9999',
-            'screen_name'   => 'Menstagram9999',
-            'email'         => $email,
-            'password'      => 'Menstagram_9999',
+            'user_id'   => 'Menstagram_9999',
+            'user_name' => 'Menstagram9999',
+            'email'     => $email,
+            'password'  => 'Menstagram_9999',
         ];
 
         $this->failBaseCase($user, $user['user_id']);
@@ -140,10 +138,10 @@ class AuthRegisterTest extends TestCase
     public function failPasswordCase($password)
     {
         $user = [
-            'user_id'       => 'Menstagram_9999',
-            'screen_name'   => 'Menstagram9999',
-            'email'         => 'menstagram_9999@menstagram.com',
-            'password'      => $password,
+            'user_id'   => 'Menstagram_9999',
+            'user_name' => 'Menstagram9999',
+            'email'     => 'menstagram_9999@menstagram.com',
+            'password'  => $password,
         ];
 
         $this->failBaseCase($user, $user['user_id']);

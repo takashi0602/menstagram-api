@@ -32,7 +32,7 @@ class UserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'=> ['bail', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'user_id' => ['bail', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users,user_id', ],
         ];
     }
 

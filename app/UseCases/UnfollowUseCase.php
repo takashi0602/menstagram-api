@@ -27,8 +27,8 @@ class UnfollowUseCase
         if ($id === $targetId) return false;
 
         DB::transaction(function () use ($id, $targetId) {
-            User::where('id', $id)->decrement('following');
-            User::where('id', $targetId)->decrement('followed');
+            User::where('id', $id)->decrement('follow_count');
+            User::where('id', $targetId)->decrement('follower_count');
 
             Follow::where('user_id', $id)->where('target_user_id', $targetId)->delete();
         }, 5);
