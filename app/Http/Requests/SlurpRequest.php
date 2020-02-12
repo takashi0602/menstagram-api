@@ -45,17 +45,17 @@ class SlurpRequest extends FormRequest
     public function messages()
     {
         return [
-            'image1.image' => '画像でないファイルは選択できません。',
-            'image1.max'   => '画像のサイズは5MBが上限です。',
+            'image1.image' => config('errors.slurp.image.image'),
+            'image1.max'   => config('errors.slurp.image.max'),
 
-            'image2.image' => '画像でないファイルは選択できません。',
-            'image2.max'   => '画像のサイズは5MBが上限です。',
+            'image2.image' => config('errors.slurp.image.image'),
+            'image2.max'   => config('errors.slurp.image.max'),
 
-            'image3.image' => '画像でないファイルは選択できません。',
-            'image3.max'   => '画像のサイズは5MBが上限です。',
+            'image3.image' => config('errors.slurp.image.image'),
+            'image3.max'   => config('errors.slurp.image.max'),
 
-            'image4.image' => '画像でないファイルは選択できません。',
-            'image4.max'   => '画像のサイズは5MBが上限です。',
+            'image4.image' => config('errors.slurp.image.image'),
+            'image4.max'   => config('errors.slurp.image.max'),
         ];
     }
 

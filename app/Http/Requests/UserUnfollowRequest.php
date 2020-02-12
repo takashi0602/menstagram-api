@@ -42,10 +42,10 @@ class UserUnfollowRequest extends FormRequest
     public function messages()
     {
         return [
-            'target_user_id.required' => 'フォロー対象となるユーザーIDは必須項目です。',
-            'target_user_id.regex'    => 'フォロー対象となるユーザーIDは半角英数字とアンダーバーのみ使用可能です。',
-            'target_user_id.between'  => 'フォロー対象となるユーザーIDは1〜16文字のみ使用可能です。',
-            'target_user_id.exists'   => '指定したユーザーIDは存在しません。',
+            'target_user_id.required' => config('errors.follow.target_user_id.required'),
+            'target_user_id.regex'    => config('errors.follow.target_user_id.regex'),
+            'target_user_id.between'  => config('errors.follow.target_user_id.between'),
+            'target_user_id.exists'   => config('errors.follow.target_user_id.exists'),
         ];
     }
 

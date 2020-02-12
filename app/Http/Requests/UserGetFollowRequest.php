@@ -44,14 +44,14 @@ class UserGetFollowRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.regex'     => 'ユーザーIDは半角英数字とアンダーバーのみ使用可能です。',
-            'user_id.between'   => 'ユーザーIDは1〜16文字のみ使用可能です。',
-            'user_id.exists'    => '指定したユーザーIDは存在しません。',
+            'user_id.regex'     => config('errors.user.user_id.regex'),
+            'user_id.between'   => config('errors.user.user_id.between'),
+            'user_id.exists'    => config('errors.user.user_id.exists'),
 
-            'follow_id.integer' => 'フォローIDは数値のみ使用可能です',
-            'follow_id.exists'  => '指定したフォローIDは存在しません',
+            'follow_id.integer' => config('errors.follow.id.integer'),
+            'follow_id.exists'  => config('errors.follow.id.exists'),
 
-            'type.in'           => '存在しないタイプです。',
+            'type.in'           => config('errors.general.type.in'),
         ];
     }
 

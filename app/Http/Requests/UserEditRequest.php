@@ -43,10 +43,10 @@ class UserEditRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_name.string'  => 'ユーザーネームは文字列のみ使用可能です',
-            'user_name.between' => 'ユーザーネームは1〜16文字のみ使用可能です',
+            'user_name.string'  => config('errors.user.user_name.string'),
+            'user_name.between' => config('errors.user.user_name.between'),
 
-            'biography.max'     => '自己紹介は128文字以下のみ使用可能です',
+            'biography.max'     => config('errors.user.biography.max'),
         ];
     }
 

@@ -42,9 +42,9 @@ class SlurpYumRequest extends FormRequest
     public function messages()
     {
         return [
-            'slurp_id.required' => 'スラープIDは必須項目です。',
-            'slurp_id.integer'  => 'スラープIDは数値のみ使用可能です。',
-            'slurp_id.exists'   => '存在しないスラープIDです。',
+            'slurp_id.required' => config('errors.slurp.id.required'),
+            'slurp_id.integer'  => config('errors.slurp.id.integer'),
+            'slurp_id.exists'   => config('errors.slurp.id.exists'),
         ];
     }
 

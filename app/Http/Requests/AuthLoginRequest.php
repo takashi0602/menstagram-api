@@ -43,14 +43,14 @@ class AuthLoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required'  => 'ユーザーIDは必須項目です。',
-            'user_id.regex'     => 'ユーザーIDは半角英数字とアンダーバーのみ使用可能です。',
-            'user_id.between'   => 'ユーザーIDは1〜16文字のみ使用可能です。',
-            'user_id.exists'    => '指定したユーザーIDは存在しません。',
+            'user_id.required'  => config('errors.user.user_id.required'),
+            'user_id.regex'     => config('errors.user.user_id.regex'),
+            'user_id.between'   => config('errors.user.user_id.between'),
+            'user_id.exists'    => config('errors.user.user_id.exists'),
 
-            'password.required' => 'パスワードは必須項目です。',
-            'password.string'   => 'パスワードは文字列のみ使用可能です。',
-            'password.min'      => 'パスワードは8文字以上のみ使用可能です。',
+            'password.required' => config('errors.user.password.required'),
+            'password.string'   => config('errors.user.password.string'),
+            'password.min'      => config('errors.user.password.min'),
         ];
     }
 

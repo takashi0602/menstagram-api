@@ -32,7 +32,7 @@ class SlurpTextRequest extends FormRequest
     public function rules()
     {
         return [
-            'slurp_id' => ['required', 'integer', ],
+            'slurp_id' => ['required', 'integer', 'exists:slurps,id', ],
             'text'     => ['required', 'string', 'between:1,256', ],
         ];
     }
@@ -43,12 +43,13 @@ class SlurpTextRequest extends FormRequest
     public function messages()
     {
         return [
-            'slurp_id.required' => 'スラープIDは必須項目です。',
-            'slurp_id.integer'  => 'スラープIDは数値のみ使用可能です。',
+            'slurp_id.required' => config('errors.slurp.id.required'),
+            'slurp_id.integer'  => config('errors.slurp.id.integer'),
+            'slurp_id.exists'   => config('errors.slurp.id.exists'),
 
-            'text.required'     => 'テキストは必須項目です。',
-            'text.string'       => 'テキストは文字列のみ使用可能です。',
-            'text.between'      => 'テキストは1〜256文字のみ使用可能です。',
+            'text.required'     => config('errors.slurp.text.required'),
+            'text.string'       => config('errors.slurp.text.string'),
+            'text.between'      => config('errors.slurp.text.between'),
         ];
     }
 

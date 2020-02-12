@@ -44,14 +44,14 @@ class UserSlurpsRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.regex'    => 'ユーザーIDは半角英数字とアンダーバーのみ使用可能です。',
-            'user_id.between'  => 'ユーザーIDは1〜16文字のみ使用可能です。',
-            'user_id.exists'   => '存在しないユーザーIDです。',
+            'user_id.regex'    => config('errors.user.user_id.regex'),
+            'user_id.between'  => config('errors.user.user_id.between'),
+            'user_id.exists'   => config('errors.user.user_id.exists'),
 
-            'slurp_id.integer' => 'スラープIDは数値のみ使用可能です。',
-            'slurp_id.exists'  => '存在しないスラープIDです。',
+            'slurp_id.integer' => config('errors.slurp.id.integer'),
+            'slurp_id.exists'  => config('errors.slurp.id.exists'),
 
-            'type.in'          => '存在しないタイプです。',
+            'type.in'          => config('errors.general.type.in'),
         ];
     }
 
