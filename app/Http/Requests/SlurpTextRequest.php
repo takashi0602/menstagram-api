@@ -33,7 +33,7 @@ class SlurpTextRequest extends FormRequest
     {
         return [
             'slurp_id' => ['required', 'integer', ],
-            'text'     => ['required', 'string', 'min:1', 'max:256', ],
+            'text'     => ['required', 'string', 'between:1,256', ],
         ];
     }
 
@@ -48,8 +48,7 @@ class SlurpTextRequest extends FormRequest
 
             'text.required'     => 'テキストは必須項目です。',
             'text.string'       => 'テキストは文字列のみ使用可能です。',
-            'text.min'          => 'テキストは1文字以上のみ使用可能です。',
-            'text.max'          => 'テキストは256文字以下のみ使用可能です',
+            'text.between'      => 'テキストは1〜256文字のみ使用可能です。',
         ];
     }
 
