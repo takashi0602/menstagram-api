@@ -32,9 +32,27 @@ class UserGetFollowRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'   => ['bail', 'string', 'min:1', 'max:16', 'exists:users,user_id', ],
-            'follow_id' => ['bail', 'integer', 'exists:follows,id', ],
-            'type'      => ['bail', 'in:old,new', ],
+            'user_id'   => ['string', 'min:1', 'max:16', 'exists:users,user_id', ],
+            'follow_id' => ['integer', 'exists:follows,id', ],
+            'type'      => ['in:old,new', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_id.string'    => 'ユーザーIDは文字列のみ使用可能です。',
+            'user_id.min'       => 'ユーザーIDは1文字以上のみ使用可能です。',
+            'user_id.max'       => 'ユーザーIDは16文字以下のみ使用可能です。',
+            'user_id.exists'    => '指定したユーザーIDは存在しません。',
+
+            'follow_id.integer' => 'フォローIDは数値のみ使用可能です',
+            'follow_id.exists'  => '指定したフォローIDは存在しません',
+
+            'type.in'           => '存在しないタイプです。',
         ];
     }
 
@@ -43,7 +61,10 @@ class UserGetFollowRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        $response['errors'] = $validator->errors()->toArray();
+
+        throw new HttpResponseException(
+            response()->json($response, 400)
+        );
     }
 }

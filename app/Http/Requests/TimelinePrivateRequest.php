@@ -32,8 +32,21 @@ class TimelinePrivateRequest extends FormRequest
     public function rules()
     {
         return [
-            'slurp_id' => ['bail', 'integer', 'exists:slurps,id', ],
-            'type'     => ['bail', 'in:old,new', ],
+            'slurp_id' => ['integer', 'exists:slurps,id', ],
+            'type'     => ['in:old,new', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'slurp_id.integer' => 'スラープIDは数値のみ使用可能です。',
+            'slurp_id.exists'  => '存在しないスラープIDです。',
+
+            'type.in'          => '存在しないタイプです。',
         ];
     }
 
@@ -42,7 +55,10 @@ class TimelinePrivateRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        $response['errors'] = $validator->errors()->toArray();
+
+        throw new HttpResponseException(
+            response()->json($response, 400)
+        );
     }
 }

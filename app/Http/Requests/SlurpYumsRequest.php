@@ -32,7 +32,19 @@ class SlurpYumsRequest extends FormRequest
     public function rules()
     {
         return [
-            'slurp_id' => ['bail', 'required', 'integer', 'exists:slurps,id', ],
+            'slurp_id' => ['required', 'integer', 'exists:slurps,id', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'slurp_id.required' => 'スラープIDは必須項目です。',
+            'slurp_id.integer'  => 'スラープIDは数値のみ使用可能です。',
+            'slurp_id.exists'   => '存在しないスラープIDです。',
         ];
     }
 
@@ -41,7 +53,10 @@ class SlurpYumsRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        $response['errors'] = $validator->errors()->toArray();
+
+        throw new HttpResponseException(
+            response()->json($response, 400)
+        );
     }
 }

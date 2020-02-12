@@ -32,10 +32,37 @@ class AuthRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'   => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'unique:users', ],
-            'user_name' => ['bail', 'required', 'string', 'min:1', 'max:16', ],
-            'email'     => ['bail', 'required', 'email', 'unique:users', ],
-            'password'  => ['bail', 'required', 'string', 'min:8', ],
+            'user_id'   => ['required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'unique:users', ],
+            'user_name' => ['required', 'string', 'min:1', 'max:16', ],
+            'email'     => ['required', 'email', 'unique:users', ],
+            'password'  => ['required', 'string', 'min:8', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_id.required'   => 'ユーザーIDは必須項目です。',
+            'user_id.regex'      => 'ユーザーIDは半角英数字とアンダーバーのみ使用可能です。',
+            'user_id.min'        => 'ユーザーIDは1文字以上のみ使用可能です。',
+            'user_id.max'        => 'ユーザーIDは16文字以下のみ使用可能です。',
+            'user_id.unique'     => '指定したユーザーIDはすでに存在しています。',
+
+            'user_name.required' => 'ユーザーネームは必須項目です。',
+            'user_name.string'   => 'ユーザーネームは文字列のみ使用可能です。',
+            'user_name.min'      => 'ユーザーネームは1文字以上のみ使用可能です。',
+            'user_name.max'      => 'ユーザーネームは16文字以下のみ使用可能です',
+
+            'email.required'     => 'メールアドレスは必須項目です。',
+            'email.email'        => 'メールアドレスの形式ではありません。',
+            'email.unique'       => '指定したメールアドレスはすでに登録されています。',
+
+            'password.required'  => 'パスワードは必須項目です。',
+            'password.string'    => 'パスワードは文字列のみ使用可能です。',
+            'password.min'       => 'パスワードは8文字以上のみ使用可能です。',
         ];
     }
 
@@ -44,7 +71,10 @@ class AuthRegisterRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        $response['errors'] = $validator->errors()->toArray();
+
+        throw new HttpResponseException(
+            response()->json($response, 400)
+        );
     }
 }

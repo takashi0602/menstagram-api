@@ -106,7 +106,7 @@ class SlurpController extends Controller
     }
 
     /**
-     * ヤムしたユーザー一覧s
+     * ヤムしたユーザー一覧
      *
      * @param SlurpYumsRequest $request
      * @param FetchSlurpYumsUseCase $useCase

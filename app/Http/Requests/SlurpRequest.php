@@ -32,10 +32,30 @@ class SlurpRequest extends FormRequest
     public function rules()
     {
         return [
-            'image1' => ['bail', 'image', 'max:5120', ],
-            'image2' => ['bail', 'image', 'max:5120', ],
-            'image3' => ['bail', 'image', 'max:5120', ],
-            'image4' => ['bail', 'image', 'max:5120', ],
+            'image1' => ['image', 'max:5120', ],
+            'image2' => ['image', 'max:5120', ],
+            'image3' => ['image', 'max:5120', ],
+            'image4' => ['image', 'max:5120', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'image1.image' => '画像でないファイルは選択できません。',
+            'image1.max'   => '画像のサイズは5MBが上限です。',
+
+            'image2.image' => '画像でないファイルは選択できません。',
+            'image2.max'   => '画像のサイズは5MBが上限です。',
+
+            'image3.image' => '画像でないファイルは選択できません。',
+            'image3.max'   => '画像のサイズは5MBが上限です。',
+
+            'image4.image' => '画像でないファイルは選択できません。',
+            'image4.max'   => '画像のサイズは5MBが上限です。',
         ];
     }
 
@@ -44,7 +64,10 @@ class SlurpRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        $response['errors'] = $validator->errors()->toArray();
+
+        throw new HttpResponseException(
+            response()->json($response, 400)
+        );
     }
 }

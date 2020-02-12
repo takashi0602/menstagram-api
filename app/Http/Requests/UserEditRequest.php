@@ -32,8 +32,21 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name' => ['bail', 'string', 'between:1,16', ],
-            'biography' => ['bail', 'max:128', ],
+            'user_name' => ['string', 'between:1,16', ],
+            'biography' => ['max:128', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_name.string'  => 'ユーザーネームは文字列のみ使用可能です',
+            'user_name.between' => 'ユーザーネームは1〜16文字のみ使用可能です',
+
+            'biography.max'     => '自己紹介は128文字以下のみ使用可能です',
         ];
     }
 
@@ -42,7 +55,10 @@ class UserEditRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        $response['errors'] = $validator->errors()->toArray();
+
+        throw new HttpResponseException(
+            response()->json($response, 400)
+        );
     }
 }
