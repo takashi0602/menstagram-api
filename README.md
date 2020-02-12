@@ -5,26 +5,18 @@
 **🍜 SUSURU FOREVER, SUSURU ANYWHERE 🍜**  
 menstagram-apiはMenstagramのWeb API開発のためのリポジトリです。
 
-### 環境構築（macOS）
+### 環境構築
 現状, macOSでの環境のみdocker-syncを使用しているため, 他のプラットフォームと比べて若干環境構築が異なる.
 
 ```bash
 $ git clone https://github.com/uyupun/menstagram-api.git
 $ cd menstagram-api
-$ docker network create menstagram  // menstagram-aiですでに作成している場合は実行しなくて良い
-$ cp docker-compose-mac.yml docker-compose.yml
-$ cp Makefile.mac Makefile
-$ make init
-```
-
-### 環境構築（Windows/Linux）
-
-```bash
-$ git clone https://github.com/uyupun/menstagram-api.git
-$ cd menstagram-api
-$ docker network create menstagram  // menstagram-aiですでに作成している場合は実行しなくて良い
-$ cp docker-compose-other.yml docker-compose.yml
-$ cp Makefile.other Makefile
+$ docker network create menstagram                // menstagram-aiですでに作成している場合は実行しなくて良い
+$ cp docker-compose-mac.yml docker-compose.yml    // macOS環境 
+$ cp docker-compose-other.yml docker-compose.yml  // Windows/Linux環境
+$ cp Makefile.mac Makefile                        // macOS環境
+$ cp Makefile.win Makefile                        // Windows環境
+$ cp Makefile.linux Makefile                      // Linux環境
 $ make init
 ```
 

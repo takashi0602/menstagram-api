@@ -23,7 +23,7 @@ ps:
 	docker-compose ps
 
 dbg:
-	open http://localhost:8000/telescope
+	xgd-open http://localhost:8000/telescope
 
 qual:
 	php artisan insights
