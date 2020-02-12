@@ -52,7 +52,7 @@ class UserUnfollowRequest extends FormRequest
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         $response['errors'] = $validator->errors()->toArray();
 
