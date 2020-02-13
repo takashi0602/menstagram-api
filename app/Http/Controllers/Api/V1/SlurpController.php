@@ -59,8 +59,7 @@ class SlurpController extends Controller
      */
     public function text(SlurpTextRequest $request, SlurpTextUseCase $useCase)
     {
-        // TODO: バリデーション化したい
-        if (!$useCase($request)) return response('{}', 400);
+        if (!$useCase($request)) return err_response(['message' => '該当するスラープがありませんでした。'], 404);
         return response('{}', 200);
     }
 
@@ -73,7 +72,7 @@ class SlurpController extends Controller
      */
     public function yum(SlurpYumRequest $request, YumUseCase $useCase)
     {
-        if (!$useCase($request->slurp_id)) return response('{}', 400);
+        if (!$useCase($request->slurp_id)) return err_response(['message' => 'すでにヤムをしているスラープです。'], 400);
         return response('{}', 200);
     }
 
@@ -86,7 +85,7 @@ class SlurpController extends Controller
      */
     public function unyum(SlurpUnyumRequest $request, UnyumUseCase $useCase)
     {
-        if(!$useCase($request->slurp_id)) return response('{}', 400);
+        if(!$useCase($request->slurp_id)) return err_response(['message' => 'まだヤムをしていないスラープです。'], 400);
         return response('{}', 200);
     }
 
@@ -100,8 +99,7 @@ class SlurpController extends Controller
     public function detail(SlurpDetailRequest $request, FetchSlurpDetailUseCase $useCase)
     {
         $response = $useCase($request->slurp_id);
-        // TODO: バリデーション化したい
-        if (collect($response)->isEmpty()) return response('{}', 400);
+        if (collect($response)->isEmpty()) return err_response(['message' => '該当するスラープがありませんでした。'], 404);
         return response($response, 200);
     }
 

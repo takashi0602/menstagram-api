@@ -54,10 +54,6 @@ class UserPostFollowRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response['errors'] = $validator->errors()->toArray();
-
-        throw new HttpResponseException(
-            response($response, 400)
-        );
+        err_response($validator->errors()->toArray(), 400);
     }
 }
