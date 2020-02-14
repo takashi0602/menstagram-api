@@ -84,4 +84,24 @@ class AuthLoginTest extends TestCase
             ->assertStatus(400)
             ->assertJsonValidationErrors(['password']);
     }
+
+    /**
+     * 異常系(ユーザーIDとパスワード)
+     *
+     * @test
+     * @dataProvider userIdAndPasswordProvider
+     * @param $userId
+     * @param $password
+     */
+    public function failUserIdAndPasswordCase($userId, $password)
+    {
+        $response = $this->post('/api/v1/auth/login', [
+            'user_id'  => $userId,
+            'password' => $password,
+        ]);
+
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['message']);
+    }
 }
