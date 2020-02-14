@@ -41,7 +41,7 @@ class AuthController extends Controller
      */
     public function login(AuthLoginRequest $request, ExistsUserUseCase $existsUserUseCase, LoginUserUseCase $loginUserUseCase)
     {
-        if (!$existsUserUseCase($request->user_id, $request->password)) return err_response(['message' => 'パスワードに誤りがあります。'], 400);
+        if (!$existsUserUseCase($request->user_id, $request->password)) return err_response(['message' => config('errors.user.not_exists')], 400);
 
         $accessToken = $loginUserUseCase($request->user_id);
         return response(['access_token' => $accessToken], 200);

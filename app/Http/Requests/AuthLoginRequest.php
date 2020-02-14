@@ -31,7 +31,7 @@ class AuthLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'  => ['required', 'regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', 'exists:users', ],
+            'user_id'  => ['required', 'regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', ],
             'password' => ['required', 'string', 'min:8', ],
         ];
     }
@@ -45,7 +45,6 @@ class AuthLoginRequest extends FormRequest
             'user_id.required'  => config('errors.user.user_id.required'),
             'user_id.regex'     => config('errors.user.user_id.regex'),
             'user_id.between'   => config('errors.user.user_id.between'),
-            'user_id.exists'    => config('errors.user.user_id.exists'),
 
             'password.required' => config('errors.user.password.required'),
             'password.string'   => config('errors.user.password.string'),

@@ -90,7 +90,7 @@ class UserController extends Controller
      */
     public function postFollow(UserPostFollowRequest $request, FollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return err_response(['message' => 'すでにフォローしているユーザーです。'], 400);
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.already')], 400);
         return response('{}', 200);
     }
 
@@ -103,7 +103,7 @@ class UserController extends Controller
      */
     public function unfollow(UserUnfollowRequest $request, UnfollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response(['message' => 'まだフォローしていないユーザーです。'], 400);
+        if (!$useCase($request->target_user_id)) return response(['message' => config('errors.follow.yet')], 400);
         return response('{}', 200);
     }
 
