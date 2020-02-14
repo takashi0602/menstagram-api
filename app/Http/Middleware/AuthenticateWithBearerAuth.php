@@ -25,14 +25,14 @@ class AuthenticateWithBearerAuth
     public function handle($request, Closure $next)
     {
         $accessToken = $request->header('Authorization');
-        if (!$this->checkAccessTokenFormat($accessToken)) return response('{}', 401);
+        if (!$this->checkAccessTokenFormat($accessToken)) return err_response(['message' => '認証情報の形式が不正です。'], 401);
 
         $accessToken = hash('sha256', Str::after($accessToken, 'Bearer '));
-        if (!$this->existsAccessToken($accessToken)) return response('{}', 401);
+        if (!$this->existsAccessToken($accessToken)) return err_response(['message' => '存在しない認証情報です。'], 401);
 
         if (!$this->checkAccessTokenDeadline($accessToken)) {
             $this->resetAccessToken($accessToken);
-            return response('{}', 401);
+            return err_response(['message' => '認証情報の期限が切れています。'], 401);
         }
 
         return $next($request);
