@@ -59,7 +59,7 @@ class SlurpController extends Controller
      */
     public function text(SlurpTextRequest $request, SlurpTextUseCase $useCase)
     {
-        if (!$useCase($request)) return err_response(['message' => config('errors.slurp.not_exists')], 404);
+        if (!$useCase($request)) return err_response(['message' => config('errors.slurp.forbid')], 403);
         return response('{}', 200);
     }
 
